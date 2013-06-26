@@ -169,9 +169,21 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                bodyDef.type = b2_dynamicBody;
                                                bodyDef.linearDamping = 1;
                                                bodyDef.angularDamping = 1;
+                                               
+                                               Vehicle* current = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
                                                CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
-                                               bodyDef.position.Set((pos.x - (isFirstPlayerTurn ? 50 : -50))/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
-                                               bodyDef.linearVelocity = b2Vec2(isFirstPlayerTurn ? -10 : 10, 10);
+                                               b2Vec2 startVelocity;
+                                               if (current.flipX) {
+                                                   pos.x -= 50;
+                                                   startVelocity = b2Vec2(-10, 10);
+                                               }
+                                               else {
+                                                   pos.x += 50;
+                                                   startVelocity = b2Vec2(10, 10);
+                                               }
+                                               
+                                               bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
+                                               bodyDef.linearVelocity = startVelocity;
                                                bodyDef.angularVelocity = isFirstPlayerTurn ? 60 : -60; //In radians
                                                bodyDef.bullet = true;
                                                bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
