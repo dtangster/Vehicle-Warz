@@ -323,6 +323,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? player1Vehicle.lastAngle : player2Vehicle.lastAngle];
     }
     if (input.gestureRotationBegan) {
+        input.gesturePinchEnabled = NO;
         if (input.gestureRotationVelocity > 0) {
             angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? ++player1Vehicle.lastAngle : --player2Vehicle.lastAngle];
         }
@@ -330,8 +331,15 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
             angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? --player1Vehicle.lastAngle : ++player2Vehicle.lastAngle];
         }
     }
+    else {
+        input.gesturePinchEnabled = YES;
+    }
     if (input.gesturePinchBegan) {
+        input.gestureRotationEnabled = NO;
         self.scale = input.gesturePinchScale;
+    }
+    else {
+        input.gestureRotationEnabled = YES;
     }
     if (input.gesturePanBegan) {
         CGPoint vel = input.gesturePanVelocity;
