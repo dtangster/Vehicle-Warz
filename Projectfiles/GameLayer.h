@@ -32,7 +32,7 @@ enum
     b2Body *player2Body;  //will store the position and type of the catapult arm
     b2Fixture *projectileFixture; //will store the shape and density information of the catapult arm
     b2Body *projectileBody;  //will store the position and type of the catapult arm
-
+    
     //MY STUFF
     float shotPower;
     int angle;

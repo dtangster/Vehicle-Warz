@@ -16,6 +16,7 @@
 @property int health;
 @property int power;
 @property int speed;
+@property int lastAngle;
 
 -(id) initWithName:(NSString *) vehicleName usingImage:(NSString *) fileName;
 -(void) attackWithWeapon:(Weapon *) weapon;

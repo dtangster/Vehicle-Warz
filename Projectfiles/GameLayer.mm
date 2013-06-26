@@ -35,6 +35,11 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
 	if ((self = [super init]))
 	{
 		CCLOG(@"%@ init", NSStringFromClass([self class]));
+        KKInput *input = [KKInput sharedInput];
+        //input.gestureTapEnabled = YES; //This causes my shot menuitems to not be activated
+        input.gesturePanEnabled = YES;
+        input.gestureRotationEnabled = YES;
+        input.gesturePinchEnabled = YES;
         
         // Construct a world object, which will hold and simulate the rigid bodies.
 		b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
@@ -51,10 +56,17 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         CGSize screenSize = [CCDirector sharedDirector].winSize;
 
         
-        b2Vec2 lowerLeftCorner =b2Vec2(0,0);
-		b2Vec2 lowerRightCorner = b2Vec2(screenSize.width/PTM_RATIO,0);
-		b2Vec2 upperLeftCorner = b2Vec2(0,screenSize.height/PTM_RATIO);
-		b2Vec2 upperRightCorner = b2Vec2(screenSize.width/PTM_RATIO,screenSize.height/PTM_RATIO);
+        //Raise to floor height
+        b2Vec2 lowerLeftCorner =b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
+        
+        //Raise to floor height, extend to end of game area
+        b2Vec2 lowerRightCorner = b2Vec2(screenSize.width * 2.0f / PTM_RATIO, FLOOR_HEIGHT / PTM_RATIO);
+        
+        //No change
+        b2Vec2 upperLeftCorner = b2Vec2(0,screenSize.height * 2.0f / PTM_RATIO);
+        
+        //Extend to end of game area.
+        b2Vec2 upperRightCorner =b2Vec2(screenSize.width * 2.0f / PTM_RATIO, screenSize.height * 2.0f / PTM_RATIO);
 		
 		// Define the static container body, which will provide the collisions at screen borders.
 		b2BodyDef screenBorderDef;
@@ -145,7 +157,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
                                                bodyDef.angularDamping = 1;
                                                CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
                                                bodyDef.position.Set((pos.x - (isFirstPlayerTurn ? 50 : -50))/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
-                                               bodyDef.linearVelocity = b2Vec2(isFirstPlayerTurn ? -5 : 5, 4);
+                                               bodyDef.linearVelocity = b2Vec2(isFirstPlayerTurn ? -5 : 5, 40);
                                                bodyDef.angularVelocity = isFirstPlayerTurn ? 60 : -60; //In radians
                                                bodyDef.bullet = true;
                                                bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
@@ -169,14 +181,14 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         [self addChild: attackMenu];
         
         //Show Power and Angle for current vehicle
-        powerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i",180]
+        powerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", 100]
                                                fontName:@"Marker Felt"
 											   fontSize:20];
 		powerLabel.position = CGPointMake(50, screenSize.height - 20);
 		powerLabel.color = ccBLACK;
 		[self addChild:powerLabel];
-        
-        angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i",180]
+
+        angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", player1Vehicle.lastAngle]
                                    fontName:@"Marker Felt"
                                    fontSize:20];
 		angleLabel.position = CGPointMake(50, screenSize.height - 40);
@@ -266,7 +278,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
 -(void) update:(ccTime)delta
 {
     //Check for inputs and create a bullet if there is a tap
-    KKInput* input = [KKInput sharedInput];
+    KKInput *input = [KKInput sharedInput];
     if(input.anyTouchEndedThisFrame)
     {
         [self createBullets];
@@ -308,7 +320,32 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
     }
     if (justAttacked) {
         justAttacked = !justAttacked;
-        powerLabel.string = @"HELLO";
+        angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? player1Vehicle.lastAngle : player2Vehicle.lastAngle];
+    }
+    if (input.gestureRotationBegan) {
+        if (input.gestureRotationVelocity > 0) {
+            angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? ++player1Vehicle.lastAngle : --player2Vehicle.lastAngle];
+        }
+        else if (input.gestureRotationVelocity < 0) {
+            angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? --player1Vehicle.lastAngle : ++player2Vehicle.lastAngle];
+        }
+    }
+    if (input.gesturePinchBegan) {
+        self.scale = input.gesturePinchScale;
+    }
+    if (input.gesturePanBegan) {
+        CGPoint vel = input.gesturePanVelocity;
+        CGPoint pos = input.gesturePanTranslation;
+        
+        //Update the screen position only when the finger is moving
+        if (vel.x || vel.y) {
+            //Change the position of the screen relative to the panning motion
+            self.position = CGPointMake(self.position.x - pos.x, self.position.y + pos.y);
+            
+            //Reset the point translation value so it doesn't append with the next pan motion
+            //before releasing the finger
+            input.gesturePanTranslation = CGPointMake(0, 0);
+        }
     }
     
     float timeStep = 0.03f;
