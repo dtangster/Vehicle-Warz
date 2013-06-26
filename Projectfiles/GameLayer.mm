@@ -171,7 +171,7 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                bodyDef.angularDamping = 1;
                                                CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
                                                bodyDef.position.Set((pos.x - (isFirstPlayerTurn ? 50 : -50))/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
-                                               bodyDef.linearVelocity = b2Vec2(isFirstPlayerTurn ? -5 : 5, 40);
+                                               bodyDef.linearVelocity = b2Vec2(isFirstPlayerTurn ? -10 : 10, 10);
                                                bodyDef.angularVelocity = isFirstPlayerTurn ? 60 : -60; //In radians
                                                bodyDef.bullet = true;
                                                bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
@@ -210,12 +210,12 @@ UIPanGestureRecognizer *threeFingerGesture;
         [self addChild:angleLabel];
         
         //Create 2 arrows for movement
-        leftArrow = [CCSprite spriteWithFile:@"arrow_left.jpeg"];
-        rightArrow = [CCSprite spriteWithFile:@"arrow_right.jpeg"];
+        leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
+        rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
         leftArrow.position = CGPointMake([leftArrow boundingBox].size.width / 2, screenSize.height / 2);
         rightArrow.position = CGPointMake(screenSize.width - [rightArrow boundingBox].size.width / 2, screenSize.height / 2);
-        [self addChild:leftArrow z:3];
-        [self addChild:rightArrow z:3];
+        [self addChild:leftArrow];
+        [self addChild:rightArrow];
         
         //schedules a call to the update method every frame
         [self scheduleUpdate];
