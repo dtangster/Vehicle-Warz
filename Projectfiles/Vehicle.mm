@@ -16,8 +16,10 @@
     {
         self.vehicleName = vehicleName;
         self.health = 2;
+        self.shield = 2;
         self.power = 100;
         self.speed = 2;
+        self.energy = 100;
         self.lastAngle = 45;
     }
     return self;

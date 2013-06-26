@@ -109,7 +109,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         sprite.anchorPoint = CGPointZero;
         [self addChild:sprite z:-1];
         
-        player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops_left.png"];
+        player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
         [self addChild:player1Vehicle z:1 tag:1];
         
         // Setting the properties of our definition
@@ -134,7 +134,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player1Fixture = player1Body->CreateFixture(&fixtureDef);
         
-        player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth_right.png"];
+        player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
         [self addChild:player2Vehicle z:1 tag:2];
         //causes rotations to slow down. A value of 0 means there is no slowdown
         bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
@@ -367,12 +367,20 @@ UIPanGestureRecognizer *threeFingerGesture;
         justAttacked = !justAttacked;
         angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? player1Vehicle.lastAngle : player2Vehicle.lastAngle];
     }
+    if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseBegan]) {
+        Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
+        vehicleToFlip.flipX = YES;
+    }
+    if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseBegan]) {
+        Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
+        vehicleToFlip.flipX = NO;
+    }
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->ApplyForceToCenter(b2Vec2(-2, 0));
     }
     if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
-        b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
+        b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;  
         bodyToMove->ApplyForceToCenter(b2Vec2(2, 0));
     }
     
