@@ -95,7 +95,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         sprite.anchorPoint = CGPointZero;
         [self addChild:sprite z:-1];
         
-        player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
+        player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops_left.png"];
         [self addChild:player1Vehicle z:1 tag:1];
         
         // Setting the properties of our definition
@@ -120,7 +120,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player1Fixture = player1Body->CreateFixture(&fixtureDef);
         
-        player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
+        player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth_right.png"];
         [self addChild:player2Vehicle z:1 tag:2];
         //causes rotations to slow down. A value of 0 means there is no slowdown
         bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);

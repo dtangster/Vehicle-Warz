@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		248667AD1778C1DC00DE5743 /* mammoth.gif in Resources */ = {isa = PBXBuildFile; fileRef = 248667AC1778C1DC00DE5743 /* mammoth.gif */; };
-		248667AE1778C1DC00DE5743 /* mammoth.gif in Resources */ = {isa = PBXBuildFile; fileRef = 248667AC1778C1DC00DE5743 /* mammoth.gif */; };
-		248667B01778C1E100DE5743 /* triceratops.gif in Resources */ = {isa = PBXBuildFile; fileRef = 248667AF1778C1E100DE5743 /* triceratops.gif */; };
-		248667B11778C1E100DE5743 /* triceratops.gif in Resources */ = {isa = PBXBuildFile; fileRef = 248667AF1778C1E100DE5743 /* triceratops.gif */; };
 		248667B41778E4D000DE5743 /* Vehicle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 248667B31778E4D000DE5743 /* Vehicle.mm */; };
 		248667B51778E4D000DE5743 /* Vehicle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 248667B31778E4D000DE5743 /* Vehicle.mm */; };
 		248667BC1778EAEB00DE5743 /* Weapon.mm in Sources */ = {isa = PBXBuildFile; fileRef = 248667BB1778EAEB00DE5743 /* Weapon.mm */; };
@@ -19,6 +15,14 @@
 		248667C31778EFC300DE5743 /* triceratops.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C11778EFC300DE5743 /* triceratops.plist */; };
 		248667C51778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667C61778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
+		248667DC177AD79D00DE5743 /* mammoth_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667D8177AD79D00DE5743 /* mammoth_left.png */; };
+		248667DD177AD79D00DE5743 /* mammoth_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667D8177AD79D00DE5743 /* mammoth_left.png */; };
+		248667DE177AD79D00DE5743 /* mammoth_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667D9177AD79D00DE5743 /* mammoth_right.png */; };
+		248667DF177AD79D00DE5743 /* mammoth_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667D9177AD79D00DE5743 /* mammoth_right.png */; };
+		248667E0177AD79D00DE5743 /* triceratops_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667DA177AD79D00DE5743 /* triceratops_left.png */; };
+		248667E1177AD79D00DE5743 /* triceratops_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667DA177AD79D00DE5743 /* triceratops_left.png */; };
+		248667E2177AD79D00DE5743 /* triceratops_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667DB177AD79D00DE5743 /* triceratops_right.png */; };
+		248667E3177AD79D00DE5743 /* triceratops_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 248667DB177AD79D00DE5743 /* triceratops_right.png */; };
 		AA3296F515CEC40D00DEE33D /* config.lua in Resources */ = {isa = PBXBuildFile; fileRef = AA3296D615CEC40D00DEE33D /* config.lua */; };
 		AA3296F615CEC40D00DEE33D /* explo2.wav in Resources */ = {isa = PBXBuildFile; fileRef = AA3296D715CEC40D00DEE33D /* explo2.wav */; };
 		AA3296F715CEC40D00DEE33D /* background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = AA3296D915CEC40D00DEE33D /* background-hd.png */; };
@@ -88,14 +92,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		248667AC1778C1DC00DE5743 /* mammoth.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = mammoth.gif; sourceTree = "<group>"; };
-		248667AF1778C1E100DE5743 /* triceratops.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = triceratops.gif; sourceTree = "<group>"; };
 		248667B21778E4D000DE5743 /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
 		248667B31778E4D000DE5743 /* Vehicle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Vehicle.mm; sourceTree = "<group>"; };
 		248667BA1778EAEB00DE5743 /* Weapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weapon.h; sourceTree = "<group>"; };
 		248667BB1778EAEB00DE5743 /* Weapon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Weapon.mm; sourceTree = "<group>"; };
 		248667C11778EFC300DE5743 /* triceratops.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = triceratops.plist; sourceTree = "<group>"; };
 		248667C41778EFDF00DE5743 /* mammoth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mammoth.plist; sourceTree = "<group>"; };
+		248667D8177AD79D00DE5743 /* mammoth_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mammoth_left.png; sourceTree = "<group>"; };
+		248667D9177AD79D00DE5743 /* mammoth_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mammoth_right.png; sourceTree = "<group>"; };
+		248667DA177AD79D00DE5743 /* triceratops_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triceratops_left.png; sourceTree = "<group>"; };
+		248667DB177AD79D00DE5743 /* triceratops_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triceratops_right.png; sourceTree = "<group>"; };
 		AA3296D615CEC40D00DEE33D /* config.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.lua; sourceTree = "<group>"; };
 		AA3296D715CEC40D00DEE33D /* explo2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explo2.wav; sourceTree = "<group>"; };
 		AA3296D915CEC40D00DEE33D /* background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-hd.png"; sourceTree = "<group>"; };
@@ -219,8 +225,10 @@
 		AA3296D515CEC40D00DEE33D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				248667AF1778C1E100DE5743 /* triceratops.gif */,
-				248667AC1778C1DC00DE5743 /* mammoth.gif */,
+				248667D8177AD79D00DE5743 /* mammoth_left.png */,
+				248667D9177AD79D00DE5743 /* mammoth_right.png */,
+				248667DA177AD79D00DE5743 /* triceratops_left.png */,
+				248667DB177AD79D00DE5743 /* triceratops_right.png */,
 				AA3296D615CEC40D00DEE33D /* config.lua */,
 				AA3296D715CEC40D00DEE33D /* explo2.wav */,
 				AA3296D815CEC40D00DEE33D /* Peeved Penguins Art */,
@@ -492,10 +500,12 @@
 				AA32971015CEC40D00DEE33D /* taperedblock.png in Resources */,
 				AA32971115CEC40D00DEE33D /* waitingpenguin-hd.png in Resources */,
 				AA32971215CEC40D00DEE33D /* waitingpenguin.png in Resources */,
-				248667AD1778C1DC00DE5743 /* mammoth.gif in Resources */,
-				248667B01778C1E100DE5743 /* triceratops.gif in Resources */,
 				248667C21778EFC300DE5743 /* triceratops.plist in Resources */,
 				248667C51778EFDF00DE5743 /* mammoth.plist in Resources */,
+				248667DC177AD79D00DE5743 /* mammoth_left.png in Resources */,
+				248667DE177AD79D00DE5743 /* mammoth_right.png in Resources */,
+				248667E0177AD79D00DE5743 /* triceratops_left.png in Resources */,
+				248667E2177AD79D00DE5743 /* triceratops_right.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,10 +517,12 @@
 				DCC1A26C13A94EE6005BD75D /* MainMenu.xib in Resources */,
 				DCC1A26E13A94EE6005BD75D /* fps_images.png in Resources */,
 				DCC1A27013A94EE6005BD75D /* icon.icns in Resources */,
-				248667AE1778C1DC00DE5743 /* mammoth.gif in Resources */,
-				248667B11778C1E100DE5743 /* triceratops.gif in Resources */,
 				248667C31778EFC300DE5743 /* triceratops.plist in Resources */,
 				248667C61778EFDF00DE5743 /* mammoth.plist in Resources */,
+				248667DD177AD79D00DE5743 /* mammoth_left.png in Resources */,
+				248667DF177AD79D00DE5743 /* mammoth_right.png in Resources */,
+				248667E1177AD79D00DE5743 /* triceratops_left.png in Resources */,
+				248667E3177AD79D00DE5743 /* triceratops_right.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
