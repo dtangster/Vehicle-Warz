@@ -210,15 +210,12 @@ UIPanGestureRecognizer *threeFingerGesture;
         [self addChild:angleLabel];
         
         //Create 2 arrows for movement
-        CCMenu *movementArrows = [[CCMenu alloc] init];
-        CCMenuItemImage *leftArrow = [CCMenuItemImage itemWithNormalImage:@"arrow_left.jpeg" selectedImage:@"arrow_left.jpeg"];
-        CCMenuItemImage *rightArrow = [CCMenuItemImage itemWithNormalImage:@"arrow_right.jpeg" selectedImage:@"arrow_right.jpeg"];
-        movementArrows.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
-        leftArrow.position = CGPointMake((screenSize.width - [leftArrow boundingBox].size.width) / 2 * -1, 0);
-        rightArrow.position = CGPointMake((screenSize.width - [rightArrow boundingBox].size.height) / 2, 0);
-        [movementArrows addChild:leftArrow];
-        [movementArrows addChild:rightArrow];
-        [self addChild:movementArrows];
+        leftArrow = [CCSprite spriteWithFile:@"arrow_left.jpeg"];
+        rightArrow = [CCSprite spriteWithFile:@"arrow_right.jpeg"];
+        leftArrow.position = CGPointMake([leftArrow boundingBox].size.width / 2, screenSize.height / 2);
+        rightArrow.position = CGPointMake(screenSize.width - [rightArrow boundingBox].size.width / 2, screenSize.height / 2);
+        [self addChild:leftArrow z:3];
+        [self addChild:rightArrow z:3];
         
         //schedules a call to the update method every frame
         [self scheduleUpdate];
@@ -330,7 +327,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     KKInput *input = [KKInput sharedInput];
     if(input.anyTouchEndedThisFrame)
     {
-        [self createBullets];
+        //[self createBullets];
     }
     //Move the projectiles to the right and down
     for(unsigned int i = 0; i < [bullets count]; i++)
@@ -367,8 +364,16 @@ UIPanGestureRecognizer *threeFingerGesture;
         }
     }
     if (justAttacked) {
-        justAttacked = !justAttacked;
+        justAttacked = !justAttacked;d
         angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? player1Vehicle.lastAngle : player2Vehicle.lastAngle];
+    }
+    if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
+        b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
+        bodyToMove->ApplyForceToCenter(b2Vec2(-2, 0));
+    }
+    if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
+        b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
+        bodyToMove->ApplyForceToCenter(b2Vec2(2, 0));
     }
     
     float timeStep = 0.03f;

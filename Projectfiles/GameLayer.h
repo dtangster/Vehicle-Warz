@@ -40,6 +40,8 @@ enum
     BOOL justAttacked;
     CCLabelTTF *powerLabel;
     CCLabelTTF *angleLabel;
+    CCSprite *leftArrow;
+    CCSprite *rightArrow;
 }
 
 +(id) scene;
