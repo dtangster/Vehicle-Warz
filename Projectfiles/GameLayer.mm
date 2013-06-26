@@ -147,7 +147,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         
         fixtureDef.shape = &playerShape; //geometric shape
         fixtureDef.density = 0.3F; //affects collision momentum and inertia
-        playerShape.SetAsBox([player2Vehicle boundingBox].size.width / 3 / PTM_RATIO, [player2Vehicle boundingBox].size.height / 3 / PTM_RATIO);
+        playerShape.SetAsBox([player2Vehicle boundingBox].size.width / 4 / PTM_RATIO, [player2Vehicle boundingBox].size.height / 4 / PTM_RATIO);
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player2Fixture = player2Body->CreateFixture(&fixtureDef);
         
