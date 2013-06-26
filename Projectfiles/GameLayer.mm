@@ -177,7 +177,6 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                    bodyDef.linearDamping = 1;
                                                    bodyDef.angularDamping = 1;
                                                    
-                                                   
                                                    CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
                                                    b2Vec2 startVelocity;
                                                    if (current.flipX) {

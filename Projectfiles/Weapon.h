@@ -10,6 +10,9 @@
 
 @interface Weapon : CCSprite
 
+@property (strong, nonatomic) NSString *weaponName;
+@property int energyCost;
+
 -(void) executeAttack;
 
 @end

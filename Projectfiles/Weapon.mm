@@ -10,4 +10,20 @@
 
 @implementation Weapon
 
+-(id) initWithName:(NSString *) weaponName usingImage:(NSString *) fileName withEnergyCost:(int) energyCost
+{
+    if ((self = [super initWithFile:fileName]))
+    {
+        self.weaponName = weaponName;
+        self.energyCost = energyCost;
+    }
+    
+    return self;
+}
+
+-(void) executeAttack
+{
+    
+}
+
 @end
