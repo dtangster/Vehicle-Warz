@@ -364,7 +364,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         }
     }
     if (justAttacked) {
-        justAttacked = !justAttacked;d
+        justAttacked = !justAttacked;
         angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? player1Vehicle.lastAngle : player2Vehicle.lastAngle];
     }
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
