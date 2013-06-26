@@ -49,22 +49,4 @@
     
     return _power;
 }
-
-- (void)setLastAngle:(int)lastAngle
-{
-    _lastAngle = lastAngle;
-}
-
-- (int)lastAngle
-{
-    if (_lastAngle > 359) {
-        [self setLastAngle:0];
-    }
-    else if (_lastAngle < -359) {
-        [self setLastAngle:0];
-    }
-    
-    return _lastAngle;
-}
-
 @end
