@@ -210,10 +210,10 @@ UIPanGestureRecognizer *threeFingerGesture;
         [self addChild:angleLabel];
         
         //Create 2 arrows for movement
-        leftArrow = [CCSprite spriteWithFile:@"arrow_left.jpeg"];
-        rightArrow = [CCSprite spriteWithFile:@"arrow_right.jpeg"];
-        leftArrow.position = CGPointMake([leftArrow boundingBox].size.width / 2, screenSize.height / 2);
-        rightArrow.position = CGPointMake(screenSize.width - [rightArrow boundingBox].size.width / 2, screenSize.height / 2);
+        leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
+        rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
+        leftArrow.position = CGPointMake([leftArrow boundingBox].size.width / 2, screenSize.height / 2 - 100);
+        rightArrow.position = CGPointMake([rightArrow boundingBox].size.width / 2 + [leftArrow boundingBox].size.width, screenSize.height / 2 - 100);
         [self addChild:leftArrow z:3];
         [self addChild:rightArrow z:3];
         
