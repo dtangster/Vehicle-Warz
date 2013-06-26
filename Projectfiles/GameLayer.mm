@@ -8,8 +8,10 @@
 #import "GameLayer.h"
 #import "Vehicle.h"
 
-const float PTM_RATIO = 32.0f;
+#define PTM_RATIO 32.0f
 #define FLOOR_HEIGHT    50.0f
+#define TORQUE_ADJUSTMENT 50
+#define MAX_TORQUE 1000
 
 CCSprite *projectile;
 CCSprite *block;
@@ -119,6 +121,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         bodyDef.angularDamping = 1;
         bodyDef.position.Set(450.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
         bodyDef.linearVelocity = b2Vec2(-5,0);
+        bodyDef.angularVelocity = -110;
         bodyDef.userData = (__bridge void*)player1Vehicle; //this tells the Box2D body which sprite to update.
         
         //create a body with the definition we just created
@@ -139,6 +142,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         //causes rotations to slow down. A value of 0 means there is no slowdown
         bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
         bodyDef.linearVelocity = b2Vec2(5,0);
+        bodyDef.angularVelocity = 90;
         bodyDef.userData = (__bridge void*)player2Vehicle; //this tells the Box2D body which sprite to update.
         
         //create a body with the definition we just created
@@ -400,6 +404,24 @@ UIPanGestureRecognizer *threeFingerGesture;
     int32 velocityIterations = 8;
     int32 positionIterations = 1;
     world->Step(timeStep, velocityIterations, positionIterations);
+    
+    [self stabilizeVehicle:player1Body withTimeStep:timeStep];
+    [self stabilizeVehicle:player2Body withTimeStep:timeStep];
+}
+
+- (void)stabilizeVehicle:(b2Body *)vehicleBody withTimeStep:(float)timeStep
+{
+    float desiredAngle = 0;
+    float angleNow = vehicleBody->GetAngle();
+    float changeExpected = vehicleBody->GetAngularVelocity() * timeStep; //expected angle change in next timestep
+    float angleNextStep = angleNow + changeExpected;
+    float changeRequiredInNextStep = desiredAngle - angleNextStep;
+    float rotationalAcceleration = timeStep * changeRequiredInNextStep;
+    float torque = rotationalAcceleration * TORQUE_ADJUSTMENT;
+    if (torque > MAX_TORQUE) {
+        torque = MAX_TORQUE;
+    }
+    vehicleBody->ApplyTorque(torque);
 }
 
 // convenience method to convert a b2Vec2 to a CGPoint
