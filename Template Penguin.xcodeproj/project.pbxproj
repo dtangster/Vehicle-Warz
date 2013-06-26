@@ -19,6 +19,11 @@
 		248667C31778EFC300DE5743 /* triceratops.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C11778EFC300DE5743 /* triceratops.plist */; };
 		248667C51778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667C61778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
+		3D9E113B177AAF82003BD67E /* mammoth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9E113A177AAF82003BD67E /* mammoth.png */; };
+		3D9E113F177AAF92003BD67E /* mammoth_inverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9E113C177AAF92003BD67E /* mammoth_inverted.png */; };
+		3D9E1140177AAF92003BD67E /* triceratops_inverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9E113D177AAF92003BD67E /* triceratops_inverted.png */; };
+		3D9E1141177AAF92003BD67E /* triceratops.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9E113E177AAF92003BD67E /* triceratops.png */; };
+		3D9E1143177AB8E8003BD67E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9E1142177AB8E8003BD67E /* Default-568h@2x.png */; };
 		AA3296F515CEC40D00DEE33D /* config.lua in Resources */ = {isa = PBXBuildFile; fileRef = AA3296D615CEC40D00DEE33D /* config.lua */; };
 		AA3296F615CEC40D00DEE33D /* explo2.wav in Resources */ = {isa = PBXBuildFile; fileRef = AA3296D715CEC40D00DEE33D /* explo2.wav */; };
 		AA3296F715CEC40D00DEE33D /* background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = AA3296D915CEC40D00DEE33D /* background-hd.png */; };
@@ -96,6 +101,11 @@
 		248667BB1778EAEB00DE5743 /* Weapon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Weapon.mm; sourceTree = "<group>"; };
 		248667C11778EFC300DE5743 /* triceratops.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = triceratops.plist; sourceTree = "<group>"; };
 		248667C41778EFDF00DE5743 /* mammoth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mammoth.plist; sourceTree = "<group>"; };
+		3D9E113A177AAF82003BD67E /* mammoth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mammoth.png; sourceTree = "<group>"; };
+		3D9E113C177AAF92003BD67E /* mammoth_inverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mammoth_inverted.png; sourceTree = "<group>"; };
+		3D9E113D177AAF92003BD67E /* triceratops_inverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triceratops_inverted.png; sourceTree = "<group>"; };
+		3D9E113E177AAF92003BD67E /* triceratops.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triceratops.png; sourceTree = "<group>"; };
+		3D9E1142177AB8E8003BD67E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		AA3296D615CEC40D00DEE33D /* config.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.lua; sourceTree = "<group>"; };
 		AA3296D715CEC40D00DEE33D /* explo2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explo2.wav; sourceTree = "<group>"; };
 		AA3296D915CEC40D00DEE33D /* background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-hd.png"; sourceTree = "<group>"; };
@@ -222,6 +232,10 @@
 				248667AF1778C1E100DE5743 /* triceratops.gif */,
 				248667AC1778C1DC00DE5743 /* mammoth.gif */,
 				AA3296D615CEC40D00DEE33D /* config.lua */,
+				3D9E113A177AAF82003BD67E /* mammoth.png */,
+				3D9E113C177AAF92003BD67E /* mammoth_inverted.png */,
+				3D9E113D177AAF92003BD67E /* triceratops_inverted.png */,
+				3D9E113E177AAF92003BD67E /* triceratops.png */,
 				AA3296D715CEC40D00DEE33D /* explo2.wav */,
 				AA3296D815CEC40D00DEE33D /* Peeved Penguins Art */,
 				248667C11778EFC300DE5743 /* triceratops.plist */,
@@ -268,6 +282,7 @@
 		DCC1A0D613A94EC0005BD75D = {
 			isa = PBXGroup;
 			children = (
+				3D9E1142177AB8E8003BD67E /* Default-568h@2x.png */,
 				DCC1A38C13A94F1A005BD75D /* Projectfiles */,
 				DCC1A0F713A94ED5005BD75D /* Projectfiles-iOS */,
 				DCC1A26413A94EE6005BD75D /* Projectfiles-Mac */,
@@ -362,11 +377,11 @@
 				AA4774A615CED021009A911F /* main.m */,
 				AA4774A715CED021009A911F /* Prefix-iOS.pch */,
 				AA4774A815CED021009A911F /* Prefix-Mac.pch */,
-				AA3296D515CEC40D00DEE33D /* Resources */,
 				248667B21778E4D000DE5743 /* Vehicle.h */,
 				248667B31778E4D000DE5743 /* Vehicle.mm */,
 				248667BA1778EAEB00DE5743 /* Weapon.h */,
 				248667BB1778EAEB00DE5743 /* Weapon.mm */,
+				AA3296D515CEC40D00DEE33D /* Resources */,
 			);
 			path = Projectfiles;
 			sourceTree = "<group>";
@@ -496,6 +511,11 @@
 				248667B01778C1E100DE5743 /* triceratops.gif in Resources */,
 				248667C21778EFC300DE5743 /* triceratops.plist in Resources */,
 				248667C51778EFDF00DE5743 /* mammoth.plist in Resources */,
+				3D9E113B177AAF82003BD67E /* mammoth.png in Resources */,
+				3D9E113F177AAF92003BD67E /* mammoth_inverted.png in Resources */,
+				3D9E1140177AAF92003BD67E /* triceratops_inverted.png in Resources */,
+				3D9E1141177AAF92003BD67E /* triceratops.png in Resources */,
+				3D9E1143177AB8E8003BD67E /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
