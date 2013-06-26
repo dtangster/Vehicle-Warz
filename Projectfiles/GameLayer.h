@@ -37,8 +37,8 @@ enum
     float shotPower;
     int angle;
     BOOL isFirstPlayerTurn;
-    BOOL justAttacked;
-    CCLabelTTF *powerLabel;
+    BOOL turnJustEnded;
+    CCLabelTTF *energyLabel;
     CCLabelTTF *angleLabel;
     CCSprite *leftArrow;
     CCSprite *rightArrow;

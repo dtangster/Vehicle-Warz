@@ -167,39 +167,50 @@ UIPanGestureRecognizer *threeFingerGesture;
             CCMenuItemLabel *levelLabel = [CCMenuItemLabel
                                            itemWithLabel:label
                                            block:^(id sender) {
-                                               CCSprite *projectile = [CCSprite spriteWithFile:@"seal.png"];
-                                               [self addChild:projectile z:-1];
-                                               b2BodyDef bodyDef;
-                                               bodyDef.type = b2_dynamicBody;
-                                               bodyDef.linearDamping = 1;
-                                               bodyDef.angularDamping = 1;
-                                               
                                                Vehicle* current = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
-                                               CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
-                                               b2Vec2 startVelocity;
-                                               if (current.flipX) {
-                                                   pos.x -= 50;
-                                                   startVelocity = b2Vec2(-10, 10);
-                                               }
-                                               else {
-                                                   pos.x += 50;
-                                                   startVelocity = b2Vec2(10, 10);
-                                               }
                                                
-                                               bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
-                                               bodyDef.linearVelocity = startVelocity;
-                                               bodyDef.angularVelocity = isFirstPlayerTurn ? 60 : -60; //In radians
-                                               bodyDef.bullet = true;
-                                               bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
-                                               projectileBody = world->CreateBody(&bodyDef);
-                                               b2CircleShape projectileShape;
-                                               b2FixtureDef projectileFixtureDef;
-                                               projectileShape.m_radius = projectile.contentSize.width/2.0f/PTM_RATIO;
-                                               projectileFixtureDef.shape = &projectileShape;
-                                               projectileFixtureDef.density = 10.3F; //affects collision momentum and inertia
-                                               projectileFixture = projectileBody->CreateFixture(&projectileFixtureDef);
-                                               isFirstPlayerTurn = !isFirstPlayerTurn;
-                                               justAttacked = true;
+                                               if (current.energy >= 25) {
+                                                   CCSprite *projectile = [CCSprite spriteWithFile:@"seal.png"];
+                                                   [self addChild:projectile z:-1];
+                                                   b2BodyDef bodyDef;
+                                                   bodyDef.type = b2_dynamicBody;
+                                                   bodyDef.linearDamping = 1;
+                                                   bodyDef.angularDamping = 1;
+                                                   
+                                                   
+                                                   CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
+                                                   b2Vec2 startVelocity;
+                                                   if (current.flipX) {
+                                                       pos.x -= 50;
+                                                       startVelocity = b2Vec2(-10, 10);
+                                                   }
+                                                   else {
+                                                       pos.x += 50;
+                                                       startVelocity = b2Vec2(10, 10);
+                                                   }
+                                                   
+                                                   bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
+                                                   bodyDef.linearVelocity = startVelocity;
+                                                   bodyDef.angularVelocity = isFirstPlayerTurn ? 60 : -60; //In radians
+                                                   bodyDef.bullet = true;
+                                                   bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
+                                                   projectileBody = world->CreateBody(&bodyDef);
+                                                   b2CircleShape projectileShape;
+                                                   b2FixtureDef projectileFixtureDef;
+                                                   projectileShape.m_radius = projectile.contentSize.width/2.0f/PTM_RATIO;
+                                                   projectileFixtureDef.shape = &projectileShape;
+                                                   projectileFixtureDef.density = 10.3F; //affects collision momentum and inertia
+                                                   projectileFixture = projectileBody->CreateFixture(&projectileFixtureDef);
+                                               
+                                                   current.energy -= 25;  
+                                                   if (current.energy == 0) {
+                                                       isFirstPlayerTurn = !isFirstPlayerTurn;
+                                                       turnJustEnded = YES;
+                                                       current.energy = 100;
+                                                   }
+                                                   
+                                                   energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
+                                               }
                                            }
                                            ];
             
@@ -211,12 +222,12 @@ UIPanGestureRecognizer *threeFingerGesture;
         [self addChild: attackMenu];
         
         //Show Power and Angle for current vehicle
-        powerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", 100]
+        energyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", 100]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
-        powerLabel.position = CGPointMake(50, screenSize.height - 20);
-        powerLabel.color = ccBLACK;
-        [self addChild:powerLabel];
+        energyLabel.position = CGPointMake(50, screenSize.height - 20);
+        energyLabel.color = ccBLACK;
+        [self addChild:energyLabel];
         
         angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", player1Vehicle.lastAngle]
                                         fontName:@"Marker Felt"
@@ -281,7 +292,7 @@ UIPanGestureRecognizer *threeFingerGesture;
 - (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
 {
     UIView *view = [[CCDirector sharedDirector] view];
-    
+    /*
     if ([gesture velocityInView:view].x > 0) {
         [powerLabel setString:[NSString stringWithFormat:@"Power: %i",
                                isFirstPlayerTurn ? ++player1Vehicle.power : ++player2Vehicle.power]];
@@ -290,6 +301,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         [powerLabel setString:[NSString stringWithFormat:@"Power: %i",
                                isFirstPlayerTurn ? --player1Vehicle.power : --player2Vehicle.power]];
     }
+    */
 }
 
 //Create the bullets, add them to the list of bullets so they can be referred to later
@@ -379,8 +391,9 @@ UIPanGestureRecognizer *threeFingerGesture;
             sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
         }
     }
-    if (justAttacked) {
-        justAttacked = !justAttacked;
+    if (turnJustEnded) {
+        turnJustEnded = !turnJustEnded;
+        energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
         angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? player1Vehicle.lastAngle : player2Vehicle.lastAngle];
     }
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseBegan]) {
@@ -394,10 +407,30 @@ UIPanGestureRecognizer *threeFingerGesture;
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->ApplyForceToCenter(b2Vec2(-2, 0));
+        
+        Vehicle *vehicleToDrain = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
+        vehicleToDrain.energy--;
+        if (!vehicleToDrain.energy) {
+            isFirstPlayerTurn = !isFirstPlayerTurn;
+            turnJustEnded = YES;
+            vehicleToDrain.energy = 100;
+        }
+        
+        energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
     }
     if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
-        b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;  
+        b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->ApplyForceToCenter(b2Vec2(2, 0));
+        
+        Vehicle *vehicleToDrain = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
+        vehicleToDrain.energy--;
+        if (!vehicleToDrain.energy) {
+            isFirstPlayerTurn = !isFirstPlayerTurn;
+            turnJustEnded = YES;
+            vehicleToDrain.energy = 100;
+        }
+        
+        energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
     }
     
     float timeStep = 0.03f;

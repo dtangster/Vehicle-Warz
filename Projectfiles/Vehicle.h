@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSString *rightFacingImage;
 @property (strong, nonatomic) Weapon *weapon1;
 @property (strong, nonatomic) Weapon *weapon2;
+@property (strong, nonatomic) Weapon *special;
 @property int health;
 @property int shield;
 @property int power;
