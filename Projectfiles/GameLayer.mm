@@ -229,9 +229,9 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
 //Check through all the bullets and blocks and see if they intersect
 -(void) detectCollisions
 {
-    for(int i = 0; i < [bullets count]; i++)
+    for(unsigned int i = 0; i < [bullets count]; i++)
     {
-        for(int j = 0; j < [blocks count]; j++)
+        for(unsigned int j = 0; j < [blocks count]; j++)
         {
             if([bullets count]>0)
             {
@@ -284,7 +284,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         [self createBullets];
     }
     //Move the projectiles to the right and down
-    for(int i = 0; i < [bullets count]; i++)
+    for(unsigned int i = 0; i < [bullets count]; i++)
     {
         NSInteger j = i;
         projectile = [bullets objectAtIndex:j];
@@ -314,8 +314,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         {
             // update the sprite's position to where their physics bodies are
             sprite.position = [self toPixels:body->GetPosition()];
-            float angle = body->GetAngle();
-            sprite.rotation = CC_RADIANS_TO_DEGREES(angle) * -1;
+            sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
         }
     }
     if (justAttacked) {
