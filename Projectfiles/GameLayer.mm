@@ -116,7 +116,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &playerShape; //geometric shape
         fixtureDef.density = 0.3F; //affects collision momentum and inertia
-        playerShape.SetAsBox(30.0f/PTM_RATIO, 30.0f/PTM_RATIO);
+        playerShape.SetAsBox(20.0f/PTM_RATIO, 20.0f/PTM_RATIO);
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player1Fixture = player1Body->CreateFixture(&fixtureDef);
         
@@ -133,7 +133,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
         
         fixtureDef.shape = &playerShape; //geometric shape
         fixtureDef.density = 0.3F; //affects collision momentum and inertia
-        playerShape.SetAsBox(30.0f/PTM_RATIO, 30.0f/PTM_RATIO);
+        playerShape.SetAsBox(20.0f/PTM_RATIO, 20.0f/PTM_RATIO);
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player2Fixture = player2Body->CreateFixture(&fixtureDef);
 		
