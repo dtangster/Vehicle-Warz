@@ -1,7 +1,7 @@
 /*
  * Kobold2D™ --- http://www.kobold2d.org
  *
- * Copyright (c) 2010-2011 Steffen Itterheim. 
+ * Copyright (c) 2010-2011 Steffen Itterheim.
  * Released under MIT License in Germany (LICENSE-Kobold2D.txt).
  */
 
@@ -35,6 +35,7 @@ UIPanGestureRecognizer *threeFingerGesture;
 
 - (id)init
 {
+<<<<<<< HEAD
 	if ((self = [super init]))
 	{
 		CCLOG(@"%@ init", NSStringFromClass([self class]));
@@ -42,11 +43,24 @@ UIPanGestureRecognizer *threeFingerGesture;
         // UIKit Gesture recognizers
         singlePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                   action:@selector(handleSingleFingerPan:)];
+=======
+    if ((self = [super init]))
+    {
+        CCLOG(@"%@ init", NSStringFromClass([self class]));
+        
+        // UIKit Gesture recognizers
+        singlePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                   action:@selector(handleSingleFingerPan:)];
+>>>>>>> 02a0526532a28d76a0828a666e017c1ed23a5361
         [singlePanGesture setMaximumNumberOfTouches:1];
         pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self
                                                                  action:@selector(handlePinchGesture:)];
         rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
+<<<<<<< HEAD
                                                                   action:@selector(handleRotateGesture:)];
+=======
+                                                                     action:@selector(handleRotateGesture:)];
+>>>>>>> 02a0526532a28d76a0828a666e017c1ed23a5361
         threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(handleThreeFingers:)];
         [threeFingerGesture setMinimumNumberOfTouches:3];
@@ -58,19 +72,19 @@ UIPanGestureRecognizer *threeFingerGesture;
         [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
         
         // Construct a world object, which will hold and simulate the rigid bodies.
-		b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
-		world = new b2World(gravity);
-		world->SetAllowSleeping(YES);
-		//world->SetContinuousPhysics(YES);
+        b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
+        world = new b2World(gravity);
+        world->SetAllowSleeping(YES);
+        //world->SetContinuousPhysics(YES);
         
         //create an object that will check for collisions
-		contactListener = new ContactListener();
-		world->SetContactListener(contactListener);
+        contactListener = new ContactListener();
+        world->SetContactListener(contactListener);
         
-		glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
+        glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
         
         CGSize screenSize = [CCDirector sharedDirector].winSize;
-
+        
         
         //Raise to floor height
         b2Vec2 lowerLeftCorner =b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
@@ -83,12 +97,12 @@ UIPanGestureRecognizer *threeFingerGesture;
         
         //Extend to end of game area.
         b2Vec2 upperRightCorner =b2Vec2(screenSize.width * 2.0f / PTM_RATIO, screenSize.height * 2.0f / PTM_RATIO);
-		
-		// Define the static container body, which will provide the collisions at screen borders.
-		b2BodyDef screenBorderDef;
-		screenBorderDef.position.Set(0, 0);
+        
+        // Define the static container body, which will provide the collisions at screen borders.
+        b2BodyDef screenBorderDef;
+        screenBorderDef.position.Set(0, 0);
         screenBorderBody = world->CreateBody(&screenBorderDef);
-		b2EdgeShape screenBorderShape;
+        b2EdgeShape screenBorderShape;
         
         screenBorderShape.Set(lowerLeftCorner, lowerRightCorner);
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
@@ -150,7 +164,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         playerShape.SetAsBox(20.0f/PTM_RATIO, 20.0f/PTM_RATIO);
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player2Fixture = player2Body->CreateFixture(&fixtureDef);
-		
+        
         //Create 2 attack buttons
         
         CCMenu *attackMenu = [[CCMenu alloc] init];
@@ -190,30 +204,30 @@ UIPanGestureRecognizer *threeFingerGesture;
             levelLabel.position = CGPointMake(0, (i * 50 * -1));
             [attackMenu addChild:levelLabel];
         }
-
+        
         attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .90);
         [self addChild: attackMenu];
         
         //Show Power and Angle for current vehicle
         powerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", 100]
-                                               fontName:@"Marker Felt"
-											   fontSize:20];
-		powerLabel.position = CGPointMake(50, screenSize.height - 20);
-		powerLabel.color = ccBLACK;
-		[self addChild:powerLabel];
-
+                                        fontName:@"Marker Felt"
+                                        fontSize:20];
+        powerLabel.position = CGPointMake(50, screenSize.height - 20);
+        powerLabel.color = ccBLACK;
+        [self addChild:powerLabel];
+        
         angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", player1Vehicle.lastAngle]
-                                   fontName:@"Marker Felt"
-                                   fontSize:20];
-		angleLabel.position = CGPointMake(50, screenSize.height - 40);
-		angleLabel.color = ccBLACK;
-		[self addChild:angleLabel];
+                                        fontName:@"Marker Felt"
+                                        fontSize:20];
+        angleLabel.position = CGPointMake(50, screenSize.height - 40);
+        angleLabel.color = ccBLACK;
+        [self addChild:angleLabel];
         
         //schedules a call to the update method every frame
-		[self scheduleUpdate];
-	}
+        [self scheduleUpdate];
+    }
     
-	return self;
+    return self;
 }
 
 + (id)scene
@@ -221,6 +235,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     CCScene *scene = [CCScene node];
     GameLayer *layer = [GameLayer node];
     [scene addChild: layer];
+<<<<<<< HEAD
 	
 	return scene;
 }
@@ -255,6 +270,42 @@ UIPanGestureRecognizer *threeFingerGesture;
     }
 }
 
+=======
+    
+    return scene;
+}
+
+#pragma mark Gesture Handlers
+- (void)handleSingleFingerPan:(UIPanGestureRecognizer *)gesture
+{
+    UIView *view = [[CCDirector sharedDirector] view];
+    CGPoint vel = [gesture velocityInView:view];
+    CGPoint pos = [gesture translationInView:view];
+    
+    if (vel.x || vel.y) {
+        self.position = CGPointMake(self.position.x - pos.x, self.position.y + pos.y);
+        [gesture setTranslation:CGPointMake(0, 0) inView:view];
+    }
+}
+
+- (void)handlePinchGesture:(UIPinchGestureRecognizer *)gesture
+{
+    self.scale = [gesture scale];
+}
+
+- (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
+{
+    if ([gesture velocity] > 0) {
+        [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
+                               isFirstPlayerTurn ? ++player1Vehicle.lastAngle : --player2Vehicle.lastAngle]];
+    }
+    else if ([gesture velocity] < 0) {
+        [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
+                               isFirstPlayerTurn ? --player1Vehicle.lastAngle : ++player2Vehicle.lastAngle]];
+    }
+}
+
+>>>>>>> 02a0526532a28d76a0828a666e017c1ed23a5361
 - (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
 {
     UIView *view = [[CCDirector sharedDirector] view];
@@ -370,8 +421,7 @@ UIPanGestureRecognizer *threeFingerGesture;
 // convenience method to convert a b2Vec2 to a CGPoint
 - (CGPoint)toPixels:(b2Vec2)vec
 {
-	return ccpMult(CGPointMake(vec.x, vec.y), PTM_RATIO);
+    return ccpMult(CGPointMake(vec.x, vec.y), PTM_RATIO);
 }
-
 
 @end
