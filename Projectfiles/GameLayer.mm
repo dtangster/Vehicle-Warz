@@ -35,15 +35,6 @@ UIPanGestureRecognizer *threeFingerGesture;
 
 - (id)init
 {
-<<<<<<< HEAD
-	if ((self = [super init]))
-	{
-		CCLOG(@"%@ init", NSStringFromClass([self class]));
-        
-        // UIKit Gesture recognizers
-        singlePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                  action:@selector(handleSingleFingerPan:)];
-=======
     if ((self = [super init]))
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
@@ -51,16 +42,11 @@ UIPanGestureRecognizer *threeFingerGesture;
         // UIKit Gesture recognizers
         singlePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                    action:@selector(handleSingleFingerPan:)];
->>>>>>> 02a0526532a28d76a0828a666e017c1ed23a5361
         [singlePanGesture setMaximumNumberOfTouches:1];
         pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self
                                                                  action:@selector(handlePinchGesture:)];
         rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
-<<<<<<< HEAD
                                                                   action:@selector(handleRotateGesture:)];
-=======
-                                                                     action:@selector(handleRotateGesture:)];
->>>>>>> 02a0526532a28d76a0828a666e017c1ed23a5361
         threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(handleThreeFingers:)];
         [threeFingerGesture setMinimumNumberOfTouches:3];
@@ -235,8 +221,6 @@ UIPanGestureRecognizer *threeFingerGesture;
     CCScene *scene = [CCScene node];
     GameLayer *layer = [GameLayer node];
     [scene addChild: layer];
-<<<<<<< HEAD
-	
 	return scene;
 }
 
@@ -270,42 +254,6 @@ UIPanGestureRecognizer *threeFingerGesture;
     }
 }
 
-=======
-    
-    return scene;
-}
-
-#pragma mark Gesture Handlers
-- (void)handleSingleFingerPan:(UIPanGestureRecognizer *)gesture
-{
-    UIView *view = [[CCDirector sharedDirector] view];
-    CGPoint vel = [gesture velocityInView:view];
-    CGPoint pos = [gesture translationInView:view];
-    
-    if (vel.x || vel.y) {
-        self.position = CGPointMake(self.position.x - pos.x, self.position.y + pos.y);
-        [gesture setTranslation:CGPointMake(0, 0) inView:view];
-    }
-}
-
-- (void)handlePinchGesture:(UIPinchGestureRecognizer *)gesture
-{
-    self.scale = [gesture scale];
-}
-
-- (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
-{
-    if ([gesture velocity] > 0) {
-        [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
-                               isFirstPlayerTurn ? ++player1Vehicle.lastAngle : --player2Vehicle.lastAngle]];
-    }
-    else if ([gesture velocity] < 0) {
-        [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
-                               isFirstPlayerTurn ? --player1Vehicle.lastAngle : ++player2Vehicle.lastAngle]];
-    }
-}
-
->>>>>>> 02a0526532a28d76a0828a666e017c1ed23a5361
 - (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
 {
     UIView *view = [[CCDirector sharedDirector] view];
