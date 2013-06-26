@@ -209,6 +209,17 @@ UIPanGestureRecognizer *threeFingerGesture;
         angleLabel.color = ccBLACK;
         [self addChild:angleLabel];
         
+        //Create 2 arrows for movement
+        CCMenu *movementArrows = [[CCMenu alloc] init];
+        CCMenuItemImage *leftArrow = [CCMenuItemImage itemWithNormalImage:@"arrow_left.jpeg" selectedImage:@"arrow_left.jpeg"];
+        CCMenuItemImage *rightArrow = [CCMenuItemImage itemWithNormalImage:@"arrow_right.jpeg" selectedImage:@"arrow_right.jpeg"];
+        movementArrows.position = CGPointMake(screenSize.width / 2, screenSize.height / 2);
+        leftArrow.position = CGPointMake((screenSize.width - [leftArrow boundingBox].size.width) / 2 * -1, 0);
+        rightArrow.position = CGPointMake((screenSize.width - [rightArrow boundingBox].size.height) / 2, 0);
+        [movementArrows addChild:leftArrow];
+        [movementArrows addChild:rightArrow];
+        [self addChild:movementArrows];
+        
         //schedules a call to the update method every frame
         [self scheduleUpdate];
     }

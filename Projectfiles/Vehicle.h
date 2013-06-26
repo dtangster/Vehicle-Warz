@@ -16,8 +16,10 @@
 @property (strong, nonatomic) Weapon *weapon1;
 @property (strong, nonatomic) Weapon *weapon2;
 @property int health;
+@property int shield;
 @property int power;
 @property int speed;
+@property int energy;
 @property int lastAngle;
 @property BOOL isFacingLeft;
 
