@@ -431,15 +431,16 @@ UIRotationGestureRecognizer *rotateGesture;
         
         // Maintains a constant velocity for the vehicle
         b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
-        bodyToMove->SetLinearVelocity(b2Vec2(-2, 0));
+        bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed * -1, 0));
 
         // Deplete vehicle energy for moving
-        Vehicle *vehicleToDrain = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        vehicleToDrain.energy--;
-        if (!vehicleToDrain.energy) {
+        vehicleToFlip.energy--;
+        
+        // Switch turns when out of energy
+        if (!vehicleToFlip.energy) {
             _isFirstPlayerTurn = !_isFirstPlayerTurn;
             _turnJustEnded = YES;
-            vehicleToDrain.energy = vehicleToDrain.maxEnergy; // Reset energy to prepare for next turn
+            vehicleToFlip.energy = vehicleToFlip.maxEnergy; // Reset energy to prepare for next turn
             bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
         }
 
@@ -451,15 +452,17 @@ UIRotationGestureRecognizer *rotateGesture;
         Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         vehicleToFlip.flipX = NO;
         b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
-        bodyToMove->SetLinearVelocity(b2Vec2(2, 0));
-
-        Vehicle *vehicleToDrain = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        vehicleToDrain.energy--;
-        if (!vehicleToDrain.energy) {
+        bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed, 0));
+        
+        // Deplete vehicle energy for moving
+        vehicleToFlip.energy--;
+        
+        // Switch turns when out of energy
+        if (!vehicleToFlip.energy) {
             _isFirstPlayerTurn = !_isFirstPlayerTurn;
             _turnJustEnded = YES;
-            vehicleToDrain.energy = vehicleToDrain.maxEnergy;
-            bodyToMove->SetLinearVelocity(b2Vec2(0, 0));
+            vehicleToFlip.energy = vehicleToFlip.maxEnergy; // Reset energy to prepare for next turn
+            bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
         }
 
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", _isFirstPlayerTurn ? _player1Vehicle.energy : _player2Vehicle.energy];
