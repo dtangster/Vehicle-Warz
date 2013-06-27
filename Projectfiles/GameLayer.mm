@@ -21,9 +21,7 @@ CGRect secondrect;
 NSMutableArray *blocks = [[NSMutableArray alloc] init];
 
 // UIKit Gestures
-UIPanGestureRecognizer *singlePanGesture;
 UIRotationGestureRecognizer *rotateGesture;
-UIPinchGestureRecognizer *pinchGesture;
 UIPanGestureRecognizer *threeFingerGesture;
 
 
@@ -42,13 +40,6 @@ UIPanGestureRecognizer *threeFingerGesture;
     if ((self = [super init]))
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
-
-        // UIKit Gesture recognizers
-        singlePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                   action:@selector(handleSingleFingerPan:)];
-        [singlePanGesture setMaximumNumberOfTouches:1];
-        pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self
-                                                                 action:@selector(handlePinchGesture:)];
         rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
                                                                   action:@selector(handleRotateGesture:)];
         threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
@@ -56,8 +47,6 @@ UIPanGestureRecognizer *threeFingerGesture;
         [threeFingerGesture setMinimumNumberOfTouches:3];
         [threeFingerGesture setMaximumNumberOfTouches:3];
 
-        [[[CCDirector sharedDirector] view] addGestureRecognizer:singlePanGesture];
-        [[[CCDirector sharedDirector] view] addGestureRecognizer:pinchGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
 
@@ -104,19 +93,19 @@ UIPanGestureRecognizer *threeFingerGesture;
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
         
         // Set up the panning/zooming Layer
-        CGSize winSize = [[CCDirector sharedDirector] winSize];
         CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
         self.panZoomLayer = [CCLayerPanZoom node];
         self.panZoomLayer.maxScale = 2.0f;
-        self.panZoomLayer.rubberEffectRatio = 0.0f;
-        self.panZoomLayer.minScale = 1.0f;
+        self.panZoomLayer.minScale = 1;
         self.panZoomLayer.mode = kCCLayerPanZoomModeSheet;
         bgSprite.anchorPoint = CGPointZero;
+        bgSprite.scale = CC_CONTENT_SCALE_FACTOR();
         [self.panZoomLayer addChild:bgSprite z:-1];
+        self.panZoomLayer.rubberEffectRatio = 0.3f;
         
         // Set up the content size
         self.panZoomLayer.contentSize = CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight]);
-        self.panZoomLayer.panBoundsRect = CGRectMake(0, 0, winSize.width, winSize.height);
+        self.panZoomLayer.panBoundsRect = CGRectMake(0, 0, screenSize.width, screenSize.height);
         self.panZoomLayer.anchorPoint = ccp(0, 0);
         self.panZoomLayer.position = ccp(0, 0);
 
@@ -269,22 +258,6 @@ UIPanGestureRecognizer *threeFingerGesture;
 }
 
 #pragma mark Gesture Handlers
-- (void)handleSingleFingerPan:(UIPanGestureRecognizer *)gesture
-{
-    UIView *view = [[CCDirector sharedDirector] view];
-    CGPoint vel = [gesture velocityInView:view];
-    CGPoint pos = [gesture translationInView:view];
-
-    if (vel.x || vel.y) {
-        self.position = CGPointMake(self.position.x - pos.x, self.position.y + pos.y);
-        [gesture setTranslation:CGPointMake(0, 0) inView:view];
-    }
-}
-
-- (void)handlePinchGesture:(UIPinchGestureRecognizer *)gesture
-{
-    self.scale = [gesture scale];
-}
 
 - (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
 {
