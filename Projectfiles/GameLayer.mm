@@ -40,7 +40,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     if ((self = [super init]))
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
-        
+
         // UIKit Gesture recognizers
         singlePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                    action:@selector(handleSingleFingerPan:)];
@@ -53,45 +53,45 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                                      action:@selector(handleThreeFingers:)];
         [threeFingerGesture setMinimumNumberOfTouches:3];
         [threeFingerGesture setMaximumNumberOfTouches:3];
-        
+
         [[[CCDirector sharedDirector] view] addGestureRecognizer:singlePanGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:pinchGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
-        
+
         // Construct a world object, which will hold and simulate the rigid bodies.
         b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
         world = new b2World(gravity);
         world->SetAllowSleeping(YES);
         //world->SetContinuousPhysics(YES);
-        
+
         //create an object that will check for collisions
         contactListener = new ContactListener();
         world->SetContactListener(contactListener);
-        
+
         glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
-        
+
         CGSize screenSize = [CCDirector sharedDirector].winSize;
-        
-        
+
+
         //Raise to floor height
         b2Vec2 lowerLeftCorner =b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
-        
+
         //Raise to floor height, extend to end of game area
         b2Vec2 lowerRightCorner = b2Vec2(screenSize.width * 2.0f / PTM_RATIO, FLOOR_HEIGHT / PTM_RATIO);
-        
+
         //No change
         b2Vec2 upperLeftCorner = b2Vec2(0,screenSize.height * 2.0f / PTM_RATIO);
-        
+
         //Extend to end of game area.
         b2Vec2 upperRightCorner =b2Vec2(screenSize.width * 2.0f / PTM_RATIO, screenSize.height * 2.0f / PTM_RATIO);
-        
+
         // Define the static container body, which will provide the collisions at screen borders.
         b2BodyDef screenBorderDef;
         screenBorderDef.position.Set(0, 0);
         screenBorderBody = world->CreateBody(&screenBorderDef);
         b2EdgeShape screenBorderShape;
-        
+
         screenBorderShape.Set(lowerLeftCorner, lowerRightCorner);
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
         screenBorderShape.Set(lowerRightCorner, upperRightCorner);
@@ -100,20 +100,15 @@ UIPanGestureRecognizer *threeFingerGesture;
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
         screenBorderShape.Set(upperLeftCorner, lowerLeftCorner);
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
-        
-        
+
         // Add sprites to the game
-        CCSprite *sprite = [CCSprite spriteWithFile:@"background.png"];
+        CCSprite *sprite = [CCSprite spriteWithFile:@"bgImage.png"];
         sprite.anchorPoint = CGPointZero;
         [self addChild:sprite z:-1];
-        
-        sprite = [CCSprite spriteWithFile:@"ground.png"];
-        sprite.anchorPoint = CGPointZero;
-        [self addChild:sprite z:-1];
-        
+
         player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
         [self addChild:player1Vehicle z:1 tag:1];
-        
+
         // Setting the properties of our definition
         b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
@@ -123,11 +118,11 @@ UIPanGestureRecognizer *threeFingerGesture;
         bodyDef.linearVelocity = b2Vec2(-5,0);
         bodyDef.angularVelocity = -110;
         bodyDef.userData = (__bridge void*)player1Vehicle; //this tells the Box2D body which sprite to update.
-        
+
         //create a body with the definition we just created
         player1Body = world->CreateBody(&bodyDef);
         //the -> is C++ syntax; it is like calling an object's methods (the CreateBody "method")
-        
+
         //Create a fixture for the arm
         b2PolygonShape playerShape;
         b2FixtureDef fixtureDef;
@@ -136,7 +131,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         playerShape.SetAsBox([player1Vehicle boundingBox].size.width / 3 / PTM_RATIO, [player1Vehicle boundingBox].size.height / 3 / PTM_RATIO);
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player1Fixture = player1Body->CreateFixture(&fixtureDef);
-        
+
         player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
         [self addChild:player2Vehicle z:1 tag:2];
         //causes rotations to slow down. A value of 0 means there is no slowdown
@@ -144,31 +139,31 @@ UIPanGestureRecognizer *threeFingerGesture;
         bodyDef.linearVelocity = b2Vec2(5,0);
         bodyDef.angularVelocity = 90;
         bodyDef.userData = (__bridge void*)player2Vehicle; //this tells the Box2D body which sprite to update.
-        
+
         //create a body with the definition we just created
         player2Body = world->CreateBody(&bodyDef);
         //the -> is C++ syntax; it is like calling an object's methods (the CreateBody "method")
-        
+
         fixtureDef.shape = &playerShape; //geometric shape
         fixtureDef.density = 0.3F; //affects collision momentum and inertia
         playerShape.SetAsBox([player2Vehicle boundingBox].size.width / 4 / PTM_RATIO, [player2Vehicle boundingBox].size.height / 4 / PTM_RATIO);
         //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player2Fixture = player2Body->CreateFixture(&fixtureDef);
-        
+
         //Create 2 attack buttons
-        
+
         CCMenu *attackMenu = [[CCMenu alloc] init];
         for (int i = 1; i <= 2; i++) {
             NSString *levelString = [NSString stringWithFormat:@"Shot %i", i];
             CCLabelTTF *label = [CCLabelTTF labelWithString:levelString
                                                    fontName:@"Marker Felt"
                                                    fontSize:50];
-            
+
             CCMenuItemLabel *levelLabel = [CCMenuItemLabel
                                            itemWithLabel:label
                                            block:^(id sender) {
                                                Vehicle* current = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
-                                               
+
                                                if (current.energy >= 25) {
                                                    CCSprite *projectile = [CCSprite spriteWithFile:@"seal.png"];
                                                    [self addChild:projectile z:-1];
@@ -176,7 +171,7 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                    bodyDef.type = b2_dynamicBody;
                                                    bodyDef.linearDamping = 1;
                                                    bodyDef.angularDamping = 1;
-                                                   
+
                                                    CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
                                                    b2Vec2 startVelocity;
                                                    if (current.flipX) {
@@ -187,7 +182,7 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                        pos.x += 50;
                                                        startVelocity = b2Vec2(10, 10);
                                                    }
-                                                   
+
                                                    bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
                                                    bodyDef.linearVelocity = startVelocity;
                                                    bodyDef.angularVelocity = isFirstPlayerTurn ? 60 : -60; //In radians
@@ -200,26 +195,26 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                    projectileFixtureDef.shape = &projectileShape;
                                                    projectileFixtureDef.density = 10.3F; //affects collision momentum and inertia
                                                    projectileFixture = projectileBody->CreateFixture(&projectileFixtureDef);
-                                               
-                                                   current.energy -= 25;  
+
+                                                   current.energy -= 25;
                                                    if (current.energy == 0) {
                                                        isFirstPlayerTurn = !isFirstPlayerTurn;
                                                        turnJustEnded = YES;
                                                        current.energy = 100;
                                                    }
-                                                   
+
                                                    energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
                                                }
                                            }
                                            ];
-            
+
             levelLabel.position = CGPointMake(0, (i * 50 * -1));
             [attackMenu addChild:levelLabel];
         }
-        
+
         attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .90);
         [self addChild: attackMenu];
-        
+
         //Show Power and Angle for current vehicle
         energyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", 100]
                                         fontName:@"Marker Felt"
@@ -227,14 +222,14 @@ UIPanGestureRecognizer *threeFingerGesture;
         energyLabel.position = CGPointMake(50, screenSize.height - 20);
         energyLabel.color = ccBLACK;
         [self addChild:energyLabel];
-        
+
         angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", player1Vehicle.lastAngle]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
         angleLabel.position = CGPointMake(50, screenSize.height - 40);
         angleLabel.color = ccBLACK;
         [self addChild:angleLabel];
-        
+
         //Create 2 arrows for movement
         leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
         rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
@@ -242,11 +237,11 @@ UIPanGestureRecognizer *threeFingerGesture;
         rightArrow.position = CGPointMake([rightArrow boundingBox].size.width / 2 + [leftArrow boundingBox].size.width, screenSize.height / 2 - 100);
         [self addChild:leftArrow];
         [self addChild:rightArrow];
-        
+
         //schedules a call to the update method every frame
         [self scheduleUpdate];
     }
-    
+
     return self;
 }
 
@@ -264,7 +259,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     UIView *view = [[CCDirector sharedDirector] view];
     CGPoint vel = [gesture velocityInView:view];
     CGPoint pos = [gesture translationInView:view];
-    
+
     if (vel.x || vel.y) {
         self.position = CGPointMake(self.position.x - pos.x, self.position.y + pos.y);
         [gesture setTranslation:CGPointMake(0, 0) inView:view];
@@ -325,7 +320,7 @@ UIPanGestureRecognizer *threeFingerGesture;
                 NSInteger second = j;
                 block = [blocks objectAtIndex:second];
                 projectile = [bullets objectAtIndex:first];
-                
+
                 firstrect = [projectile textureRect];
                 secondrect = [block textureRect];
                 //check if their x coordinates match
@@ -338,13 +333,13 @@ UIPanGestureRecognizer *threeFingerGesture;
                         [self removeChild:projectile cleanup:YES];
                         [blocks removeObjectAtIndex:second];
                         [bullets removeObjectAtIndex:first];
-                        
+
                     }
                 }
             }
-            
+
         }
-        
+
     }
 }
 
@@ -377,7 +372,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     {
         [self detectCollisions];
     }
-    
+
     //get all the bodies in the world
     for (b2Body* body = world->GetBodyList(); body != nil; body = body->GetNext())
     {
@@ -406,7 +401,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->ApplyForceToCenter(b2Vec2(-2, 0));
-        
+
         Vehicle *vehicleToDrain = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToDrain.energy--;
         if (!vehicleToDrain.energy) {
@@ -414,13 +409,13 @@ UIPanGestureRecognizer *threeFingerGesture;
             turnJustEnded = YES;
             vehicleToDrain.energy = 100;
         }
-        
+
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
     }
     if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->ApplyForceToCenter(b2Vec2(2, 0));
-        
+
         Vehicle *vehicleToDrain = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToDrain.energy--;
         if (!vehicleToDrain.energy) {
@@ -428,15 +423,15 @@ UIPanGestureRecognizer *threeFingerGesture;
             turnJustEnded = YES;
             vehicleToDrain.energy = 100;
         }
-        
+
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
     }
-    
+
     float timeStep = 0.03f;
     int32 velocityIterations = 8;
     int32 positionIterations = 1;
     world->Step(timeStep, velocityIterations, positionIterations);
-    
+
     [self stabilizeVehicle:player1Body withTimeStep:timeStep];
     [self stabilizeVehicle:player2Body withTimeStep:timeStep];
 }
