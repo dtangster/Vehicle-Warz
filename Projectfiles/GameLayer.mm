@@ -414,6 +414,8 @@ UIPanGestureRecognizer *threeFingerGesture;
         vehicleToFlip.flipX = NO;
     }
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
+        Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
+        vehicleToFlip.flipX = YES;
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->SetLinearVelocity(b2Vec2(-2, 0));
 
@@ -429,6 +431,8 @@ UIPanGestureRecognizer *threeFingerGesture;
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
     }
     if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
+        Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
+        vehicleToFlip.flipX = NO;
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->SetLinearVelocity(b2Vec2(2, 0));
 
