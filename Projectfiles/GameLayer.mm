@@ -21,7 +21,7 @@ CGRect secondrect;
 NSMutableArray *blocks = [[NSMutableArray alloc] init];
 
 // UIKit Gestures
-UIRotationGestureRecognizer *rotateGesture;
+UIPanGestureRecognizer *panGesture;
 UIPanGestureRecognizer *threeFingerGesture;
 
 
@@ -40,14 +40,14 @@ UIPanGestureRecognizer *threeFingerGesture;
     if ((self = [super init]))
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
-        rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
-                                                                  action:@selector(handleRotateGesture:)];
+        panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                  action:@selector(handlePanGesture:)];
         threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(handleThreeFingers:)];
         [threeFingerGesture setMinimumNumberOfTouches:3];
         [threeFingerGesture setMaximumNumberOfTouches:3];
 
-        [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
+        [[[CCDirector sharedDirector] view] addGestureRecognizer:panGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
 
         // Construct a world object, which will hold and simulate the rigid bodies.
@@ -259,14 +259,14 @@ UIPanGestureRecognizer *threeFingerGesture;
 }
 
 #pragma mark Gesture Handlers
-
-- (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
 {
-    if ([gesture velocity] > 0) {
+    UIView *view = [[CCDirector sharedDirector] view];
+    if ([gesture velocityInView:view].x < 0) {
         [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
                                isFirstPlayerTurn ? ++player1Vehicle.lastAngle : --player2Vehicle.lastAngle]];
     }
-    else if ([gesture velocity] < 0) {
+    else if ([gesture velocityInView:view].x > 0) {
         [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
                                isFirstPlayerTurn ? --player1Vehicle.lastAngle : ++player2Vehicle.lastAngle]];
     }
