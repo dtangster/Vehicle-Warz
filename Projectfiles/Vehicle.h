@@ -13,28 +13,28 @@
 
 @interface Vehicle : CCSprite
 
-@property (strong, nonatomic) NSString *vehicleName;
-@property b2Fixture *fixture; //will store the shape and density information
-@property b2Body *body;  //will store the position and type
-@property (strong, nonatomic) Weapon *weapon1;
-@property (strong, nonatomic) Weapon *weapon2;
-@property (strong, nonatomic) Weapon *special;
-@property int baseHealth;
-@property int baseShield;
-@property int basePower;
-@property int baseSpeed;
-@property int baseEnergy;
-@property int maxHealth;
-@property int maxShield;
-@property int maxEnergy;
-@property int health;
-@property int shield;
-@property int power;
-@property int speed;
-@property int energy;
-@property int maxFrontUpperAngle;
-@property int maxFrontLowerAngle;
-@property int lastAngle;
+@property (nonatomic) NSString *vehicleName;
+@property (nonatomic) b2Fixture *fixture; //will store the shape and density information
+@property (nonatomic) b2Body *body;  //will store the position and type
+@property (nonatomic) Weapon *weapon1;
+@property (nonatomic) Weapon *weapon2;
+@property (nonatomic) Weapon *special;
+@property (nonatomic) int baseHealth;
+@property (nonatomic) int baseShield;
+@property (nonatomic) int basePower;
+@property (nonatomic) int baseSpeed;
+@property (nonatomic) int baseEnergy;
+@property (nonatomic) int maxHealth;
+@property (nonatomic) int maxShield;
+@property (nonatomic) int maxEnergy;
+@property (nonatomic) int health;
+@property (nonatomic) int shield;
+@property (nonatomic) int power;
+@property (nonatomic) int speed;
+@property (nonatomic) int energy;
+@property (nonatomic) int maxFrontUpperAngle;
+@property (nonatomic) int maxFrontLowerAngle;
+@property (nonatomic) int lastAngle;
 
 -(id) initWithName:(NSString *) vehicleName usingImage:(NSString *) fileName;
 -(BOOL) attackWithWeapon:(Weapon *) weapon onScreen:(GameLayer *) screen;

@@ -13,12 +13,12 @@
 
 @interface Weapon : CCSprite
 
-@property (strong, nonatomic) Vehicle *carrier;
-@property (strong, nonatomic) NSString *imageFile;
-@property (strong, nonatomic) NSString *weaponName;
-@property b2Fixture *fixture; //will store the shape and density information
-@property b2Body *body;  //will store the position and type
-@property int energyCost;
+@property (nonatomic) Vehicle *carrier;
+@property (nonatomic) NSString *imageFile;
+@property (nonatomic) NSString *weaponName;
+@property (nonatomic) b2Fixture *fixture; //will store the shape and density information
+@property (nonatomic) b2Body *body;  //will store the position and type
+@property (nonatomic) int energyCost;
 
 -(id) initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName;
 -(BOOL) executeAttackOnScreen: (GameLayer *) screen;

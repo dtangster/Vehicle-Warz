@@ -34,21 +34,20 @@
         self.carrier.energy -= self.energyCost;
         success = YES;
         
-        // Create clone of itself to shoot because you cannot multiple instances of yourself on the screen.
-        // Clones do not have a reference to the original vehicle that wants to use this weapon. Only self
-        // has a reference to the original vehicle.
-        Weapon *projectile = [[Weapon alloc] initWithName:self.weaponName
+        // Create clone of itself to shoot because you cannot have multiple instances of yourself on the screen.
+        Weapon *clone = [[Weapon alloc] initWithName:self.weaponName
                                            withEnergyCost:self.energyCost
                                                usingImage:self.imageFile];
-        [screen.panZoomLayer addChild:projectile z:-1];
+        clone.carrier = self.carrier;
+        [screen.panZoomLayer addChild:clone z:-1];
         b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
         bodyDef.linearDamping = 1;
         bodyDef.angularDamping = 1;
         
-        CGPoint pos = [screen toPixels:self.carrier.body->GetPosition()];
+        CGPoint pos = [screen toPixels:clone.carrier.body->GetPosition()];
         b2Vec2 startVelocity;
-        if (self.carrier.flipX) {
+        if (clone.carrier.flipX) {
             pos.x -= 50;
             startVelocity = b2Vec2(-10, 10);
         }
@@ -61,23 +60,23 @@
         bodyDef.linearVelocity = startVelocity;
         bodyDef.angularVelocity = 60; //In radians
         bodyDef.bullet = true;
-        bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
-        projectile.body = screen.world->CreateBody(&bodyDef);
+        bodyDef.userData = (__bridge void*)clone; //this tells the Box2D body which sprite to update.
+        clone.body = screen.world->CreateBody(&bodyDef);
         b2CircleShape projectileShape;
         b2FixtureDef projectileFixtureDef;
-        projectileShape.m_radius = self.contentSize.width/2.0f/PTM_RATIO;
+        projectileShape.m_radius = clone.contentSize.width/2.0f/PTM_RATIO;
         projectileFixtureDef.shape = &projectileShape;
         projectileFixtureDef.density = 10.3F; //affects collision momentum and inertia
-        projectile.fixture = projectile.body->CreateFixture(&projectileFixtureDef);
+        clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
         
         // If energy is depleted, refill energy and switch player turns
-        if (self.carrier.energy <= 0) {
+        if (clone.carrier.energy <= 0) {
             screen.isFirstPlayerTurn = !screen.isFirstPlayerTurn;
             screen.turnJustEnded = YES;
-            self.carrier.energy = self.carrier.maxEnergy;
+            clone.carrier.energy = clone.carrier.maxEnergy;
         }
         
-        screen.energyLabel.string = [NSString stringWithFormat:@"Energy: %i", self.carrier.energy];
+        screen.energyLabel.string = [NSString stringWithFormat:@"Energy: %i", clone.carrier.energy];
     }
     
     return success;

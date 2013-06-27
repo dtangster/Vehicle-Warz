@@ -63,8 +63,8 @@ UIPanGestureRecognizer *threeFingerGesture;
         //world->SetContinuousPhysics(YES);
 
         //create an object that will check for collisions
-        contactListener = new ContactListener();
-        _world->SetContactListener(contactListener);
+        _contactListener = new ContactListener();
+        _world->SetContactListener(_contactListener);
 
         glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
 
@@ -86,17 +86,17 @@ UIPanGestureRecognizer *threeFingerGesture;
         // Define the static container body, which will provide the collisions at screen borders.
         b2BodyDef screenBorderDef;
         screenBorderDef.position.Set(0, 0);
-        screenBorderBody = _world->CreateBody(&screenBorderDef);
+        _screenBorderBody = _world->CreateBody(&screenBorderDef);
         b2EdgeShape screenBorderShape;
 
         screenBorderShape.Set(lowerLeftCorner, lowerRightCorner);
-        screenBorderBody->CreateFixture(&screenBorderShape, 0);
+        _screenBorderBody->CreateFixture(&screenBorderShape, 0);
         screenBorderShape.Set(lowerRightCorner, upperRightCorner);
-        screenBorderBody->CreateFixture(&screenBorderShape, 0);
+        _screenBorderBody->CreateFixture(&screenBorderShape, 0);
         screenBorderShape.Set(upperRightCorner, upperLeftCorner);
-        screenBorderBody->CreateFixture(&screenBorderShape, 0);
+        _screenBorderBody->CreateFixture(&screenBorderShape, 0);
         screenBorderShape.Set(upperLeftCorner, lowerLeftCorner);
-        screenBorderBody->CreateFixture(&screenBorderShape, 0);
+        _screenBorderBody->CreateFixture(&screenBorderShape, 0);
         
         // Set up a layer that restricts panning and zooming to within the background's content size
         self.panZoomLayer = [CCLayerPanZoom node];
@@ -199,60 +199,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(linkAttacksToButtons:)];
         [attackMenu addChild:menuLabel z:2 tag:12];
         [attackMenu alignItemsVertically];
-/*
-        for (int i = 1; i <= 2; i++) {
-            
-
-            CCMenuItemLabel *levelLabel = [CCMenuItemLabel
-                                           itemWithLabel:label
-                                           block:^(id sender) {
-                                               Vehicle* current = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
-
-                                               if (current.energy >= 25) {
-                                                   CCSprite *projectile = [CCSprite spriteWithFile:@"seal.png"];
-                                                   [self.panZoomLayer addChild:projectile z:-1];
-                                                   b2BodyDef bodyDef;
-                                                   bodyDef.type = b2_dynamicBody;
-                                                   bodyDef.linearDamping = 1;
-                                                   bodyDef.angularDamping = 1;
-
-                                                   CGPoint pos = [self toPixels: isFirstPlayerTurn ? player1Body->GetPosition() : player2Body->GetPosition()];
-                                                   b2Vec2 startVelocity;
-                                                   if (current.flipX) {
-                                                       pos.x -= 50;
-                                                       startVelocity = b2Vec2(-10, 10);
-                                                   }
-                                                   else {
-                                                       pos.x += 50;
-                                                       startVelocity = b2Vec2(10, 10);
-                                                   }
-
-                                                   bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
-                                                   bodyDef.linearVelocity = startVelocity;
-                                                   bodyDef.angularVelocity = isFirstPlayerTurn ? 60 : -60; //In radians
-                                                   bodyDef.bullet = true;
-                                                   bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
-                                                   projectileBody = world->CreateBody(&bodyDef);
-                                                   b2CircleShape projectileShape;
-                                                   b2FixtureDef projectileFixtureDef;
-                                                   projectileShape.m_radius = projectile.contentSize.width/2.0f/PTM_RATIO;
-                                                   projectileFixtureDef.shape = &projectileShape;
-                                                   projectileFixtureDef.density = 10.3F; //affects collision momentum and inertia
-                                                   projectileFixture = projectileBody->CreateFixture(&projectileFixtureDef);
-
-                                                   current.energy -= 25;
-                                                   if (current.energy == 0) {
-                                                       isFirstPlayerTurn = !isFirstPlayerTurn;
-                                                       turnJustEnded = YES;
-                                                       current.energy = 100;
-                                                   }
-
-                                                   energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
-                                               }
-                                           }
-                                           ];
-        }
-*/
+        
         // Show Power and Angle for current vehicle
         _energyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", 100]
                                         fontName:@"Marker Felt"
@@ -261,20 +208,20 @@ UIPanGestureRecognizer *threeFingerGesture;
         _energyLabel.color = ccBLACK;
         [self.panZoomLayer addChild:_energyLabel];
 
-        angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.lastAngle]
+        _angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.lastAngle]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
-        angleLabel.position = CGPointMake(50, screenSize.height - 40);
-        angleLabel.color = ccBLACK;
-        [self.panZoomLayer addChild:angleLabel];
+        _angleLabel.position = CGPointMake(50, screenSize.height - 40);
+        _angleLabel.color = ccBLACK;
+        [self.panZoomLayer addChild:_angleLabel];
 
         // Create 2 arrows for movement
-        leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
-        rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
-        leftArrow.position = CGPointMake([leftArrow boundingBox].size.width / 2, screenSize.height / 2 - 100);
-        rightArrow.position = CGPointMake([rightArrow boundingBox].size.width / 2 + [leftArrow boundingBox].size.width, screenSize.height / 2 - 100);
-        [self.panZoomLayer addChild:leftArrow];
-        [self.panZoomLayer addChild:rightArrow];
+        _leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
+        _rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
+        _leftArrow.position = CGPointMake([_leftArrow boundingBox].size.width / 2, screenSize.height / 2 - 100);
+        _rightArrow.position = CGPointMake([_rightArrow boundingBox].size.width / 2 + [_leftArrow boundingBox].size.width, screenSize.height / 2 - 100);
+        [self.panZoomLayer addChild:_leftArrow];
+        [self.panZoomLayer addChild:_rightArrow];
         [self addChild:self.panZoomLayer];
 
         //schedules a call to the update method every frame
@@ -297,11 +244,11 @@ UIPanGestureRecognizer *threeFingerGesture;
 {
     UIView *view = [[CCDirector sharedDirector] view];
     if ([gesture velocityInView:view].x < 0) {
-        [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
+        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
                                _isFirstPlayerTurn ? ++_player1Vehicle.lastAngle : --_player2Vehicle.lastAngle]];
     }
     else if ([gesture velocityInView:view].x > 0) {
-        [angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
+        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
                                _isFirstPlayerTurn ? --_player1Vehicle.lastAngle : ++_player2Vehicle.lastAngle]];
     }
 }
@@ -434,21 +381,21 @@ UIPanGestureRecognizer *threeFingerGesture;
     if (_turnJustEnded) {
         _turnJustEnded = !_turnJustEnded;
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", _isFirstPlayerTurn ? _player1Vehicle.energy : _player2Vehicle.energy];
-        angleLabel.string = [NSString stringWithFormat:@"Angle: %i", _isFirstPlayerTurn ? _player1Vehicle.lastAngle : _player2Vehicle.lastAngle];
+        _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", _isFirstPlayerTurn ? _player1Vehicle.lastAngle : _player2Vehicle.lastAngle];
     }
     
     // Ensure that the current vehicle is facing left when they press the left arrow
-    if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseBegan]) {
+    if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
         Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         vehicleToFlip.flipX = YES;
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
-    if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseBegan]) {
+    if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
         Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         vehicleToFlip.flipX = NO;
     }
-    if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
+    if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseAny]) {
         Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         vehicleToFlip.flipX = YES;
         
@@ -470,7 +417,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", _isFirstPlayerTurn ? _player1Vehicle.energy : _player2Vehicle.energy];
     }
     
-    if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
+    if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseAny]) {
         Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         vehicleToFlip.flipX = NO;
         b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;

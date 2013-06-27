@@ -21,26 +21,21 @@ enum
 {
     int currentBullet;
     NSMutableArray *bullets;
-    ContactListener *contactListener;
-    b2Body *screenBorderBody;
-    
-    //MY STUFF
-    float shotPower;
-    int angle;
-    
-    CCLabelTTF *angleLabel;
-    CCSprite *leftArrow;
-    CCSprite *rightArrow;
 }
 
-
-@property b2World *world;
-@property (strong, nonatomic) Vehicle *player1Vehicle;
-@property (strong, nonatomic) Vehicle *player2Vehicle;
-@property BOOL isFirstPlayerTurn;
-@property BOOL turnJustEnded;
-@property (strong, nonatomic) CCLabelTTF *energyLabel;
-@property (strong, nonatomic) CCLayerPanZoom *panZoomLayer;
+@property (nonatomic) b2World *world;
+@property (nonatomic) ContactListener *contactListener;
+@property (nonatomic) b2Body *screenBorderBody;
+@property (nonatomic) BOOL isFirstPlayerTurn;
+@property (nonatomic) BOOL turnJustEnded;
+@property (nonatomic) Vehicle *player1Vehicle;
+@property (nonatomic) Vehicle *player2Vehicle;
+@property (nonatomic) CCLabelTTF *energyLabel;
+@property (nonatomic) float shotPower;
+@property (nonatomic) CCLabelTTF *angleLabel;
+@property (nonatomic) CCSprite *leftArrow;
+@property (nonatomic) CCSprite *rightArrow;
+@property (nonatomic) CCLayerPanZoom *panZoomLayer;
 
 +(id) scene;
 - (CGPoint)toPixels:(b2Vec2)vec;
