@@ -262,40 +262,39 @@ UIRotationGestureRecognizer *rotateGesture;
 - (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
 {
     UIView *view = [[CCDirector sharedDirector] view];
-    if ([gesture velocityInView:view].x < 0) {
-        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
-                               _isFirstPlayerTurn ? ++_player1Vehicle.lastAngle : --_player2Vehicle.lastAngle]];
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    
+    if ([gesture velocityInView:view].x > 0 && current.lastAngle < current.maxFrontUpperAngle) {
+        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.lastAngle]];
     }
-    else if ([gesture velocityInView:view].x > 0) {
-        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i",
-                               _isFirstPlayerTurn ? --_player1Vehicle.lastAngle : ++_player2Vehicle.lastAngle]];
+    else if ([gesture velocityInView:view].x < 0 && current.lastAngle > current.maxFrontLowerAngle) {
+        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.lastAngle]];
     }
 }
 
 - (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
 {
     UIView *view = [[CCDirector sharedDirector] view];
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
-    if ([gesture velocityInView:view].x > 0) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
-                               _isFirstPlayerTurn ? ++_player1Vehicle.lastShotPower : ++_player2Vehicle.lastShotPower]];
+    if ([gesture velocityInView:view].x > 0 && current.lastShotPower <= current.power) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.lastShotPower]];
     }
-    else if ([gesture velocityInView:view].x < 0) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
-                               _isFirstPlayerTurn ? --_player1Vehicle.lastShotPower : --_player2Vehicle.lastShotPower]];
+    else if ([gesture velocityInView:view].x < 0 && current.lastShotPower >= 0) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.lastShotPower]];
     }
 }
 
 //-------------------------------TEMPORARY--------------------------------
 - (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
 {
-    if (gesture.velocity > 0) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
-                               _isFirstPlayerTurn ? ++_player1Vehicle.lastShotPower : ++_player2Vehicle.lastShotPower]];
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+
+    if (gesture.velocity > 0 && current.lastShotPower < current.power) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.lastShotPower]];
     }
-    else if (gesture.velocity < 0) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
-                               _isFirstPlayerTurn ? --_player1Vehicle.lastShotPower : --_player2Vehicle.lastShotPower]];
+    else if (gesture.velocity < 0 && current.lastShotPower > 0) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.lastShotPower]];
     }
 }
 //-------------------------------TEMPORARY--------------------------------
