@@ -58,15 +58,15 @@
         
         bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
         bodyDef.linearVelocity = startVelocity;
-        bodyDef.angularVelocity = 60; //In radians
+        bodyDef.angularVelocity = 60; // In radians
         bodyDef.bullet = true;
-        bodyDef.userData = (__bridge void*)clone; //this tells the Box2D body which sprite to update.
+        bodyDef.userData = (__bridge void*)clone; // This tells the Box2D body which sprite to update.
         clone.body = screen.world->CreateBody(&bodyDef);
         b2CircleShape projectileShape;
         b2FixtureDef projectileFixtureDef;
         projectileShape.m_radius = clone.contentSize.width/2.0f/PTM_RATIO;
         projectileFixtureDef.shape = &projectileShape;
-        projectileFixtureDef.density = 10.3F; //affects collision momentum and inertia
+        projectileFixtureDef.density = 10.3F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
         
         // If energy is depleted, refill energy and switch player turns

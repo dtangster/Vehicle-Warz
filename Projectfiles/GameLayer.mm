@@ -182,7 +182,7 @@ UIRotationGestureRecognizer *rotateGesture;
         tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png"];
         _player2Vehicle.special = tempWeapon;
         
-        // Create 2 attack buttons
+        // Create 3 attack buttons
         CCMenu *attackMenu = [[CCMenu alloc] init];
         attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .80);
         [self.panZoomLayer addChild: attackMenu];
@@ -264,10 +264,10 @@ UIRotationGestureRecognizer *rotateGesture;
     UIView *view = [[CCDirector sharedDirector] view];
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
-    if ([gesture velocityInView:view].x > 0 && current.lastAngle < current.maxFrontUpperAngle) {
+    if ([gesture velocityInView:view].y < 0 && current.lastAngle < current.maxFrontUpperAngle) {
         [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.lastAngle]];
     }
-    else if ([gesture velocityInView:view].x < 0 && current.lastAngle > current.maxFrontLowerAngle) {
+    else if ([gesture velocityInView:view].y > 0 && current.lastAngle > current.maxFrontLowerAngle) {
         [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.lastAngle]];
     }
 }

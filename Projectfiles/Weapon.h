@@ -16,8 +16,8 @@
 @property (nonatomic) Vehicle *carrier;
 @property (nonatomic) NSString *imageFile;
 @property (nonatomic) NSString *weaponName;
-@property (nonatomic) b2Fixture *fixture; //will store the shape and density information
-@property (nonatomic) b2Body *body;  //will store the position and type
+@property (nonatomic) b2Fixture *fixture; // Will store the shape and density information
+@property (nonatomic) b2Body *body;  // Will store the position and type
 @property (nonatomic) int energyCost;
 
 -(id) initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName;
