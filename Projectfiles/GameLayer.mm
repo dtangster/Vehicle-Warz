@@ -108,6 +108,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
         self.panZoomLayer = [CCLayerPanZoom node];
         self.panZoomLayer.maxScale = 2.0f;
+        self.panZoomLayer.rubberEffectRatio = 0.0f;
         self.panZoomLayer.minScale = 1.0f;
         self.panZoomLayer.mode = kCCLayerPanZoomModeSheet;
         bgSprite.anchorPoint = CGPointZero;

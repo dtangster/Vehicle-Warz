@@ -17,7 +17,7 @@ enum
 
 @class Vehicle;
 
-@interface GameLayer : CCLayer <CCLayerPanZoomClickDelegate>
+@interface GameLayer : CCLayer
 {
 	b2World* world;
     int currentBullet;
