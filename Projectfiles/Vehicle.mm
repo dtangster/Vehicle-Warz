@@ -7,6 +7,7 @@
 //
 
 #import "Vehicle.h"
+#import "Weapon.h"
 
 @implementation Vehicle
 
@@ -24,6 +25,11 @@
     }
     
     return self;
+}
+
+-(BOOL) attackWithWeapon:(Weapon *) weapon
+{
+    return [weapon executeAttack];
 }
 
 @end

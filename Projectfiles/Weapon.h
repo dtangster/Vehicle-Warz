@@ -8,11 +8,14 @@
 
 #import "CCSprite.h"
 
+@class Vehicle;
+
 @interface Weapon : CCSprite
 
+@property (strong, nonatomic) Vehicle *carrier;
 @property (strong, nonatomic) NSString *weaponName;
 @property int energyCost;
 
--(void) executeAttack;
+-(BOOL) executeAttack;
 
 @end
