@@ -11,11 +11,10 @@
 
 @implementation Weapon
 
--(id) initWithCarrier:(Vehicle *) carrier withName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName
+-(id) initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName
 {
     if ((self = [super initWithFile:fileName]))
     {
-        self.carrier = carrier;
         self.weaponName = weaponName;
         self.energyCost = energyCost;
     }
