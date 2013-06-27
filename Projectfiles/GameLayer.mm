@@ -42,6 +42,8 @@ UIPanGestureRecognizer *threeFingerGesture;
         CCLOG(@"%@ init", NSStringFromClass([self class]));
         panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                   action:@selector(handlePanGesture:)];
+        [panGesture setMinimumNumberOfTouches:2];
+        [panGesture setMaximumNumberOfTouches:2];
         threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(handleThreeFingers:)];
         [threeFingerGesture setMinimumNumberOfTouches:3];
