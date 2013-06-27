@@ -134,7 +134,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         // Create a physical body for the vehicle
         b2PolygonShape playerShape;
         b2FixtureDef fixtureDef;
-        fixtureDef.shape = &playerShape
+        fixtureDef.shape = &playerShape;
         fixtureDef.density = 0.3F; // Affects collision momentum and inertia
         playerShape.SetAsBox([player1Vehicle boundingBox].size.width / 3 / PTM_RATIO, [player1Vehicle boundingBox].size.height / 3 / PTM_RATIO);
         player1Fixture = player1Body->CreateFixture(&fixtureDef);
