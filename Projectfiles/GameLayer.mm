@@ -28,6 +28,9 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
 UIPanGestureRecognizer *panGesture;
 UIPanGestureRecognizer *threeFingerGesture;
 
+//-------------------------------TEMPORARY--------------------------------
+UIRotationGestureRecognizer *rotateGesture;
+//-------------------------------TEMPORARY--------------------------------
 
 @interface GameLayer (PrivateMethods)
 - (void) enableBox2dDebugDrawing;
@@ -52,10 +55,19 @@ UIPanGestureRecognizer *threeFingerGesture;
                                                                      action:@selector(handleThreeFingers:)];
         [threeFingerGesture setMinimumNumberOfTouches:3];
         [threeFingerGesture setMaximumNumberOfTouches:3];
+        
+        //-------------------------------TEMPORARY--------------------------------
+        rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
+                                                                     action:@selector(handleRotateGesture:)];
+        //-------------------------------TEMPORARY--------------------------------
 
         [[[CCDirector sharedDirector] view] addGestureRecognizer:panGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
-
+        
+        //-------------------------------TEMPORARY--------------------------------
+        [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
+        //-------------------------------TEMPORARY--------------------------------
+        
         // Construct a world object, which will hold and simulate the rigid bodies.
         b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
         _world = new b2World(gravity);
@@ -200,18 +212,25 @@ UIPanGestureRecognizer *threeFingerGesture;
         [attackMenu addChild:menuLabel z:2 tag:12];
         [attackMenu alignItemsVertically];
         
-        // Show Power and Angle for current vehicle
-        _energyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", 100]
+        // Show energy, power, and angle for current vehicle
+        _energyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", _player1Vehicle.energy]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
         _energyLabel.position = CGPointMake(50, screenSize.height - 20);
         _energyLabel.color = ccBLACK;
         [self.panZoomLayer addChild:_energyLabel];
+        
+        _shotPowerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.lastShotPower]
+                                         fontName:@"Marker Felt"
+                                         fontSize:20];
+        _shotPowerLabel.position = CGPointMake(50, screenSize.height - 40);
+        _shotPowerLabel.color = ccBLACK;
+        [self.panZoomLayer addChild:_shotPowerLabel];
 
         _angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.lastAngle]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
-        _angleLabel.position = CGPointMake(50, screenSize.height - 40);
+        _angleLabel.position = CGPointMake(50, screenSize.height - 60);
         _angleLabel.color = ccBLACK;
         [self.panZoomLayer addChild:_angleLabel];
 
@@ -255,19 +274,31 @@ UIPanGestureRecognizer *threeFingerGesture;
 
 - (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
 {
-    /*
     UIView *view = [[CCDirector sharedDirector] view];
     
     if ([gesture velocityInView:view].x > 0) {
-        [powerLabel setString:[NSString stringWithFormat:@"Power: %i",
-                               isFirstPlayerTurn ? ++player1Vehicle.power : ++player2Vehicle.power]];
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
+                               _isFirstPlayerTurn ? ++_player1Vehicle.lastShotPower : ++_player2Vehicle.lastShotPower]];
     }
     else if ([gesture velocityInView:view].x < 0) {
-        [powerLabel setString:[NSString stringWithFormat:@"Power: %i",
-                               isFirstPlayerTurn ? --player1Vehicle.power : --player2Vehicle.power]];
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
+                               _isFirstPlayerTurn ? --_player1Vehicle.lastShotPower : --_player2Vehicle.lastShotPower]];
     }
-    */
 }
+
+//-------------------------------TEMPORARY--------------------------------
+- (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
+{
+    if (gesture.velocity > 0) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
+                               _isFirstPlayerTurn ? ++_player1Vehicle.lastShotPower : ++_player2Vehicle.lastShotPower]];
+    }
+    else if (gesture.velocity < 0) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i",
+                               _isFirstPlayerTurn ? --_player1Vehicle.lastShotPower : --_player2Vehicle.lastShotPower]];
+    }
+}
+//-------------------------------TEMPORARY--------------------------------
 
 - (void)linkAttacksToButtons:(CCMenuItemLabel *) sender
 {

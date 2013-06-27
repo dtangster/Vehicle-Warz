@@ -34,6 +34,7 @@
 @property (nonatomic) int energy;
 @property (nonatomic) int maxFrontUpperAngle;
 @property (nonatomic) int maxFrontLowerAngle;
+@property (nonatomic) int lastShotPower;
 @property (nonatomic) int lastAngle;
 
 -(id) initWithName:(NSString *) vehicleName usingImage:(NSString *) fileName;

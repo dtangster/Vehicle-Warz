@@ -31,8 +31,8 @@ enum
 @property (nonatomic) Vehicle *player1Vehicle;
 @property (nonatomic) Vehicle *player2Vehicle;
 @property (nonatomic) CCLabelTTF *energyLabel;
-@property (nonatomic) float shotPower;
 @property (nonatomic) CCLabelTTF *angleLabel;
+@property (nonatomic) CCLabelTTF *shotPowerLabel;
 @property (nonatomic) CCSprite *leftArrow;
 @property (nonatomic) CCSprite *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
