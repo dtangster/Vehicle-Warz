@@ -415,7 +415,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     }
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
-        bodyToMove->ApplyForceToCenter(b2Vec2(-2, 0));
+        bodyToMove->SetLinearVelocity(b2Vec2(-2, 0));
 
         Vehicle *vehicleToDrain = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToDrain.energy--;
@@ -423,13 +423,14 @@ UIPanGestureRecognizer *threeFingerGesture;
             isFirstPlayerTurn = !isFirstPlayerTurn;
             turnJustEnded = YES;
             vehicleToDrain.energy = 100;
+            bodyToMove->SetLinearVelocity(b2Vec2(0, 0));
         }
 
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
     }
     if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
-        bodyToMove->ApplyForceToCenter(b2Vec2(2, 0));
+        bodyToMove->SetLinearVelocity(b2Vec2(2, 0));
 
         Vehicle *vehicleToDrain = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToDrain.energy--;
@@ -437,6 +438,7 @@ UIPanGestureRecognizer *threeFingerGesture;
             isFirstPlayerTurn = !isFirstPlayerTurn;
             turnJustEnded = YES;
             vehicleToDrain.energy = 100;
+            bodyToMove->SetLinearVelocity(b2Vec2(0, 0));
         }
 
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
