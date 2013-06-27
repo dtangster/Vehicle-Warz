@@ -112,6 +112,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         [[self panZoomLayer] setAnchorPoint:CGPointZero];
         [[self panZoomLayer] setPosition:CGPointZero];
 
+        // Create first player vehicle
         player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
         [self.panZoomLayer addChild:player1Vehicle z:1 tag:1];
 
@@ -123,41 +124,35 @@ UIPanGestureRecognizer *threeFingerGesture;
         bodyDef.position.Set(450.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
         bodyDef.linearVelocity = b2Vec2(-5,0);
         bodyDef.angularVelocity = -110;
-        bodyDef.userData = (__bridge void*)player1Vehicle; //this tells the Box2D body which sprite to update.
+        
+        // This tells the Box2D body which sprite to update.
+        bodyDef.userData = (__bridge void*)player1Vehicle; 
 
-        //create a body with the definition we just created
+        // Create a body with the definition we just created
         player1Body = world->CreateBody(&bodyDef);
-        //the -> is C++ syntax; it is like calling an object's methods (the CreateBody "method")
 
-        //Create a fixture for the arm
+        // Create a physical body for the vehicle
         b2PolygonShape playerShape;
         b2FixtureDef fixtureDef;
-        fixtureDef.shape = &playerShape; //geometric shape
-        fixtureDef.density = 0.3F; //affects collision momentum and inertia
+        fixtureDef.shape = &playerShape
+        fixtureDef.density = 0.3F; // Affects collision momentum and inertia
         playerShape.SetAsBox([player1Vehicle boundingBox].size.width / 3 / PTM_RATIO, [player1Vehicle boundingBox].size.height / 3 / PTM_RATIO);
-        //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player1Fixture = player1Body->CreateFixture(&fixtureDef);
 
+        // Create second player vehicle
         player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
         [self.panZoomLayer addChild:player2Vehicle z:1 tag:2];
-        //causes rotations to slow down. A value of 0 means there is no slowdown
         bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
         bodyDef.linearVelocity = b2Vec2(5,0);
         bodyDef.angularVelocity = 90;
-        bodyDef.userData = (__bridge void*)player2Vehicle; //this tells the Box2D body which sprite to update.
-
-        //create a body with the definition we just created
+        bodyDef.userData = (__bridge void*)player2Vehicle;
         player2Body = world->CreateBody(&bodyDef);
-        //the -> is C++ syntax; it is like calling an object's methods (the CreateBody "method")
-
-        fixtureDef.shape = &playerShape; //geometric shape
+        fixtureDef.shape = &playerShape;
         fixtureDef.density = 0.3F; //affects collision momentum and inertia
         playerShape.SetAsBox([player2Vehicle boundingBox].size.width / 4 / PTM_RATIO, [player2Vehicle boundingBox].size.height / 4 / PTM_RATIO);
-        //this is based on the dimensions of the arm which you can get from your image editing software of choice
         player2Fixture = player2Body->CreateFixture(&fixtureDef);
 
-        //Create 2 attack buttons
-
+        // Create 2 attack buttons
         CCMenu *attackMenu = [[CCMenu alloc] init];
         for (int i = 1; i <= 2; i++) {
             NSString *levelString = [NSString stringWithFormat:@"Shot %i", i];
@@ -276,8 +271,9 @@ UIPanGestureRecognizer *threeFingerGesture;
 
 - (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
 {
-    UIView *view = [[CCDirector sharedDirector] view];
     /*
+    UIView *view = [[CCDirector sharedDirector] view];
+    
     if ([gesture velocityInView:view].x > 0) {
         [powerLabel setString:[NSString stringWithFormat:@"Power: %i",
                                isFirstPlayerTurn ? ++player1Vehicle.power : ++player2Vehicle.power]];
@@ -289,6 +285,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     */
 }
 
+/*
 //Create the bullets, add them to the list of bullets so they can be referred to later
 - (void)createBullets
 {
@@ -333,11 +330,14 @@ UIPanGestureRecognizer *threeFingerGesture;
 
     }
 }
+*/
 
 - (void)update:(ccTime)delta
 {
     //Check for inputs and create a bullet if there is a tap
     KKInput *input = [KKInput sharedInput];
+    
+    /*
     if(input.anyTouchEndedThisFrame)
     {
         //[self createBullets];
@@ -363,28 +363,35 @@ UIPanGestureRecognizer *threeFingerGesture;
     {
         [self detectCollisions];
     }
+    */
 
-    //get all the bodies in the world
+    // Get all the bodies in the world
     for (b2Body* body = world->GetBodyList(); body != nil; body = body->GetNext())
     {
-        //get the sprite associated with the body
+        // Get the sprite associated with the body
         CCSprite* sprite = (__bridge CCSprite*)body->GetUserData();
         if (sprite != NULL)
         {
-            // update the sprite's position to where their physics bodies are
+            // Update the sprite's position to where their physics bodies are
             sprite.position = [self toPixels:body->GetPosition()];
             sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
         }
     }
+    
+    // Change energy and angle labels when a vehicle turn ends
     if (turnJustEnded) {
         turnJustEnded = !turnJustEnded;
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
         angleLabel.string = [NSString stringWithFormat:@"Angle: %i", isFirstPlayerTurn ? player1Vehicle.lastAngle : player2Vehicle.lastAngle];
     }
+    
+    // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseBegan]) {
         Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToFlip.flipX = YES;
     }
+    
+    // Ensure that the current vehicle is facing right when they press right arrow
     if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseBegan]) {
         Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToFlip.flipX = NO;
@@ -392,20 +399,25 @@ UIPanGestureRecognizer *threeFingerGesture;
     if ([input isAnyTouchOnNode:leftArrow touchPhase:KKTouchPhaseAny]) {
         Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToFlip.flipX = YES;
+        
+        // Maintains a constant velocity for the vehicle
         b2Body *bodyToMove = isFirstPlayerTurn ? player1Body : player2Body;
         bodyToMove->SetLinearVelocity(b2Vec2(-2, 0));
 
+        // Deplete vehicle energy for moving
         Vehicle *vehicleToDrain = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToDrain.energy--;
         if (!vehicleToDrain.energy) {
             isFirstPlayerTurn = !isFirstPlayerTurn;
             turnJustEnded = YES;
-            vehicleToDrain.energy = 100;
-            bodyToMove->SetLinearVelocity(b2Vec2(0, 0));
+            vehicleToDrain.energy = 100; // Reset energy to prepare for next turn
+            bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
         }
 
+        // Update energy label
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
     }
+    
     if ([input isAnyTouchOnNode:rightArrow touchPhase:KKTouchPhaseAny]) {
         Vehicle *vehicleToFlip = isFirstPlayerTurn ? player1Vehicle : player2Vehicle;
         vehicleToFlip.flipX = NO;
@@ -429,6 +441,7 @@ UIPanGestureRecognizer *threeFingerGesture;
     int32 positionIterations = 1;
     world->Step(timeStep, velocityIterations, positionIterations);
 
+    // Prevent vehicles from flipping over
     [self stabilizeVehicle:player1Body withTimeStep:timeStep];
     [self stabilizeVehicle:player2Body withTimeStep:timeStep];
 }
@@ -437,18 +450,23 @@ UIPanGestureRecognizer *threeFingerGesture;
 {
     float desiredAngle = 0;
     float angleNow = vehicleBody->GetAngle();
-    float changeExpected = vehicleBody->GetAngularVelocity() * timeStep; //expected angle change in next timestep
+    
+    // Expected angle change in next timestep
+    float changeExpected = vehicleBody->GetAngularVelocity() * timeStep;
+    
     float angleNextStep = angleNow + changeExpected;
     float changeRequiredInNextStep = desiredAngle - angleNextStep;
     float rotationalAcceleration = timeStep * changeRequiredInNextStep;
     float torque = rotationalAcceleration * TORQUE_ADJUSTMENT;
+    
     if (torque > MAX_TORQUE) {
         torque = MAX_TORQUE;
     }
+    
     vehicleBody->ApplyTorque(torque);
 }
 
-// convenience method to convert a b2Vec2 to a CGPoint
+// Convenience method to convert a b2Vec2 to a CGPoint
 - (CGPoint)toPixels:(b2Vec2)vec
 {
     return ccpMult(CGPointMake(vec.x, vec.y), PTM_RATIO);
