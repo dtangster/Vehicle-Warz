@@ -19,13 +19,14 @@
     if ((self = [super initWithFile:fileName]))
     {
         self.weaponName = weaponName;
+        self.imageFile = fileName;
         self.energyCost = energyCost;
     }
     
     return self;
 }
 
--(BOOL) executeAttack;
+-(BOOL) executeAttackOnScreen:(GameLayer *)screen
 {
     BOOL success = NO;
     
@@ -33,18 +34,19 @@
         self.carrier.energy -= self.energyCost;
         success = YES;
         
-        //TO-DO: Add general implementation to execute an attack here
-        GameLayer *gameLayer = (GameLayer *) self.carrier.parent;
-        CCSprite *projectile = [CCSprite spriteWithFile:@"seal.png"];
-        [gameLayer.panZoomLayer addChild:projectile z:-1];
-
-        //[gameLayer.panZoomLayer addChild:self z:-1];
+        // Create clone of itself to shoot because you cannot multiple instances of yourself on the screen.
+        // Clones do not have a reference to the original vehicle that wants to use this weapon. Only self
+        // has a reference to the original vehicle.
+        Weapon *projectile = [[Weapon alloc] initWithName:self.weaponName
+                                           withEnergyCost:self.energyCost
+                                               usingImage:self.imageFile];
+        [screen.panZoomLayer addChild:projectile z:-1];
         b2BodyDef bodyDef;
         bodyDef.type = b2_dynamicBody;
         bodyDef.linearDamping = 1;
         bodyDef.angularDamping = 1;
         
-        CGPoint pos = [gameLayer toPixels:self.carrier.body->GetPosition()];
+        CGPoint pos = [screen toPixels:self.carrier.body->GetPosition()];
         b2Vec2 startVelocity;
         if (self.carrier.flipX) {
             pos.x -= 50;
@@ -59,23 +61,23 @@
         bodyDef.linearVelocity = startVelocity;
         bodyDef.angularVelocity = 60; //In radians
         bodyDef.bullet = true;
-        bodyDef.userData = (__bridge void*)self; //this tells the Box2D body which sprite to update.
-        self.body = gameLayer.world->CreateBody(&bodyDef);
+        bodyDef.userData = (__bridge void*)projectile; //this tells the Box2D body which sprite to update.
+        projectile.body = screen.world->CreateBody(&bodyDef);
         b2CircleShape projectileShape;
         b2FixtureDef projectileFixtureDef;
         projectileShape.m_radius = self.contentSize.width/2.0f/PTM_RATIO;
         projectileFixtureDef.shape = &projectileShape;
         projectileFixtureDef.density = 10.3F; //affects collision momentum and inertia
-        self.fixture = self.body->CreateFixture(&projectileFixtureDef);
+        projectile.fixture = projectile.body->CreateFixture(&projectileFixtureDef);
         
-        self.carrier.energy -= self.energyCost;
-        if (self.carrier.energy == 0) {
-            gameLayer.isFirstPlayerTurn = !gameLayer.isFirstPlayerTurn;
-            gameLayer.turnJustEnded = YES;
+        // If energy is depleted, refill energy and switch player turns
+        if (self.carrier.energy <= 0) {
+            screen.isFirstPlayerTurn = !screen.isFirstPlayerTurn;
+            screen.turnJustEnded = YES;
             self.carrier.energy = self.carrier.maxEnergy;
         }
         
-        gameLayer.energyLabel.string = [NSString stringWithFormat:@"Energy: %i", self.carrier.energy];
+        screen.energyLabel.string = [NSString stringWithFormat:@"Energy: %i", self.carrier.energy];
     }
     
     return success;

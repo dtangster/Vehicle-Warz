@@ -9,6 +9,7 @@
 #import "CCSprite.h"
 
 @class Weapon;
+@class GameLayer;
 
 @interface Vehicle : CCSprite
 
@@ -36,6 +37,6 @@
 @property int lastAngle;
 
 -(id) initWithName:(NSString *) vehicleName usingImage:(NSString *) fileName;
--(BOOL) attackWithWeapon:(Weapon *) weapon;
+-(BOOL) attackWithWeapon:(Weapon *) weapon onScreen:(GameLayer *) screen;
 
 @end

@@ -327,13 +327,13 @@ UIPanGestureRecognizer *threeFingerGesture;
     Vehicle *vehicle = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
 
     if ([sender.label.string isEqualToString:SHOT_ONE_TEXT]) {
-        [vehicle attackWithWeapon:vehicle.weapon1];
+        [vehicle attackWithWeapon:vehicle.weapon1 onScreen:self];
     }
     else if ([sender.label.string isEqualToString:SHOT_TWO_TEXT]) {
-        [vehicle attackWithWeapon:vehicle.weapon2];
+        [vehicle attackWithWeapon:vehicle.weapon2 onScreen:self];
     }
     else if ([sender.label.string isEqualToString:SHOT_SPECIAL_TEXT]) {
-        [vehicle attackWithWeapon:vehicle.special];
+        [vehicle attackWithWeapon:vehicle.special onScreen:self];
     }
 }
 
@@ -462,7 +462,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         if (!vehicleToDrain.energy) {
             _isFirstPlayerTurn = !_isFirstPlayerTurn;
             _turnJustEnded = YES;
-            vehicleToDrain.energy = 100; // Reset energy to prepare for next turn
+            vehicleToDrain.energy = vehicleToDrain.maxEnergy; // Reset energy to prepare for next turn
             bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
         }
 
@@ -481,7 +481,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         if (!vehicleToDrain.energy) {
             _isFirstPlayerTurn = !_isFirstPlayerTurn;
             _turnJustEnded = YES;
-            vehicleToDrain.energy = 100;
+            vehicleToDrain.energy = vehicleToDrain.maxEnergy;
             bodyToMove->SetLinearVelocity(b2Vec2(0, 0));
         }
 

@@ -35,9 +35,9 @@
     return self;
 }
 
--(BOOL) attackWithWeapon:(Weapon *) weapon
+-(BOOL) attackWithWeapon:(Weapon *) weapon onScreen:(GameLayer *) screen
 {
-    return [weapon executeAttack];
+    return [weapon executeAttackOnScreen:screen];
 }
 
 -(void) setWeapon1:(Weapon *) weapon1
