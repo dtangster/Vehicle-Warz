@@ -102,23 +102,22 @@ UIPanGestureRecognizer *threeFingerGesture;
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
         screenBorderShape.Set(upperLeftCorner, lowerLeftCorner);
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
-
-        [self setContentSize:CGSizeMake(960, 320)];
         
-        // Add sprites to the game
-        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
-        bgSprite.anchorPoint = CGPointZero;
+        // Set up the panning/zooming Layer
         CGSize winSize = [[CCDirector sharedDirector] winSize];
-        
-        self.panZoomLayer = [[CCLayerPanZoom alloc] init];
+        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
+        self.panZoomLayer = [CCLayerPanZoom node];
+        self.panZoomLayer.maxScale = 2.0f;
+        self.panZoomLayer.minScale = 1.0f;
         self.panZoomLayer.mode = kCCLayerPanZoomModeSheet;
-        self.panZoomLayer.minScale = 0.25;
-        self.panZoomLayer.maxScale = 1;
-        self.panZoomLayer.contentSize = CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight]);
-        
-        [[self panZoomLayer] setPanBoundsRect:CGRectMake(winSize.width / 2, winSize.height / 2, winSize.width, winSize.height)];
-        [[self panZoomLayer] setPosition:ccp(winSize.width / 2, winSize.height / 2)];
+        bgSprite.anchorPoint = CGPointZero;
         [self.panZoomLayer addChild:bgSprite z:-1];
+        
+        // Set up the content size
+        self.panZoomLayer.contentSize = CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight]);
+        self.panZoomLayer.panBoundsRect = CGRectMake(0, 0, winSize.width, winSize.height);
+        self.panZoomLayer.anchorPoint = ccp(0, 0);
+        self.panZoomLayer.position = ccp(0, 0);
 
         player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
         [self.panZoomLayer addChild:player1Vehicle z:1 tag:1];
