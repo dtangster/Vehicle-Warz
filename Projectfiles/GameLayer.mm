@@ -277,10 +277,10 @@ UIRotationGestureRecognizer *rotateGesture;
     UIView *view = [[CCDirector sharedDirector] view];
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
-    if ([gesture velocityInView:view].x > 0 && current.lastShotPower <= current.power) {
+    if ([gesture velocityInView:view].x > 0 && current.lastShotPower < current.power) {
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.lastShotPower]];
     }
-    else if ([gesture velocityInView:view].x < 0 && current.lastShotPower >= 0) {
+    else if ([gesture velocityInView:view].x < 0 && current.lastShotPower > 0) {
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.lastShotPower]];
     }
 }
