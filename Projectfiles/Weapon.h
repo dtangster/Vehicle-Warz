@@ -22,5 +22,6 @@
 
 -(id) initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName;
 -(BOOL) executeAttackOnScreen: (GameLayer *) screen;
+-(b2Vec2) calculateInitialVector;
 
 @end

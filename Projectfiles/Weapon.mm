@@ -82,4 +82,9 @@
     return success;
 }
 
+-(b2Vec2) calculateInitialVector
+{
+    
+}
+
 @end
