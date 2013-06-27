@@ -408,6 +408,7 @@ UIPanGestureRecognizer *threeFingerGesture;
             isFirstPlayerTurn = !isFirstPlayerTurn;
             turnJustEnded = YES;
             vehicleToDrain.energy = 100;
+            bodyToMove->SetLinearVelocity(b2Vec2(0, 0));
         }
 
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
@@ -422,6 +423,7 @@ UIPanGestureRecognizer *threeFingerGesture;
             isFirstPlayerTurn = !isFirstPlayerTurn;
             turnJustEnded = YES;
             vehicleToDrain.energy = 100;
+            bodyToMove->SetLinearVelocity(b2Vec2(0, 0));
         }
 
         energyLabel.string = [NSString stringWithFormat:@"Energy: %i", isFirstPlayerTurn ? player1Vehicle.energy : player2Vehicle.energy];
