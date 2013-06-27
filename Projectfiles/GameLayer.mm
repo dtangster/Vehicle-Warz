@@ -92,22 +92,23 @@ UIPanGestureRecognizer *threeFingerGesture;
         screenBorderShape.Set(upperLeftCorner, lowerLeftCorner);
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
         
-        // Set up the panning/zooming Layer
-        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
+        // Set up a layer that restricts panning and zooming to within the background's content size
         self.panZoomLayer = [CCLayerPanZoom node];
-        self.panZoomLayer.maxScale = 2.0f;
-        self.panZoomLayer.minScale = 1;
-        self.panZoomLayer.mode = kCCLayerPanZoomModeSheet;
+        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
         bgSprite.anchorPoint = CGPointZero;
         bgSprite.scale = CC_CONTENT_SCALE_FACTOR();
         [self.panZoomLayer addChild:bgSprite z:-1];
-        self.panZoomLayer.rubberEffectRatio = 0.3f;
         
-        // Set up the content size
-        self.panZoomLayer.contentSize = CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight]);
-        self.panZoomLayer.panBoundsRect = CGRectMake(0, 0, screenSize.width, screenSize.height);
-        self.panZoomLayer.anchorPoint = ccp(0, 0);
-        self.panZoomLayer.position = ccp(0, 0);
+        // Set up the zooming restrictions
+        [[self panZoomLayer] setMaxScale:2.0f];
+        [[self panZoomLayer] setMinScale:1];
+        [[self panZoomLayer] setRubberEffectRatio:0.0f];
+        
+        // Set up the content size for restricting panning
+        [[self panZoomLayer] setContentSize:CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight])];
+        [[self panZoomLayer] setPanBoundsRect:CGRectMake(0, 0, screenSize.width, screenSize.height)];
+        [[self panZoomLayer] setAnchorPoint:CGPointZero];
+        [[self panZoomLayer] setPosition:CGPointZero];
 
         player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
         [self.panZoomLayer addChild:player1Vehicle z:1 tag:1];
