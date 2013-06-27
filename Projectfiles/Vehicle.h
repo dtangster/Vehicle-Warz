@@ -13,8 +13,6 @@
 @interface Vehicle : CCSprite
 
 @property (strong, nonatomic) NSString *vehicleName;
-@property (strong, nonatomic) NSString *leftFacingImage;
-@property (strong, nonatomic) NSString *rightFacingImage;
 @property (strong, nonatomic) Weapon *weapon1;
 @property (strong, nonatomic) Weapon *weapon2;
 @property (strong, nonatomic) Weapon *special;
@@ -23,9 +21,11 @@
 @property int power;
 @property int speed;
 @property int energy;
+@property int maxFrontUpperAngle;
+@property int maxFrontLowerAngle;
 @property int lastAngle;
 
 -(id) initWithName:(NSString *) vehicleName usingImage:(NSString *) fileName;
--(void) attackWithWeapon:(Weapon *) weapon;
+-(BOOL) attackWithWeapon:(Weapon *) weapon;
 
 @end
