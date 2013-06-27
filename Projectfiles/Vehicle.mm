@@ -16,6 +16,14 @@
     if ((self = [super initWithFile:fileName]))
     {
         self.vehicleName = vehicleName;
+        self.baseHealth = 2;
+        self.baseShield = 2;
+        self.basePower = 100;
+        self.baseSpeed = 2;
+        self.baseEnergy = 100;
+        self.maxHealth = 2;
+        self.maxShield = 2;
+        self.maxEnergy = 100;
         self.health = 2;
         self.shield = 2;
         self.power = 100;
@@ -34,19 +42,19 @@
 
 -(void) setWeapon1:(Weapon *) weapon1
 {
-    self.weapon1 = weapon1;
+    _weapon1 = weapon1;
     weapon1.carrier = self;
 }
 
 -(void) setWeapon2:(Weapon *) weapon2
 {
-    self.weapon2 = weapon2;
+    _weapon2 = weapon2;
     weapon2.carrier = self;
 }
 
 -(void) setSpecial:(Weapon *) special
 {
-    self.weapon1 = special;
+    _special = special;
     special.carrier = self;
 }
 

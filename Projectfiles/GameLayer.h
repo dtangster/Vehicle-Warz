@@ -19,35 +19,31 @@ enum
 
 @interface GameLayer : CCLayer
 {
-	b2World* world;
     int currentBullet;
     NSMutableArray *bullets;
     ContactListener *contactListener;
     b2Body *screenBorderBody;
     
-    Vehicle *player1Vehicle;
-    Vehicle *player2Vehicle;
-    b2Fixture *player1Fixture; //will store the shape and density information of the catapult arm
-    b2Body *player1Body;  //will store the position and type of the catapult arm
-    b2Fixture *player2Fixture; //will store the shape and density information of the catapult arm
-    b2Body *player2Body;  //will store the position and type of the catapult arm
-    b2Fixture *projectileFixture; //will store the shape and density information of the catapult arm
-    b2Body *projectileBody;  //will store the position and type of the catapult arm
-    
     //MY STUFF
     float shotPower;
     int angle;
-    BOOL isFirstPlayerTurn;
-    BOOL turnJustEnded;
-    CCLabelTTF *energyLabel;
+    
     CCLabelTTF *angleLabel;
     CCSprite *leftArrow;
     CCSprite *rightArrow;
 }
 
+
+@property b2World *world;
+@property (strong, nonatomic) Vehicle *player1Vehicle;
+@property (strong, nonatomic) Vehicle *player2Vehicle;
+@property BOOL isFirstPlayerTurn;
+@property BOOL turnJustEnded;
+@property (strong, nonatomic) CCLabelTTF *energyLabel;
 @property (strong, nonatomic) CCLayerPanZoom *panZoomLayer;
 
 +(id) scene;
+- (CGPoint)toPixels:(b2Vec2)vec;
 - (void)createBullets;
 
 @end
