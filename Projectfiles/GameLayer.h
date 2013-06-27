@@ -8,6 +8,7 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "ContactListener.h"
+#import "CCLayerPanZoom.h"
 
 enum
 {
@@ -43,6 +44,8 @@ enum
     CCSprite *leftArrow;
     CCSprite *rightArrow;
 }
+
+@property (strong, nonatomic) CCLayerPanZoom *panZoomLayer;
 
 +(id) scene;
 - (void)createBullets;

@@ -7,6 +7,7 @@
 
 #import "GameLayer.h"
 #import "Vehicle.h"
+#import "CCSprite+SpriteSize.h"
 
 #define PTM_RATIO 32.0f
 #define FLOOR_HEIGHT    50.0f
@@ -24,6 +25,7 @@ UIPanGestureRecognizer *singlePanGesture;
 UIRotationGestureRecognizer *rotateGesture;
 UIPinchGestureRecognizer *pinchGesture;
 UIPanGestureRecognizer *threeFingerGesture;
+
 
 @interface GameLayer (PrivateMethods)
 - (void) enableBox2dDebugDrawing;
@@ -101,13 +103,25 @@ UIPanGestureRecognizer *threeFingerGesture;
         screenBorderShape.Set(upperLeftCorner, lowerLeftCorner);
         screenBorderBody->CreateFixture(&screenBorderShape, 0);
 
+        [self setContentSize:CGSizeMake(960, 320)];
+        
         // Add sprites to the game
-        CCSprite *sprite = [CCSprite spriteWithFile:@"bgImage.png"];
-        sprite.anchorPoint = CGPointZero;
-        [self addChild:sprite z:-1];
+        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
+        bgSprite.anchorPoint = CGPointZero;
+        CGSize winSize = [[CCDirector sharedDirector] winSize];
+        
+        self.panZoomLayer = [[CCLayerPanZoom alloc] init];
+        self.panZoomLayer.mode = kCCLayerPanZoomModeSheet;
+        self.panZoomLayer.minScale = 0.25;
+        self.panZoomLayer.maxScale = 1;
+        self.panZoomLayer.contentSize = CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight]);
+        
+        [[self panZoomLayer] setPanBoundsRect:CGRectMake(winSize.width / 2, winSize.height / 2, winSize.width, winSize.height)];
+        [[self panZoomLayer] setPosition:ccp(winSize.width / 2, winSize.height / 2)];
+        [self.panZoomLayer addChild:bgSprite z:-1];
 
         player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
-        [self addChild:player1Vehicle z:1 tag:1];
+        [self.panZoomLayer addChild:player1Vehicle z:1 tag:1];
 
         // Setting the properties of our definition
         b2BodyDef bodyDef;
@@ -133,7 +147,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         player1Fixture = player1Body->CreateFixture(&fixtureDef);
 
         player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
-        [self addChild:player2Vehicle z:1 tag:2];
+        [self.panZoomLayer addChild:player2Vehicle z:1 tag:2];
         //causes rotations to slow down. A value of 0 means there is no slowdown
         bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
         bodyDef.linearVelocity = b2Vec2(5,0);
@@ -166,7 +180,7 @@ UIPanGestureRecognizer *threeFingerGesture;
 
                                                if (current.energy >= 25) {
                                                    CCSprite *projectile = [CCSprite spriteWithFile:@"seal.png"];
-                                                   [self addChild:projectile z:-1];
+                                                   [self.panZoomLayer addChild:projectile z:-1];
                                                    b2BodyDef bodyDef;
                                                    bodyDef.type = b2_dynamicBody;
                                                    bodyDef.linearDamping = 1;
@@ -213,7 +227,7 @@ UIPanGestureRecognizer *threeFingerGesture;
         }
 
         attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .90);
-        [self addChild: attackMenu];
+        [self.panZoomLayer addChild: attackMenu];
 
         //Show Power and Angle for current vehicle
         energyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", 100]
@@ -221,22 +235,23 @@ UIPanGestureRecognizer *threeFingerGesture;
                                         fontSize:20];
         energyLabel.position = CGPointMake(50, screenSize.height - 20);
         energyLabel.color = ccBLACK;
-        [self addChild:energyLabel];
+        [self.panZoomLayer addChild:energyLabel];
 
         angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", player1Vehicle.lastAngle]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
         angleLabel.position = CGPointMake(50, screenSize.height - 40);
         angleLabel.color = ccBLACK;
-        [self addChild:angleLabel];
+        [self.panZoomLayer addChild:angleLabel];
 
         //Create 2 arrows for movement
         leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
         rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
         leftArrow.position = CGPointMake([leftArrow boundingBox].size.width / 2, screenSize.height / 2 - 100);
         rightArrow.position = CGPointMake([rightArrow boundingBox].size.width / 2 + [leftArrow boundingBox].size.width, screenSize.height / 2 - 100);
-        [self addChild:leftArrow];
-        [self addChild:rightArrow];
+        [self.panZoomLayer addChild:leftArrow];
+        [self.panZoomLayer addChild:rightArrow];
+        [self addChild:self.panZoomLayer];
 
         //schedules a call to the update method every frame
         [self scheduleUpdate];
@@ -303,7 +318,7 @@ UIPanGestureRecognizer *threeFingerGesture;
 {
     CCSprite *bullet = [CCSprite spriteWithFile:@"flyingpenguin.png"];
     bullet.position = CGPointMake(250.0f, FLOOR_HEIGHT+190.0f);
-    [self addChild:bullet z:9];
+    [self.panZoomLayer addChild:bullet z:9];
     [bullets addObject:bullet];
 }
 
