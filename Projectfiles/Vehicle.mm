@@ -31,7 +31,7 @@
         self.power = 100;
         self.speed = 1;
         self.energy = 100;
-        self.maxFrontUpperAngle = 60;
+        self.maxFrontUpperAngle = 120;
         self.maxFrontLowerAngle = -30;
         self.lastShotPower = 0;
         self.lastAngle = 0;

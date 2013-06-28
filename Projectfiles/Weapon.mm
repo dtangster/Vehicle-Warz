@@ -6,11 +6,14 @@
 //
 //
 
+#include "math.h"
+
 #import "Weapon.h"
 #import "Vehicle.h"
 #import "GameLayer.h"
 
 #define PTM_RATIO 32.0f
+#define PI 3.14159265
 
 @implementation Weapon
 
@@ -47,18 +50,25 @@
         
         CGPoint pos = [screen toPixels:clone.carrier.body->GetPosition()];
         b2Vec2 startVelocity;
+        float x;
+        float y = sin(clone.carrier.lastAngle * PI / 180) * clone.carrier.lastShotPower / 3;
+        
         if (clone.carrier.flipX) {
             pos.x -= 50;
-            startVelocity = b2Vec2(-10, 10);
+            x = cos(PI - (clone.carrier.lastAngle * PI / 180)) * clone.carrier.lastShotPower / 3;
+            startVelocity = b2Vec2(x, y);
+            bodyDef.angularVelocity = -30; // In radians
         }
         else {
             pos.x += 50;
-            startVelocity = b2Vec2(10, 10);
+            x = cos(clone.carrier.lastAngle * PI / 180) * clone.carrier.lastShotPower / 3;
+            startVelocity = b2Vec2(x, y);
+            bodyDef.angularVelocity = 30; // In radians
         }
         
         bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
         bodyDef.linearVelocity = startVelocity;
-        bodyDef.angularVelocity = 60; // In radians
+        bodyDef.angularVelocity = 0; // In radians
         bodyDef.bullet = true;
         bodyDef.userData = (__bridge void*)clone; // This tells the Box2D body which sprite to update.
         clone.body = screen.world->CreateBody(&bodyDef);
@@ -73,7 +83,6 @@
         if (clone.carrier.energy <= 0) {
             screen.isFirstPlayerTurn = !screen.isFirstPlayerTurn;
             screen.turnJustEnded = YES;
-            clone.carrier.energy = clone.carrier.maxEnergy;
         }
         
         screen.energyLabel.string = [NSString stringWithFormat:@"Energy: %i", clone.carrier.energy];

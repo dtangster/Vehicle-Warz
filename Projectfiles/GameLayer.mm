@@ -243,6 +243,8 @@ UIRotationGestureRecognizer *rotateGesture;
         [_panZoomLayer addChild:_rightArrow];
         [self addChild:_panZoomLayer];
 
+        _isFirstPlayerTurn = YES;
+        
         //schedules a call to the update method every frame
         [self scheduleUpdate];
     }
@@ -409,9 +411,14 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Change energy and angle labels when a vehicle turn ends
     if (_turnJustEnded) {
+        Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+        Vehicle *other = _isFirstPlayerTurn ? _player2Vehicle : _player1Vehicle;
+        
         _turnJustEnded = !_turnJustEnded;
-        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", _isFirstPlayerTurn ? _player1Vehicle.energy : _player2Vehicle.energy];
-        _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", _isFirstPlayerTurn ? _player1Vehicle.lastAngle : _player2Vehicle.lastAngle];
+        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
+        _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.lastAngle];
+        _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.lastShotPower];
+        other.energy = other.maxEnergy; // Reset energy to prepare for next turn
     }
     
     // Ensure that the current vehicle is facing left when they press the left arrow
@@ -440,12 +447,11 @@ UIRotationGestureRecognizer *rotateGesture;
         if (!vehicleToFlip.energy) {
             _isFirstPlayerTurn = !_isFirstPlayerTurn;
             _turnJustEnded = YES;
-            vehicleToFlip.energy = vehicleToFlip.maxEnergy; // Reset energy to prepare for next turn
             bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
         }
 
         // Update energy label
-        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", _isFirstPlayerTurn ? _player1Vehicle.energy : _player2Vehicle.energy];
+        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
     }
     
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseAny]) {
@@ -461,11 +467,10 @@ UIRotationGestureRecognizer *rotateGesture;
         if (!vehicleToFlip.energy) {
             _isFirstPlayerTurn = !_isFirstPlayerTurn;
             _turnJustEnded = YES;
-            vehicleToFlip.energy = vehicleToFlip.maxEnergy; // Reset energy to prepare for next turn
             bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
         }
 
-        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", _isFirstPlayerTurn ? _player1Vehicle.energy : _player2Vehicle.energy];
+        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
     }
 
     float timeStep = 0.03f;
