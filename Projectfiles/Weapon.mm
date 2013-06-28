@@ -14,6 +14,7 @@
 
 #define PTM_RATIO 32.0f
 #define PI 3.14159265
+#define POWER_DOWN_SCALE 3
 
 @implementation Weapon
 
@@ -51,17 +52,17 @@
         CGPoint pos = [screen toPixels:clone.carrier.body->GetPosition()];
         b2Vec2 startVelocity;
         float x;
-        float y = sin(clone.carrier.lastAngle * PI / 180) * clone.carrier.lastShotPower / 3;
+        float y = sin(clone.carrier.lastAngle * PI / 180) * clone.carrier.lastShotPower / POWER_DOWN_SCALE;
         
         if (clone.carrier.flipX) {
             pos.x -= 50;
-            x = cos(PI - (clone.carrier.lastAngle * PI / 180)) * clone.carrier.lastShotPower / 3;
+            x = cos(PI - ((clone.carrier.lastAngle + clone.carrier.rotation) * PI / 180)) * clone.carrier.lastShotPower / POWER_DOWN_SCALE;
             startVelocity = b2Vec2(x, y);
             bodyDef.angularVelocity = -30; // In radians
         }
         else {
             pos.x += 50;
-            x = cos(clone.carrier.lastAngle * PI / 180) * clone.carrier.lastShotPower / 3;
+            x = cos((clone.carrier.lastAngle + clone.carrier.rotation) * PI / 180) * clone.carrier.lastShotPower / POWER_DOWN_SCALE;
             startVelocity = b2Vec2(x, y);
             bodyDef.angularVelocity = 30; // In radians
         }
