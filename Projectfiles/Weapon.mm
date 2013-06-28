@@ -68,7 +68,6 @@
         
         bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
         bodyDef.linearVelocity = startVelocity;
-        bodyDef.angularVelocity = 0; // In radians
         bodyDef.bullet = true;
         bodyDef.userData = (__bridge void*)clone; // This tells the Box2D body which sprite to update.
         clone.body = screen.world->CreateBody(&bodyDef);
