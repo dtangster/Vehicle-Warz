@@ -45,7 +45,7 @@
         Weapon *clone = [[Weapon alloc] initWithName:_weaponName
                                            withEnergyCost:_energyCost
                                                usingImage:_imageFile];
-        clone.carrier = self.carrier;
+        clone.carrier = _carrier;
         [screen.panZoomLayer addChild:clone z:-1];
         b2BodyDef bodyDef;
         bodyDef.type = _carrier.body->GetType();
