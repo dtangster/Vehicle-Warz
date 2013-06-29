@@ -19,6 +19,7 @@
 @property (nonatomic) Weapon *weapon1;
 @property (nonatomic) Weapon *weapon2;
 @property (nonatomic) Weapon *special;
+@property (nonatomic) Weapon *selectedWeapon;
 
 // These are the base stats that multiplier effects will be applied to
 @property (nonatomic) int baseHealth;
@@ -47,11 +48,10 @@
 // The max angle below its horizontal line
 @property (nonatomic) int maxFrontLowerAngle;
 
-// Store last shot settings
-@property (nonatomic) int lastShotPower;
-@property (nonatomic) int lastAngle;
-
 -(id) initWithName:(NSString *) vehicleName usingImage:(NSString *) fileName;
 -(BOOL) attackWithWeapon:(Weapon *) weapon onScreen:(GameLayer *) screen;
+-(void) setWeapon1:(Weapon *) weapon;
+-(void) setWeapon2:(Weapon *) weapon;
+-(void) setSpecial:(Weapon *) weapon;
 
 @end

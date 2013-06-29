@@ -17,6 +17,7 @@
 #define SHOT_ONE_TEXT @"Shot 1"
 #define SHOT_TWO_TEXT @"Shot 2"
 #define SHOT_SPECIAL_TEXT @"Special"
+#define FIRE_SHOT_LABEL @"Fire"
 
 CCSprite *projectile;
 CCSprite *block;
@@ -184,7 +185,7 @@ UIRotationGestureRecognizer *rotateGesture;
         
         // Create 3 attack buttons
         CCMenu *attackMenu = [[CCMenu alloc] init];
-        attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .80);
+        attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .75);
         [_panZoomLayer addChild: attackMenu];
         
         // Create first shot label
@@ -192,7 +193,7 @@ UIRotationGestureRecognizer *rotateGesture;
         CCLabelTTF *label = [CCLabelTTF labelWithString:shotString
                                                fontName:@"Marker Felt"
                                                fontSize:30];
-        CCMenuItemLabel *menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(linkAttacksToButtons:)];
+        CCMenuItemLabel *menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
         [attackMenu addChild:menuLabel z:2 tag:10];
         
         // Create second shot label
@@ -200,7 +201,7 @@ UIRotationGestureRecognizer *rotateGesture;
         label = [CCLabelTTF labelWithString:shotString
                                                fontName:@"Marker Felt"
                                                fontSize:30];
-        menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(linkAttacksToButtons:)];
+        menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
         [attackMenu addChild:menuLabel z:2 tag:11];
         
         // Create special shot label
@@ -208,8 +209,20 @@ UIRotationGestureRecognizer *rotateGesture;
         label = [CCLabelTTF labelWithString:shotString
                                    fontName:@"Marker Felt"
                                    fontSize:30];
-        menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(linkAttacksToButtons:)];
+        menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
         [attackMenu addChild:menuLabel z:2 tag:12];
+        [attackMenu alignItemsVertically];
+        
+        // Create fire shot label
+        shotString = [NSString stringWithFormat:FIRE_SHOT_LABEL];
+        label = [CCLabelTTF labelWithString:shotString
+                                   fontName:@"Marker Felt"
+                                   fontSize:30];
+        menuLabel = [CCMenuItemLabel itemWithLabel:label block:^(id sender) {
+            Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+            [current.selectedWeapon executeAttackOnScreen:self];
+        }];
+        [attackMenu addChild:menuLabel z:2 tag:13];
         [attackMenu alignItemsVertically];
         
         // Show energy, power, and angle for current vehicle
@@ -220,14 +233,14 @@ UIRotationGestureRecognizer *rotateGesture;
         _energyLabel.color = ccBLACK;
         [_panZoomLayer addChild:_energyLabel];
         
-        _shotPowerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.lastShotPower]
+        _shotPowerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.selectedWeapon.lastShotPower]
                                          fontName:@"Marker Felt"
                                          fontSize:20];
         _shotPowerLabel.position = CGPointMake(50, screenSize.height - 40);
         _shotPowerLabel.color = ccBLACK;
         [_panZoomLayer addChild:_shotPowerLabel];
 
-        _angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.lastAngle]
+        _angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.selectedWeapon.lastAngle]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
         _angleLabel.position = CGPointMake(50, screenSize.height - 60);
@@ -270,11 +283,11 @@ UIRotationGestureRecognizer *rotateGesture;
     UIView *view = [[CCDirector sharedDirector] view];
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
-    if ([gesture velocityInView:view].y < 0 && current.lastAngle < current.maxFrontUpperAngle) {
-        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.lastAngle]];
+    if ([gesture velocityInView:view].y < 0 && current.selectedWeapon.lastAngle < current.maxFrontUpperAngle) {
+        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.selectedWeapon.lastAngle]];
     }
-    else if ([gesture velocityInView:view].y > 0 && current.lastAngle > current.maxFrontLowerAngle) {
-        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.lastAngle]];
+    else if ([gesture velocityInView:view].y > 0 && current.selectedWeapon.lastAngle > current.maxFrontLowerAngle) {
+        [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.selectedWeapon.lastAngle]];
     }
 }
 
@@ -287,11 +300,11 @@ UIRotationGestureRecognizer *rotateGesture;
     UIView *view = [[CCDirector sharedDirector] view];
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
-    if ([gesture velocityInView:view].x > 0 && current.lastShotPower < current.power) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.lastShotPower]];
+    if ([gesture velocityInView:view].x > 0 && current.selectedWeapon.lastShotPower < current.power) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
     }
-    else if ([gesture velocityInView:view].x < 0 && current.lastShotPower > 0) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.lastShotPower]];
+    else if ([gesture velocityInView:view].x < 0 && current.selectedWeapon.lastShotPower > 0) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
     }
 }
 
@@ -304,28 +317,31 @@ UIRotationGestureRecognizer *rotateGesture;
     
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
 
-    if (gesture.velocity > 0 && current.lastShotPower < current.power) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.lastShotPower]];
+    if (gesture.velocity > 0 && current.selectedWeapon.lastShotPower < current.power) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
     }
-    else if (gesture.velocity < 0 && current.lastShotPower > 0) {
-        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.lastShotPower]];
+    else if (gesture.velocity < 0 && current.selectedWeapon.lastShotPower > 0) {
+        [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
     }
 }
 //-------------------------------TEMPORARY--------------------------------
 
-- (void)linkAttacksToButtons:(CCMenuItemLabel *) sender
+- (void)selectWeapon:(CCMenuItemLabel *) sender
 {
     Vehicle *vehicle = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
 
     if ([sender.label.string isEqualToString:SHOT_ONE_TEXT]) {
-        [vehicle attackWithWeapon:vehicle.weapon1 onScreen:self];
+        vehicle.selectedWeapon = vehicle.weapon1;
     }
     else if ([sender.label.string isEqualToString:SHOT_TWO_TEXT]) {
-        [vehicle attackWithWeapon:vehicle.weapon2 onScreen:self];
+        vehicle.selectedWeapon = vehicle.weapon2;
     }
     else if ([sender.label.string isEqualToString:SHOT_SPECIAL_TEXT]) {
-        [vehicle attackWithWeapon:vehicle.special onScreen:self];
+        vehicle.selectedWeapon = vehicle.special;
     }
+    
+    _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", vehicle.selectedWeapon.lastAngle];
+    _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", vehicle.selectedWeapon.lastShotPower];
 }
 
 /*
@@ -428,8 +444,8 @@ UIRotationGestureRecognizer *rotateGesture;
         
         _turnJustEnded = !_turnJustEnded;
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
-        _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.lastAngle];
-        _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.lastShotPower];
+        _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+        _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
         other.energy = other.maxEnergy; // Reset energy to prepare for next turn
     }
     

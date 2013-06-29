@@ -15,26 +15,24 @@
 {
     if ((self = [super initWithFile:fileName]))
     {
-        self.vehicleName = vehicleName;
-        self.baseHealth = 2;
-        self.baseShield = 2;
-        self.basePower = 100;
-        self.baseSpeed = 1;
-        self.baseEnergy = 100;
-        self.maxHealth = 2;
-        self.maxShield = 2;
-        self.maxEnergy = 100;
-        self.maxSpeed = 1;
-        self.maxEnergy = 100;
-        self.health = 2;
-        self.shield = 2;
-        self.power = 100;
-        self.speed = 1;
-        self.energy = 100;
-        self.maxFrontUpperAngle = 120;
-        self.maxFrontLowerAngle = -30;
-        self.lastShotPower = 0;
-        self.lastAngle = 0;
+        _vehicleName = vehicleName;
+        _baseHealth = 2;
+        _baseShield = 2;
+        _basePower = 100;
+        _baseSpeed = 1;
+        _baseEnergy = 100;
+        _maxHealth = 2;
+        _maxShield = 2;
+        _maxEnergy = 100;
+        _maxSpeed = 1;
+        _maxEnergy = 100;
+        _health = 2;
+        _shield = 2;
+        _power = 100;
+        _speed = 1;
+        _energy = 100;
+        _maxFrontUpperAngle = 120;
+        _maxFrontLowerAngle = -30;
     }
     
     return self;
@@ -42,25 +40,27 @@
 
 -(BOOL) attackWithWeapon:(Weapon *) weapon onScreen:(GameLayer *) screen
 {
+    _selectedWeapon = weapon;
     return [weapon executeAttackOnScreen:screen];
 }
 
--(void) setWeapon1:(Weapon *) weapon1
+-(void) setWeapon1:(Weapon *) weapon
 {
-    _weapon1 = weapon1;
-    weapon1.carrier = self;
+    _selectedWeapon = weapon;
+    _weapon1 = weapon;
+    weapon.carrier = self;
 }
 
--(void) setWeapon2:(Weapon *) weapon2
+-(void) setWeapon2:(Weapon *) weapon
 {
-    _weapon2 = weapon2;
-    weapon2.carrier = self;
+    _weapon2 = weapon;
+    weapon.carrier = self;
 }
 
--(void) setSpecial:(Weapon *) special
+-(void) setSpecial:(Weapon *) weapon
 {
-    _special = special;
-    special.carrier = self;
+    _special = weapon;
+    weapon.carrier = self;
 }
 
 @end

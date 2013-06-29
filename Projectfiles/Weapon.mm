@@ -25,6 +25,8 @@
         self.weaponName = weaponName;
         self.imageFile = fileName;
         self.energyCost = energyCost;
+        self.lastShotPower = 0;
+        self.lastAngle = 0;
     }
     
     return self;
@@ -87,13 +89,13 @@
 -(b2Vec2) calculateInitialVector
 {
     float x;
-    float y = sin(_carrier.lastAngle * PI / 180) * _carrier.lastShotPower / POWER_DOWN_SCALE;
+    float y = sin(_lastAngle * PI / 180) * _lastShotPower / POWER_DOWN_SCALE;
     
     if (_carrier.flipX) {
-        x = cos(PI - ((_carrier.lastAngle + _carrier.rotation) * PI / 180)) * _carrier.lastShotPower / POWER_DOWN_SCALE;
+        x = cos(PI - ((_lastAngle + _carrier.rotation) * PI / 180)) * _lastShotPower / POWER_DOWN_SCALE;
     }
     else {
-        x = cos((_carrier.lastAngle + _carrier.rotation) * PI / 180) * _carrier.lastShotPower / POWER_DOWN_SCALE;
+        x = cos((_lastAngle + _carrier.rotation) * PI / 180) * _lastShotPower / POWER_DOWN_SCALE;
     }
     
     return b2Vec2(x, y);

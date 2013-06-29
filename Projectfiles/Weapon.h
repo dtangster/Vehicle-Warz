@@ -20,6 +20,10 @@
 @property (nonatomic) b2Body *body;  // Will store the position and type
 @property (nonatomic) int energyCost;
 
+// Store last shot settings
+@property (nonatomic) int lastShotPower;
+@property (nonatomic) int lastAngle;
+
 -(id) initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName;
 -(BOOL) executeAttackOnScreen: (GameLayer *) screen;
 -(b2Vec2) calculateInitialVector;
