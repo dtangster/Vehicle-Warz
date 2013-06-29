@@ -50,25 +50,18 @@
         bodyDef.angularDamping = 1;
         
         CGPoint pos = [screen toPixels:clone.carrier.body->GetPosition()];
-        b2Vec2 startVelocity;
-        float x;
-        float y = sin(clone.carrier.lastAngle * PI / 180) * clone.carrier.lastShotPower / POWER_DOWN_SCALE;
         
         if (clone.carrier.flipX) {
             pos.x -= 50;
-            x = cos(PI - ((clone.carrier.lastAngle + clone.carrier.rotation) * PI / 180)) * clone.carrier.lastShotPower / POWER_DOWN_SCALE;
-            startVelocity = b2Vec2(x, y);
             bodyDef.angularVelocity = -30; // In radians
         }
         else {
             pos.x += 50;
-            x = cos((clone.carrier.lastAngle + clone.carrier.rotation) * PI / 180) * clone.carrier.lastShotPower / POWER_DOWN_SCALE;
-            startVelocity = b2Vec2(x, y);
             bodyDef.angularVelocity = 30; // In radians
         }
         
         bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
-        bodyDef.linearVelocity = startVelocity;
+        bodyDef.linearVelocity = [self calculateInitialVector];
         bodyDef.bullet = true;
         bodyDef.userData = (__bridge void*)clone; // This tells the Box2D body which sprite to update.
         clone.body = screen.world->CreateBody(&bodyDef);
@@ -93,7 +86,17 @@
 
 -(b2Vec2) calculateInitialVector
 {
+    float x;
+    float y = sin(_carrier.lastAngle * PI / 180) * _carrier.lastShotPower / POWER_DOWN_SCALE;
     
+    if (_carrier.flipX) {
+        x = cos(PI - ((_carrier.lastAngle + _carrier.rotation) * PI / 180)) * _carrier.lastShotPower / POWER_DOWN_SCALE;
+    }
+    else {
+        x = cos((_carrier.lastAngle + _carrier.rotation) * PI / 180) * _carrier.lastShotPower / POWER_DOWN_SCALE;
+    }
+    
+    return b2Vec2(x, y);
 }
 
 @end
