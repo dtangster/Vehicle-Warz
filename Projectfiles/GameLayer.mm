@@ -225,7 +225,7 @@ UIRotationGestureRecognizer *rotateGesture;
         [attackMenu addChild:menuLabel z:2 tag:13];
         [attackMenu alignItemsVertically];
         
-        // Show energy, power, and angle for current vehicle
+        // Show energy, power, and angle for current vehicle and selected weapon
         _energyLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", _player1Vehicle.energy]
                                         fontName:@"Marker Felt"
                                         fontSize:20];

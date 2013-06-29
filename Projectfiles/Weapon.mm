@@ -42,15 +42,15 @@
         success = YES;
         
         // Create clone of itself to shoot because you cannot have multiple instances of yourself on the screen.
-        Weapon *clone = [[Weapon alloc] initWithName:self.weaponName
-                                           withEnergyCost:self.energyCost
-                                               usingImage:self.imageFile];
+        Weapon *clone = [[Weapon alloc] initWithName:_weaponName
+                                           withEnergyCost:_energyCost
+                                               usingImage:_imageFile];
         clone.carrier = self.carrier;
         [screen.panZoomLayer addChild:clone z:-1];
         b2BodyDef bodyDef;
-        bodyDef.type = b2_dynamicBody;
-        bodyDef.linearDamping = 1;
-        bodyDef.angularDamping = 1;
+        bodyDef.type = _carrier.body->GetType();
+        bodyDef.linearDamping = _carrier.body->GetLinearDamping();
+        bodyDef.angularDamping = _carrier.body->GetAngularDamping();
         
         CGPoint pos = [screen toPixels:clone.carrier.body->GetPosition()];
         
@@ -72,7 +72,7 @@
         b2FixtureDef projectileFixtureDef;
         projectileShape.m_radius = clone.contentSize.width/2.0f/PTM_RATIO;
         projectileFixtureDef.shape = &projectileShape;
-        projectileFixtureDef.density = 10.3F; // Affects collision momentum and inertia
+        projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
         
         // If energy is depleted, refill energy and switch player turns
