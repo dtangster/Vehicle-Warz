@@ -187,7 +187,7 @@ UIRotationGestureRecognizer *rotateGesture;
         // Create 3 attack buttons
         CCMenu *attackMenu = [[CCMenu alloc] init];
         attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .75);
-        [_panZoomLayer addChild: attackMenu];
+        
         
         // Create first shot label
         NSString *shotString = [NSString stringWithFormat:SHOT_ONE_TEXT];
@@ -232,31 +232,34 @@ UIRotationGestureRecognizer *rotateGesture;
                                         fontSize:20];
         _energyLabel.position = CGPointMake(50, screenSize.height - 20);
         _energyLabel.color = ccBLACK;
-        [_panZoomLayer addChild:_energyLabel];
         
         _shotPowerLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.selectedWeapon.lastShotPower]
                                          fontName:@"Marker Felt"
                                          fontSize:20];
         _shotPowerLabel.position = CGPointMake(50, screenSize.height - 40);
         _shotPowerLabel.color = ccBLACK;
-        [_panZoomLayer addChild:_shotPowerLabel];
 
         _angleLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.selectedWeapon.lastAngle]
                                         fontName:@"Marker Felt"
                                         fontSize:20];
         _angleLabel.position = CGPointMake(50, screenSize.height - 60);
         _angleLabel.color = ccBLACK;
-        [_panZoomLayer addChild:_angleLabel];
+        
 
         // Create 2 arrows for movement
         _leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
         _rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
         _leftArrow.position = CGPointMake([_leftArrow boundingBox].size.width / 2, screenSize.height / 2 - 100);
         _rightArrow.position = CGPointMake([_rightArrow boundingBox].size.width / 2 + [_leftArrow boundingBox].size.width, screenSize.height / 2 - 100);
-        [_panZoomLayer addChild:_leftArrow];
-        [_panZoomLayer addChild:_rightArrow];
+        
         [self addChild:_panZoomLayer];
-
+        [self addChild: attackMenu];
+        [self addChild:_energyLabel];
+        [self addChild:_shotPowerLabel];
+        [self addChild:_angleLabel];
+        [self addChild:_leftArrow];
+        [self addChild:_rightArrow];
+        
         _isFirstPlayerTurn = YES;
         
         //schedules a call to the update method every frame
@@ -448,7 +451,6 @@ UIRotationGestureRecognizer *rotateGesture;
     else if (current.position.x < (director.screenSize.width * SCREEN_PAN_RATIO + _panZoomLayer.position.x) * _panZoomLayer.scale) {
         _panZoomLayer.position = ccp(_panZoomLayer.position.x + 1, _panZoomLayer.position.y);
     }
-    
     
     NSLog(@"vehicle x = %f, vehicle y = %f", current.position.x, current.position.y);
     NSLog(@"background x = %f, background y = %f", _panZoomLayer.position.x, _panZoomLayer.position.y);
