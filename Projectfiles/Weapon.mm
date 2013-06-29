@@ -22,11 +22,12 @@
 {
     if ((self = [super initWithFile:fileName]))
     {
-        self.weaponName = weaponName;
-        self.imageFile = fileName;
-        self.energyCost = energyCost;
-        self.lastShotPower = 0;
-        self.lastAngle = 0;
+        _weaponName = weaponName;
+        _imageFile = fileName;
+        _energyCost = energyCost;
+        _lastShotPower = 0;
+        _lastAngle = 0;
+        _lastRotation = 30;
     }
     
     return self;
@@ -36,8 +37,8 @@
 {
     BOOL success = NO;
     
-    if (self.carrier.energy >= self.energyCost) {
-        self.carrier.energy -= self.energyCost;
+    if (_carrier.energy >= _energyCost) {
+        _carrier.energy -= _energyCost;
         success = YES;
         
         // Create clone of itself to shoot because you cannot have multiple instances of yourself on the screen.
@@ -55,11 +56,11 @@
         
         if (clone.carrier.flipX) {
             pos.x -= 50;
-            bodyDef.angularVelocity = -30; // In radians
+            bodyDef.angularVelocity = -_lastRotation; // In radians
         }
         else {
             pos.x += 50;
-            bodyDef.angularVelocity = 30; // In radians
+            bodyDef.angularVelocity = _lastRotation; // In radians
         }
         
         bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);

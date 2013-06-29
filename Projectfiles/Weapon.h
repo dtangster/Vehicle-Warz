@@ -23,6 +23,7 @@
 // Store last shot settings
 @property (nonatomic) int lastShotPower;
 @property (nonatomic) int lastAngle;
+@property (nonatomic) int lastRotation; // Just in case we want to allow players to set the rotation of the shot
 
 -(id) initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName;
 -(BOOL) executeAttackOnScreen: (GameLayer *) screen;

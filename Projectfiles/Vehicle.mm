@@ -21,16 +21,22 @@
         _basePower = 100;
         _baseSpeed = 1;
         _baseEnergy = 100;
-        _maxHealth = 2;
-        _maxShield = 2;
-        _maxEnergy = 100;
-        _maxSpeed = 1;
-        _maxEnergy = 100;
-        _health = 2;
-        _shield = 2;
-        _power = 100;
-        _speed = 1;
-        _energy = 100;
+        
+        // These should be some formula using the base as a multiplier
+        _maxHealth = _baseHealth; 
+        _maxShield = _baseShield;
+        _maxPower = _basePower;
+        _maxSpeed = _baseSpeed;
+        _maxEnergy = _baseEnergy;
+        
+        // Give vehicles full health, shields, etc.
+        _health = _maxHealth; 
+        _shield = _maxShield;
+        _power = _maxPower;
+        _speed = _maxSpeed;
+        _energy = _maxEnergy;
+        
+        // Limits the range of angles
         _maxFrontUpperAngle = 120;
         _maxFrontLowerAngle = -30;
     }
