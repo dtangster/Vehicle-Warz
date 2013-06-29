@@ -12,6 +12,7 @@
 
 #define PTM_RATIO 32.0f
 #define FLOOR_HEIGHT    50.0f
+#define SCREEN_PAN_RATIO 0.75
 #define TORQUE_ADJUSTMENT 50
 #define MAX_TORQUE 1000
 #define SHOT_ONE_TEXT @"Shot 1"
@@ -395,6 +396,7 @@ UIRotationGestureRecognizer *rotateGesture;
 {
     //Check for inputs and create a bullet if there is a tap
     KKInput *input = [KKInput sharedInput];
+    CCDirector* director = [CCDirector sharedDirector];
     
     /*
     if(input.anyTouchEndedThisFrame)
@@ -437,11 +439,27 @@ UIRotationGestureRecognizer *rotateGesture;
         }
     }
     
+    // Pan the screen if a vehicle moves close enough to the border
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    /*
+    if (current.position.x > (director.screenSize.width * SCREEN_PAN_RATIO - _panZoomLayer.position.x) * _panZoomLayer.scale) {
+        _panZoomLayer.position = ccp(_panZoomLayer.position.x - 1, _panZoomLayer.position.y);
+    }
+    else if (current.position.x < (director.screenSize.width * SCREEN_PAN_RATIO + _panZoomLayer.position.x) * _panZoomLayer.scale) {
+        _panZoomLayer.position = ccp(_panZoomLayer.position.x + 1, _panZoomLayer.position.y);
+    }
+    
+    
+    NSLog(@"vehicle x = %f, vehicle y = %f", current.position.x, current.position.y);
+    NSLog(@"background x = %f, background y = %f", _panZoomLayer.position.x, _panZoomLayer.position.y);
+    NSLog(@"director width = %f, director height = %f", director.screenSize.width, director.screenSize.height);
+    NSLog(@"SCALE = %f", _panZoomLayer.scale);
+    */
+    
     // Change energy and angle labels when a vehicle turn ends
     if (_turnJustEnded) {
-        Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        Vehicle *other = _isFirstPlayerTurn ? _player2Vehicle : _player1Vehicle;
-        
+        Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+
         _turnJustEnded = !_turnJustEnded;
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
         _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
@@ -451,15 +469,15 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
-        Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        vehicleToFlip.flipX = YES;
+        current.flipX = YES;
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
-        Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        vehicleToFlip.flipX = NO;
+        current.flipX = NO;
     }
+    
+    // Move the vehicle left and drain energy when left arrow is pressed
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseAny]) {
         Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         vehicleToFlip.flipX = YES;
@@ -482,6 +500,7 @@ UIRotationGestureRecognizer *rotateGesture;
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
     }
     
+    // Move vehicle right and drain energy when right arrow is pressed
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseAny]) {
         Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         vehicleToFlip.flipX = NO;
