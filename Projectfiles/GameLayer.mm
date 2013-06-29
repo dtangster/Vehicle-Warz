@@ -263,6 +263,10 @@ UIRotationGestureRecognizer *rotateGesture;
 #pragma mark Gesture Handlers
 - (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
 {
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        return;
+    }
+    
     UIView *view = [[CCDirector sharedDirector] view];
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
@@ -276,6 +280,10 @@ UIRotationGestureRecognizer *rotateGesture;
 
 - (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
 {
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        return;
+    }
+    
     UIView *view = [[CCDirector sharedDirector] view];
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
@@ -290,6 +298,10 @@ UIRotationGestureRecognizer *rotateGesture;
 //-------------------------------TEMPORARY--------------------------------
 - (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
 {
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        return;
+    }
+    
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
 
     if (gesture.velocity > 0 && current.lastShotPower < current.power) {
