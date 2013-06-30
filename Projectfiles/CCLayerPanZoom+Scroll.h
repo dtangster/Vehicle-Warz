@@ -16,4 +16,8 @@
 
 - (void)scrollToRect:(CGRect)theRect;
 
+- (void)enableTouches:(BOOL)enable;
+
+- (void)removeAllTouches;
+
 @end

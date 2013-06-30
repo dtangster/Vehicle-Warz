@@ -32,4 +32,22 @@ CAScrollLayer *scrollLayer;
     [scrollLayer scrollToPoint:thePoint];
 }
 
+- (void)removeAllTouches
+{
+    [_touches removeAllObjects];
+}
+
+- (void)enableTouches:(BOOL)enable
+{
+    if (enable) {
+        [self removeAllTouches];
+        [[[CCDirector sharedDirector] touchDispatcher] addStandardDelegate:self priority:0];
+        NSLog(@"Touch enabled.");
+    }
+    else {
+        [[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
+        NSLog(@"Touch disabled.");
+    }
+}
+
 @end
