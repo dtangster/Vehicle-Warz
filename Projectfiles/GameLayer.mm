@@ -154,7 +154,7 @@ UIRotationGestureRecognizer *rotateGesture;
         b2FixtureDef fixtureDef;
         fixtureDef.shape = &playerShape;
         fixtureDef.density = 0.3F; // Affects collision momentum and inertia
-        playerShape.SetAsBox([_player1Vehicle boundingBox].size.width / 3 / PTM_RATIO, [_player1Vehicle boundingBox].size.height / 3 / PTM_RATIO);
+        playerShape.SetAsBox([_player1Vehicle spriteWidth] / 3 / PTM_RATIO, [_player1Vehicle spriteHeight] / 3 / PTM_RATIO);
         _player1Vehicle.fixture = _player1Vehicle.body->CreateFixture(&fixtureDef);
 
         // Create second player vehicle
@@ -167,7 +167,7 @@ UIRotationGestureRecognizer *rotateGesture;
         _player2Vehicle.body = _world->CreateBody(&bodyDef);
         fixtureDef.shape = &playerShape;
         fixtureDef.density = 0.3F; //affects collision momentum and inertia
-        playerShape.SetAsBox([_player2Vehicle boundingBox].size.width / 4 / PTM_RATIO, [_player2Vehicle boundingBox].size.height / 4 / PTM_RATIO);
+        playerShape.SetAsBox([_player2Vehicle spriteWidth] / 4 / PTM_RATIO, [_player2Vehicle spriteHeight] / 4 / PTM_RATIO);
         _player2Vehicle.fixture = _player2Vehicle.body->CreateFixture(&fixtureDef);
         
         // Each weapon makes a different sound
@@ -263,8 +263,8 @@ UIRotationGestureRecognizer *rotateGesture;
         // Create 2 arrows for movement
         _leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
         _rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
-        _leftArrow.position = CGPointMake([_leftArrow boundingBox].size.width / 2, screenSize.height / 2 - 100);
-        _rightArrow.position = CGPointMake([_rightArrow boundingBox].size.width / 2 + [_leftArrow boundingBox].size.width, screenSize.height / 2 - 100);
+        _leftArrow.position = CGPointMake([_leftArrow spriteWidth] / 2, screenSize.height / 2 - 100);
+        _rightArrow.position = CGPointMake([_rightArrow spriteWidth] / 2 + [_leftArrow spriteWidth], screenSize.height / 2 - 100);
         
         [self addChild:_panZoomLayer];
         
