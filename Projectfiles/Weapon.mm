@@ -6,8 +6,6 @@
 //
 //
 
-#include "math.h"
-
 #import "Weapon.h"
 #import "Vehicle.h"
 #import "GameLayer.h"
