@@ -181,7 +181,7 @@ UIRotationGestureRecognizer *rotateGesture;
         _player1Vehicle.weapon1 = tempWeapon;
         tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:_weapon2Sound];
         _player1Vehicle.weapon2 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:_weapon2Sound];
+        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:_weaponSpecialSound];
         _player1Vehicle.special = tempWeapon;
         tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:_weapon1Sound];
         _player2Vehicle.weapon1 = tempWeapon;
