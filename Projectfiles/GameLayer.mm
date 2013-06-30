@@ -270,7 +270,7 @@ UIRotationGestureRecognizer *rotateGesture;
         
         _isFirstPlayerTurn = YES;
         
-        //schedules a call to the update method every frame
+        // Schedules a call to the update method every frame
         [self scheduleUpdate];
     }
 
@@ -450,9 +450,19 @@ UIRotationGestureRecognizer *rotateGesture;
         }
     }
     
-    // Pan the screen if a vehicle moves close enough to the border
+    // Change energy and angle labels when a vehicle turn ends
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    /*
+    Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    
+    if (_turnJustEnded) {
+        _turnJustEnded = !_turnJustEnded;
+        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
+        _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+        _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+        other.energy = other.maxEnergy; // Reset energy to prepare for next turn
+    }
+    
+    // Pan the screen if a vehicle moves close enough to the border    
     if (current.position.x > (director.screenSize.width * SCREEN_PAN_RATIO - _panZoomLayer.position.x) * _panZoomLayer.scale) {
         _panZoomLayer.position = ccp(_panZoomLayer.position.x - 1, _panZoomLayer.position.y);
     }
@@ -464,18 +474,6 @@ UIRotationGestureRecognizer *rotateGesture;
     NSLog(@"background x = %f, background y = %f", _panZoomLayer.position.x, _panZoomLayer.position.y);
     NSLog(@"director width = %f, director height = %f", director.screenSize.width, director.screenSize.height);
     NSLog(@"SCALE = %f", _panZoomLayer.scale);
-    */
-    
-    // Change energy and angle labels when a vehicle turn ends
-    if (_turnJustEnded) {
-        Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-
-        _turnJustEnded = !_turnJustEnded;
-        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
-        _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
-        _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
-        other.energy = other.maxEnergy; // Reset energy to prepare for next turn
-    }
     
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
