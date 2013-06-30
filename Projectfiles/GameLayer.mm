@@ -305,6 +305,8 @@ UIRotationGestureRecognizer *rotateGesture;
                                                          block:^(id sender) {}];
     _leftArrow.position = CGPointMake(-(screenSize.width / 2) + 30, -(screenSize.height / 2) - 40);
     _rightArrow.position = CGPointMake(-(screenSize.width / 2) + 65, -(screenSize.height / 2) - 40);
+    _leftArrow.isEnabled = false;
+    _rightArrow.isEnabled = false;
     [controlMenu addChild:_leftArrow];
     [controlMenu addChild:_rightArrow];
     
