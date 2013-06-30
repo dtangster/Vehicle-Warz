@@ -28,6 +28,7 @@
         _lastShotPower = 0;
         _lastAngle = 0;
         _lastRotation = 30;
+        [[SimpleAudioEngine sharedEngine] preloadEffect:@"explo2.wav"];
     }
     
     return self;
@@ -74,6 +75,7 @@
         projectileFixtureDef.shape = &projectileShape;
         projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
+        [[SimpleAudioEngine sharedEngine] playEffect:@"explo2.wav"];
         
         // If energy is depleted, refill energy and switch player turns
         if (clone.carrier.energy <= 0) {

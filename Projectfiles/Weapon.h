@@ -7,6 +7,7 @@
 //
 
 #import "CCSprite.h"
+#import "SimpleAudioEngine.h"
 
 @class Vehicle;
 @class GameLayer;
