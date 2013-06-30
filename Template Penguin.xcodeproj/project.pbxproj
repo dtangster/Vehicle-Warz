@@ -16,7 +16,6 @@
 		248667C51778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667C61778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667FD177FEEA800DE5743 /* sound_effects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667FC177FEEA800DE5743 /* sound_effects.plist */; };
-		3D23DE6E1780144E0011020E /* CCLayerPanZoom+Moving.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D23DE6D1780144E0011020E /* CCLayerPanZoom+Moving.m */; };
 		3D23DE70178014BA0011020E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D23DE6F178014BA0011020E /* QuartzCore.framework */; };
 		3D5099BD177BBC5200C691D1 /* bgImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5099BC177BBC5200C691D1 /* bgImage.png */; };
 		3D5099C0177BC74100C691D1 /* CCSprite+SpriteSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.m */; };
@@ -107,9 +106,9 @@
 		248667C11778EFC300DE5743 /* triceratops.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = triceratops.plist; sourceTree = "<group>"; };
 		248667C41778EFDF00DE5743 /* mammoth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mammoth.plist; sourceTree = "<group>"; };
 		248667FC177FEEA800DE5743 /* sound_effects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = sound_effects.plist; sourceTree = "<group>"; };
-		3D23DE6C1780144D0011020E /* CCLayerPanZoom+Moving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCLayerPanZoom+Moving.h"; sourceTree = "<group>"; };
-		3D23DE6D1780144E0011020E /* CCLayerPanZoom+Moving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCLayerPanZoom+Moving.m"; sourceTree = "<group>"; };
 		3D23DE6F178014BA0011020E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		3D23DE71178018850011020E /* CCLayerPanZoom+Scroll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CCLayerPanZoom+Scroll.h"; sourceTree = "<group>"; };
+		3D23DE72178018850011020E /* CCLayerPanZoom+Scroll.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CCLayerPanZoom+Scroll.m"; sourceTree = "<group>"; };
 		3D5099BC177BBC5200C691D1 /* bgImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgImage.png; sourceTree = "<group>"; };
 		3D5099BE177BC74100C691D1 /* CCSprite+SpriteSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+SpriteSize.h"; sourceTree = "<group>"; };
 		3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCSprite+SpriteSize.m"; sourceTree = "<group>"; };
@@ -308,7 +307,6 @@
 		DCC1A0D613A94EC0005BD75D = {
 			isa = PBXGroup;
 			children = (
-				3D23DE6F178014BA0011020E /* QuartzCore.framework */,
 				DCC1A38C13A94F1A005BD75D /* Projectfiles */,
 				DCC1A0F713A94ED5005BD75D /* Projectfiles-iOS */,
 				DCC1A26413A94EE6005BD75D /* Projectfiles-Mac */,
@@ -330,6 +328,7 @@
 		DCC1A0E613A94ED5005BD75D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3D23DE6F178014BA0011020E /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -405,8 +404,8 @@
 				AA4774A415CED021009A911F /* GLES-Render.h */,
 				AA4774A515CED021009A911F /* GLES-Render.mm */,
 				AA4774A615CED021009A911F /* main.m */,
-				3D23DE6C1780144D0011020E /* CCLayerPanZoom+Moving.h */,
-				3D23DE6D1780144E0011020E /* CCLayerPanZoom+Moving.m */,
+				3D23DE71178018850011020E /* CCLayerPanZoom+Scroll.h */,
+				3D23DE72178018850011020E /* CCLayerPanZoom+Scroll.m */,
 				AA4774A715CED021009A911F /* Prefix-iOS.pch */,
 				AA4774A815CED021009A911F /* Prefix-Mac.pch */,
 				248667B21778E4D000DE5743 /* Vehicle.h */,
@@ -586,7 +585,6 @@
 				248667BC1778EAEB00DE5743 /* Weapon.mm in Sources */,
 				3D5099C0177BC74100C691D1 /* CCSprite+SpriteSize.m in Sources */,
 				3D709707177FD50B006704EF /* StartMenuLayer.mm in Sources */,
-				3D23DE6E1780144E0011020E /* CCLayerPanZoom+Moving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
