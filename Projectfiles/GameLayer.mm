@@ -193,6 +193,7 @@ UIRotationGestureRecognizer *rotateGesture;
     return self;
 }
 
+#pragma mark Sounds and Menu
 - (void)setUpSounds
 {
     // Load sound effects
@@ -227,7 +228,6 @@ UIRotationGestureRecognizer *rotateGesture;
 
 - (void)setUpMenu
 {
-    // TODO: Maybe combine all the labels and controls into one menu
     CGSize screenSize = [[CCDirector sharedDirector] winSize];
     // Create 3 attack buttons
     CCMenu *controlMenu = [[CCMenu alloc] init];
