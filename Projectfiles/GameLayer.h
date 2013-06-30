@@ -38,7 +38,8 @@ enum
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
 @property (nonatomic) NSDictionary *soundEffects;
 
-+(id) scene;
++ (id)scene;
+- (id)init;
 - (CGPoint)toPixels:(b2Vec2)vec;
 - (void)createBullets;
 

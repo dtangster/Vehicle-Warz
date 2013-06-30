@@ -182,127 +182,131 @@ UIRotationGestureRecognizer *rotateGesture;
         playerShape.SetAsBox([_player2Vehicle spriteWidth] / 4 / PTM_RATIO, [_player2Vehicle spriteHeight] / 4 / PTM_RATIO);
         _player2Vehicle.fixture = _player2Vehicle.body->CreateFixture(&fixtureDef);
         
-        // Each weapon makes a different sound
-        // TODO: add more weapon sounds
-        _soundEffects = [[NSDictionary alloc] initWithContentsOfFile:@"sound_effects.plist"];
-
-        // Create a temporary seal weapon and assign to all weapon shots for both players
-        Weapon *tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                               usingImage:@"seal.png"
-                                               usingSound:_soundEffects[@"vehicle1-shot1"]];
-        _player1Vehicle.weapon1 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                       usingImage:@"seal.png"
-                                       usingSound:_soundEffects[@"vehicle1-shot2"]];
-        _player1Vehicle.weapon2 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                       usingImage:@"seal.png"
-                                       usingSound:_soundEffects[@"vehicle1-special"]];
-        _player1Vehicle.special = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                       usingImage:@"seal.png"
-                                       usingSound:_soundEffects[@"vehicle2-shot1"]];
-        _player2Vehicle.weapon1 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                       usingImage:@"seal.png"
-                                       usingSound:_soundEffects[@"vehicle2-shot2"]];
-        _player2Vehicle.weapon2 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                       usingImage:@"seal.png"
-                                       usingSound:_soundEffects[@"vehicle2-special"]];
-        _player2Vehicle.special = tempWeapon;
-        
-        // Create 3 attack buttons
-        CCMenu *attackMenu = [[CCMenu alloc] init];
-        attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .75);
-        
-        
-        // Create first shot label
-        NSString *shotString = [NSString stringWithFormat:SHOT_ONE_TEXT];
-        CCLabelTTF *label = [CCLabelTTF labelWithString:shotString
-                                               fontName:@"Marker Felt"
-                                               fontSize:30];
-        CCMenuItemLabel *menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
-        [attackMenu addChild:menuLabel z:2];
-        
-        // Create second shot label
-        shotString = [NSString stringWithFormat:SHOT_TWO_TEXT];
-        label = [CCLabelTTF labelWithString:shotString
-                                               fontName:@"Marker Felt"
-                                               fontSize:30];
-        menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
-        [attackMenu addChild:menuLabel z:2];
-        
-        // Create special shot label
-        shotString = [NSString stringWithFormat:SHOT_SPECIAL_TEXT];
-        label = [CCLabelTTF labelWithString:shotString
-                                   fontName:@"Marker Felt"
-                                   fontSize:30];
-        menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
-        [attackMenu addChild:menuLabel z:2];
-        
-        // Create fire shot label
-        shotString = [NSString stringWithFormat:FIRE_SHOT_LABEL];
-        label = [CCLabelTTF labelWithString:shotString
-                                   fontName:@"Marker Felt"
-                                   fontSize:30];
-        menuLabel = [CCMenuItemLabel itemWithLabel:label block:^(id sender) {
-            Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-            [current.selectedWeapon executeAttackOnScreen:self];
-        }];
-        
-        // Add labels to the menu and align them vertically
-        [attackMenu addChild:menuLabel z:2];
-        [attackMenu alignItemsVertically];
-        
-        // Show energy, power, and angle for current vehicle and selected weapon
-        label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", _player1Vehicle.energy]
-                                        fontName:@"Marker Felt"
-                                        fontSize:20];
-        label.color = ccBLACK;
-        _energyLabel = [CCMenuItemLabel itemWithLabel:label];
-        //_energyLabel.position = CGPointMake(50, screenSize.height - 20);
-        
-        
-        label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.selectedWeapon.lastShotPower]
-                                         fontName:@"Marker Felt"
-                                         fontSize:20];
-        label.color = ccBLACK;
-        _shotPowerLabel = [CCMenuItemLabel itemWithLabel:label];
-        //_shotPowerLabel.position = CGPointMake(50, screenSize.height - 40);
-
-        label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.selectedWeapon.lastAngle]
-                                        fontName:@"Marker Felt"
-                                        fontSize:20];
-        label.color = ccBLACK;
-        _angleLabel = [CCMenuItemLabel itemWithLabel:label];
-        //_angleLabel.position = CGPointMake(50, screenSize.height - 60);
-        
-        CCMenu *vehicleInfoLabels = [CCMenu menuWithItems:_energyLabel, _shotPowerLabel, _angleLabel, nil];
-        vehicleInfoLabels.position = CGPointMake(55, 275);
-        [vehicleInfoLabels alignItemsVertically];
-
-        // Create 2 arrows for movement
-        _leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
-        _rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
-        _leftArrow.position = CGPointMake([_leftArrow spriteWidth] / 2, screenSize.height / 2 - 100);
-        _rightArrow.position = CGPointMake([_rightArrow spriteWidth] / 2 + [_leftArrow spriteWidth], screenSize.height / 2 - 100);
-        
         [self addChild:_panZoomLayer];
-        
-        // TODO: Maybe combine all the labels and controls into one menu
-        [self addChild: attackMenu];
-        [self addChild: vehicleInfoLabels];
-        [self addChild:_leftArrow];
-        [self addChild:_rightArrow];
-        
+        [self setUpSounds];
+        [self setUpMenu];
         _isFirstPlayerTurn = YES;
-        
         // Schedules a call to the update method every frame
         [self scheduleUpdate];
     }
 
     return self;
+}
+
+- (void)setUpSounds
+{
+    // Load sound effects
+    _soundEffects = [[NSDictionary alloc] initWithContentsOfFile:@"sound_effects.plist"];
+    
+    // Create a temporary seal weapon and assign to all weapon shots for both players
+    Weapon *tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                           usingImage:@"seal.png"
+                                           usingSound:_soundEffects[@"vehicle1-shot1"]];
+    _player1Vehicle.weapon1 = tempWeapon;
+    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                   usingImage:@"seal.png"
+                                   usingSound:_soundEffects[@"vehicle1-shot2"]];
+    _player1Vehicle.weapon2 = tempWeapon;
+    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                   usingImage:@"seal.png"
+                                   usingSound:_soundEffects[@"vehicle1-special"]];
+    _player1Vehicle.special = tempWeapon;
+    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                   usingImage:@"seal.png"
+                                   usingSound:_soundEffects[@"vehicle2-shot1"]];
+    _player2Vehicle.weapon1 = tempWeapon;
+    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                   usingImage:@"seal.png"
+                                   usingSound:_soundEffects[@"vehicle2-shot2"]];
+    _player2Vehicle.weapon2 = tempWeapon;
+    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                   usingImage:@"seal.png"
+                                   usingSound:_soundEffects[@"vehicle2-special"]];
+    _player2Vehicle.special = tempWeapon;
+}
+
+- (void)setUpMenu
+{
+    // TODO: Maybe combine all the labels and controls into one menu
+    CGSize screenSize = [[CCDirector sharedDirector] winSize];
+    // Create 3 attack buttons
+    CCMenu *attackMenu = [[CCMenu alloc] init];
+    attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .75);
+
+    // Create first shot label
+    NSString *shotString = [NSString stringWithFormat:SHOT_ONE_TEXT];
+    CCLabelTTF *label = [CCLabelTTF labelWithString:shotString
+                                           fontName:@"Marker Felt"
+                                           fontSize:30];
+    CCMenuItemLabel *menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
+    [attackMenu addChild:menuLabel z:2];
+    
+    // Create second shot label
+    shotString = [NSString stringWithFormat:SHOT_TWO_TEXT];
+    label = [CCLabelTTF labelWithString:shotString
+                               fontName:@"Marker Felt"
+                               fontSize:30];
+    menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
+    [attackMenu addChild:menuLabel z:2];
+    
+    // Create special shot label
+    shotString = [NSString stringWithFormat:SHOT_SPECIAL_TEXT];
+    label = [CCLabelTTF labelWithString:shotString
+                               fontName:@"Marker Felt"
+                               fontSize:30];
+    menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
+    [attackMenu addChild:menuLabel z:2];
+    
+    // Create fire shot label
+    shotString = [NSString stringWithFormat:FIRE_SHOT_LABEL];
+    label = [CCLabelTTF labelWithString:shotString
+                               fontName:@"Marker Felt"
+                               fontSize:30];
+    menuLabel = [CCMenuItemLabel itemWithLabel:label block:^(id sender) {
+        Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+        [current.selectedWeapon executeAttackOnScreen:self];
+    }];
+    
+    // Add labels to the menu and align them vertically
+    [attackMenu addChild:menuLabel z:2];
+    [attackMenu alignItemsVertically];
+    
+    // Show energy, power, and angle for current vehicle and selected weapon
+    label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", _player1Vehicle.energy]
+                               fontName:@"Marker Felt"
+                               fontSize:20];
+    label.color = ccBLACK;
+    _energyLabel = [CCMenuItemLabel itemWithLabel:label];
+    //_energyLabel.position = CGPointMake(50, screenSize.height - 20);
+    
+    
+    label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.selectedWeapon.lastShotPower]
+                               fontName:@"Marker Felt"
+                               fontSize:20];
+    label.color = ccBLACK;
+    _shotPowerLabel = [CCMenuItemLabel itemWithLabel:label];
+    //_shotPowerLabel.position = CGPointMake(50, screenSize.height - 40);
+    
+    label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.selectedWeapon.lastAngle]
+                               fontName:@"Marker Felt"
+                               fontSize:20];
+    label.color = ccBLACK;
+    _angleLabel = [CCMenuItemLabel itemWithLabel:label];
+    
+    CCMenu *vehicleInfoLabels = [CCMenu menuWithItems:_energyLabel, _shotPowerLabel, _angleLabel, nil];
+    vehicleInfoLabels.position = CGPointMake(55, 275);
+    [vehicleInfoLabels alignItemsVertically];
+    
+    // Create 2 arrows for movement
+    _leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
+    _rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
+    _leftArrow.position = CGPointMake([_leftArrow spriteWidth] / 2, screenSize.height / 2 - 100);
+    _rightArrow.position = CGPointMake([_rightArrow spriteWidth] / 2 + [_leftArrow spriteWidth], screenSize.height / 2 - 100);
+    
+    [self addChild:attackMenu];
+    [self addChild:vehicleInfoLabels];
+    [self addChild:_leftArrow];
+    [self addChild:_rightArrow];
 }
 
 #pragma mark Gesture Handlers
