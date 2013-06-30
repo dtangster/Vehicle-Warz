@@ -36,9 +36,7 @@ enum
 @property (nonatomic) CCSprite *leftArrow;
 @property (nonatomic) CCSprite *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
-@property (nonatomic) NSString* weapon1Sound;
-@property (nonatomic) NSString* weapon2Sound;
-@property (nonatomic) NSString* weaponSpecialSound;
+@property (nonatomic) NSDictionary *soundEffects;
 
 +(id) scene;
 - (CGPoint)toPixels:(b2Vec2)vec;

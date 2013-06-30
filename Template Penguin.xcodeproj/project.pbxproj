@@ -15,6 +15,7 @@
 		248667C31778EFC300DE5743 /* triceratops.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C11778EFC300DE5743 /* triceratops.plist */; };
 		248667C51778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667C61778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
+		248667FD177FEEA800DE5743 /* sound_effects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667FC177FEEA800DE5743 /* sound_effects.plist */; };
 		3D5099BD177BBC5200C691D1 /* bgImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5099BC177BBC5200C691D1 /* bgImage.png */; };
 		3D5099C0177BC74100C691D1 /* CCSprite+SpriteSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.m */; };
 		3D7096FA177FB762006704EF /* bgImage-big.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7096F9177FB762006704EF /* bgImage-big.png */; };
@@ -103,6 +104,7 @@
 		248667BB1778EAEB00DE5743 /* Weapon.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Weapon.mm; sourceTree = "<group>"; };
 		248667C11778EFC300DE5743 /* triceratops.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = triceratops.plist; sourceTree = "<group>"; };
 		248667C41778EFDF00DE5743 /* mammoth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mammoth.plist; sourceTree = "<group>"; };
+		248667FC177FEEA800DE5743 /* sound_effects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = sound_effects.plist; sourceTree = "<group>"; };
 		3D5099BC177BBC5200C691D1 /* bgImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgImage.png; sourceTree = "<group>"; };
 		3D5099BE177BC74100C691D1 /* CCSprite+SpriteSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+SpriteSize.h"; sourceTree = "<group>"; };
 		3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCSprite+SpriteSize.m"; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 				AA3296D815CEC40D00DEE33D /* Peeved Penguins Art */,
 				248667C11778EFC300DE5743 /* triceratops.plist */,
 				248667C41778EFDF00DE5743 /* mammoth.plist */,
+				248667FC177FEEA800DE5743 /* sound_effects.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				3D709704177FCB63006704EF /* specialShoot.wav in Resources */,
 				3D70970E177FE1A1006704EF /* shoot1.wav in Resources */,
 				3D70970F177FE1A1006704EF /* shoot2.wav in Resources */,
+				248667FD177FEEA800DE5743 /* sound_effects.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
