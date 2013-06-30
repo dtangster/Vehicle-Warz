@@ -184,17 +184,29 @@ UIRotationGestureRecognizer *rotateGesture;
         _soundEffects = [[NSDictionary alloc] initWithContentsOfFile:@"sound_effects.plist"];
 
         // Create a temporary seal weapon and assign to all weapon shots for both players
-        Weapon *tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:[_soundEffects valueForKey:@"vehicle1-shot1"]];
+        Weapon *tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                               usingImage:@"seal.png"
+                                               usingSound:_soundEffects[@"vehicle1-shot1"]];
         _player1Vehicle.weapon1 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:[_soundEffects valueForKey:@"vehicle1-shot2"]];
+        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                       usingImage:@"seal.png"
+                                       usingSound:_soundEffects[@"vehicle1-shot2"]];
         _player1Vehicle.weapon2 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:[_soundEffects valueForKey:@"vehicle1-special"]];
+        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                       usingImage:@"seal.png"
+                                       usingSound:_soundEffects[@"vehicle1-special"]];
         _player1Vehicle.special = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:[_soundEffects valueForKey:@"vehicle2-shot1"]];
+        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                       usingImage:@"seal.png"
+                                       usingSound:_soundEffects[@"vehicle2-shot1"]];
         _player2Vehicle.weapon1 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:[_soundEffects valueForKey:@"vehicle2-shot2"]];
+        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                       usingImage:@"seal.png"
+                                       usingSound:_soundEffects[@"vehicle2-shot2"]];
         _player2Vehicle.weapon2 = tempWeapon;
-        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20 usingImage:@"seal.png" usingSound:[_soundEffects valueForKey:@"vehicle2-special"]];
+        tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+                                       usingImage:@"seal.png"
+                                       usingSound:_soundEffects[@"vehicle2-special"]];
         _player2Vehicle.special = tempWeapon;
         
         // Create 3 attack buttons
