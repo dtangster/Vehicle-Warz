@@ -10,4 +10,10 @@
 
 @interface CCLayerPanZoom (Scroll)
 
+- (id)initWithScrollLayer:(CAScrollLayer *)scrollLayer;
+
+- (void)scrollToPoint:(CGPoint)thePoint;
+
+- (void)scrollToRect:(CGRect)theRect;
+
 @end

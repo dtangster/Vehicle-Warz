@@ -9,6 +9,7 @@
 #import "Vehicle.h"
 #import "Weapon.h"
 #import "CCSprite+SpriteSize.h"
+#import "CCLayerPanZoom+Scroll.h"
 
 #define PTM_RATIO 32.0f
 #define FLOOR_HEIGHT    50.0f
@@ -122,7 +123,8 @@ UIRotationGestureRecognizer *rotateGesture;
         _screenBorderBody->CreateFixture(&screenBorderShape, 0);
         
         // Set up a layer that restricts panning and zooming to within the background's content size
-        _panZoomLayer = [CCLayerPanZoom node];
+        CAScrollLayer *scrollLayer = [[CAScrollLayer alloc] init];
+        _panZoomLayer = [[CCLayerPanZoom alloc] initWithScrollLayer:scrollLayer];
         CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage-big.png"];
         bgSprite.anchorPoint = CGPointZero;
         [_panZoomLayer addChild:bgSprite z:-1];
