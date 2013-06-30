@@ -114,7 +114,7 @@ UIRotationGestureRecognizer *rotateGesture;
         
         // Set up a layer that restricts panning and zooming to within the background's content size
         _panZoomLayer = [CCLayerPanZoom node];
-        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage.png"];
+        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage-big.png"];
         bgSprite.anchorPoint = CGPointZero;
         bgSprite.scale = CC_CONTENT_SCALE_FACTOR();
         [_panZoomLayer addChild:bgSprite z:-1];
