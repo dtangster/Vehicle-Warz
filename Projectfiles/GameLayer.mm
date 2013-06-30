@@ -128,6 +128,7 @@ UIRotationGestureRecognizer *rotateGesture;
         [_panZoomLayer addChild:bgSprite z:-1];
         
         // Set up the zooming restrictions
+        // NOTE: Apparently the order these properties are set actually matters
         [_panZoomLayer setMaxScale:2.0f];
         [_panZoomLayer setMinScale:0.0f];
         [_panZoomLayer setRubberEffectRatio:0.0f];
@@ -135,7 +136,7 @@ UIRotationGestureRecognizer *rotateGesture;
         // Set up the content size for restricting panning
         [_panZoomLayer setContentSize:CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight])];
         [_panZoomLayer setPanBoundsRect:CGRectMake(0, 0, screenSize.width, screenSize.height)];
-        [_panZoomLayer setAnchorPoint:ccp(0.0f, 0.0f)];
+        [_panZoomLayer setAnchorPoint:CGPointZero];
         [_panZoomLayer setScale:1.0f];
         [_panZoomLayer setPosition:CGPointZero];
 
