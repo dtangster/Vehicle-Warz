@@ -44,6 +44,15 @@ UIRotationGestureRecognizer *rotateGesture;
 
 @implementation GameLayer
 
++ (id)scene
+{
+    CCScene *scene = [CCScene node];
+    GameLayer *layer = [GameLayer node];
+    [scene addChild: layer];
+    
+	return scene;
+}
+
 - (id)init
 {
     if ((self = [super init]))
@@ -281,14 +290,6 @@ UIRotationGestureRecognizer *rotateGesture;
     }
 
     return self;
-}
-
-+ (id)scene
-{
-    CCScene *scene = [CCScene node];
-    GameLayer *layer = [GameLayer node];
-    [scene addChild: layer];
-	return scene;
 }
 
 #pragma mark Gesture Handlers

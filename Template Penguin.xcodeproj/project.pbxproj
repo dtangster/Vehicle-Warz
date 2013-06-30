@@ -23,7 +23,7 @@
 		3D709700177FBC83006704EF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D7096FF177FBC83006704EF /* Default.png */; };
 		3D709702177FBE3E006704EF /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D709701177FBE3E006704EF /* Default-Landscape~ipad.png */; };
 		3D709704177FCB63006704EF /* specialShoot.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3D709703177FCB63006704EF /* specialShoot.wav */; };
-		3D709707177FD50B006704EF /* StartMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D709706177FD50B006704EF /* StartMenuLayer.m */; };
+		3D709707177FD50B006704EF /* StartMenuLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D709706177FD50B006704EF /* StartMenuLayer.mm */; };
 		3D9D59A2177AEB5700B6076E /* mammoth_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9D599C177AEB5700B6076E /* mammoth_left.png */; };
 		3D9D59A3177AEB5700B6076E /* mammoth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9D599D177AEB5700B6076E /* mammoth.png */; };
 		3D9D59A5177AEB5700B6076E /* triceratops_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9D599F177AEB5700B6076E /* triceratops_left.png */; };
@@ -115,7 +115,7 @@
 		3D709701177FBE3E006704EF /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		3D709703177FCB63006704EF /* specialShoot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = specialShoot.wav; sourceTree = "<group>"; };
 		3D709705177FD50B006704EF /* StartMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartMenuLayer.h; sourceTree = "<group>"; };
-		3D709706177FD50B006704EF /* StartMenuLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartMenuLayer.m; sourceTree = "<group>"; };
+		3D709706177FD50B006704EF /* StartMenuLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StartMenuLayer.mm; sourceTree = "<group>"; };
 		3D9D599C177AEB5700B6076E /* mammoth_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mammoth_left.png; sourceTree = "<group>"; };
 		3D9D599D177AEB5700B6076E /* mammoth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mammoth.png; sourceTree = "<group>"; };
 		3D9D599F177AEB5700B6076E /* triceratops_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triceratops_left.png; sourceTree = "<group>"; };
@@ -395,7 +395,7 @@
 				AA4774A215CED021009A911F /* GameLayer.h */,
 				AA4774A315CED021009A911F /* GameLayer.mm */,
 				3D709705177FD50B006704EF /* StartMenuLayer.h */,
-				3D709706177FD50B006704EF /* StartMenuLayer.m */,
+				3D709706177FD50B006704EF /* StartMenuLayer.mm */,
 				3D5099BE177BC74100C691D1 /* CCSprite+SpriteSize.h */,
 				3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.m */,
 				AA4774A415CED021009A911F /* GLES-Render.h */,
@@ -580,7 +580,7 @@
 				248667B41778E4D000DE5743 /* Vehicle.mm in Sources */,
 				248667BC1778EAEB00DE5743 /* Weapon.mm in Sources */,
 				3D5099C0177BC74100C691D1 /* CCSprite+SpriteSize.m in Sources */,
-				3D709707177FD50B006704EF /* StartMenuLayer.m in Sources */,
+				3D709707177FD50B006704EF /* StartMenuLayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

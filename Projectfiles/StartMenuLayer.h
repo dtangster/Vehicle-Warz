@@ -10,4 +10,9 @@
 
 @interface StartMenuLayer : CCLayer
 
++ (id)scene;
+- (id)init;
+- (void)setUpMenus;
+- (void)playGame:(CCMenuItem *)sender;
+
 @end
