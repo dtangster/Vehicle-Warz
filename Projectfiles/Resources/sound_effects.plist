@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>vehicle1-shot1</key>
+	<string>shoot1.wav</string>
+	<key>vehicle1-shot2</key>
+	<string>shoot2.wav</string>
+	<key>vehicle1-special</key>
+	<string>specialShoot.wav</string>
+	<key>vehicle2-shot1</key>
+	<string>shoot1.wav</string>
+	<key>vehicle2-shot2</key>
+	<string>shoot2.wav</string>
+	<key>vehicle2-special</key>
+	<string>specialShoot.wav</string>
+</dict>
+</plist>
