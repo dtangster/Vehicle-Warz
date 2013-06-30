@@ -297,14 +297,18 @@ UIRotationGestureRecognizer *rotateGesture;
     [controlMenu addChild:_angleLabel];
     
     // Create 2 arrows for movement
-    _leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
-    _rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
-    _leftArrow.position = CGPointMake(25, 25);
-    _rightArrow.position = CGPointMake(60, 25);
+    _leftArrow = [[CCMenuItemImage alloc] initWithNormalImage:@"arrow_left.png"
+                                                selectedImage:@"arrow_left.png" disabledImage:@"arrow_left.png"
+                                                        block:^(id sender) {}];
+    _rightArrow = [[CCMenuItemImage alloc] initWithNormalImage:@"arrow_right.png"
+                                                 selectedImage:@"arrow_right.png" disabledImage:@"arrow_right.png"
+                                                         block:^(id sender) {}];
+    _leftArrow.position = CGPointMake(-(screenSize.width / 2) + 30, -(screenSize.height / 2) - 40);
+    _rightArrow.position = CGPointMake(-(screenSize.width / 2) + 65, -(screenSize.height / 2) - 40);
+    [controlMenu addChild:_leftArrow];
+    [controlMenu addChild:_rightArrow];
     
     [self addChild:controlMenu];
-    [self addChild:_leftArrow];
-    [self addChild:_rightArrow];
 }
 
 #pragma mark Gesture Handlers
