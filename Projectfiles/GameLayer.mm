@@ -181,8 +181,8 @@ UIRotationGestureRecognizer *rotateGesture;
         
         // Each weapon makes a different sound
         // TODO: add more weapon sounds
-        _weapon1Sound = @"explo2.wav";
-        _weapon2Sound = @"explo2.wav";
+        _weapon1Sound = @"shoot1.wav";
+        _weapon2Sound = @"shoot2.wav";
         _weaponSpecialSound = @"specialShoot.wav";
 
         // Create a temporary seal weapon and assign to all weapon shots for both players
