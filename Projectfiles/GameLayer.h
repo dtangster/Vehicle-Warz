@@ -30,9 +30,9 @@ enum
 @property (nonatomic) BOOL turnJustEnded;
 @property (nonatomic) Vehicle *player1Vehicle;
 @property (nonatomic) Vehicle *player2Vehicle;
-@property (nonatomic) CCLabelTTF *energyLabel;
-@property (nonatomic) CCLabelTTF *angleLabel;
-@property (nonatomic) CCLabelTTF *shotPowerLabel;
+@property (nonatomic) CCMenuItemLabel *energyLabel;
+@property (nonatomic) CCMenuItemLabel *angleLabel;
+@property (nonatomic) CCMenuItemLabel *shotPowerLabel;
 @property (nonatomic) CCSprite *leftArrow;
 @property (nonatomic) CCSprite *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
