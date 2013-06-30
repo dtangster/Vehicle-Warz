@@ -18,23 +18,24 @@
 
 @implementation Weapon
 
--(id) initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *) fileName
+- (id)initWithName:(NSString *)weaponName withEnergyCost:(int)energyCost usingImage:(NSString *)fileName usingSound:(NSString *)weaponSound
 {
     if ((self = [super initWithFile:fileName]))
     {
         _weaponName = weaponName;
         _imageFile = fileName;
         _energyCost = energyCost;
+        _weaponSound = weaponSound;
         _lastShotPower = 0;
         _lastAngle = 0;
         _lastRotation = 30;
-        [[SimpleAudioEngine sharedEngine] preloadEffect:@"explo2.wav"];
+        [[SimpleAudioEngine sharedEngine] preloadEffect:weaponSound];
     }
     
     return self;
 }
 
--(BOOL) executeAttackOnScreen:(GameLayer *)screen
+- (BOOL)executeAttackOnScreen:(GameLayer *)screen
 {
     BOOL success = NO;
     
@@ -45,7 +46,8 @@
         // Create clone of itself to shoot because you cannot have multiple instances of yourself on the screen.
         Weapon *clone = [[Weapon alloc] initWithName:_weaponName
                                            withEnergyCost:_energyCost
-                                               usingImage:_imageFile];
+                                               usingImage:_imageFile
+                                                usingSound:_weaponSound];
         clone.carrier = _carrier;
         [screen.panZoomLayer addChild:clone z:-1];
         b2BodyDef bodyDef;
@@ -75,7 +77,7 @@
         projectileFixtureDef.shape = &projectileShape;
         projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
-        [[SimpleAudioEngine sharedEngine] playEffect:@"explo2.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:_weaponSound];
         
         // If energy is depleted, refill energy and switch player turns
         if (clone.carrier.energy <= 0) {
@@ -89,7 +91,7 @@
     return success;
 }
 
--(b2Vec2) calculateInitialVector
+- (b2Vec2)calculateInitialVector
 {
     float x;
     float y = sin(_lastAngle * PI / 180) * _lastShotPower / POWER_DOWN_SCALE;
