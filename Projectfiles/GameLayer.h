@@ -33,8 +33,8 @@ enum
 @property (nonatomic) CCMenuItemLabel *energyLabel;
 @property (nonatomic) CCMenuItemLabel *angleLabel;
 @property (nonatomic) CCMenuItemLabel *shotPowerLabel;
-@property (nonatomic) CCSprite *leftArrow;
-@property (nonatomic) CCSprite *rightArrow;
+@property (nonatomic) CCMenuItemImage *leftArrow;
+@property (nonatomic) CCMenuItemImage *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
 @property (nonatomic) NSDictionary *soundEffects;
 

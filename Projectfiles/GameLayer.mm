@@ -230,8 +230,8 @@ UIRotationGestureRecognizer *rotateGesture;
     // TODO: Maybe combine all the labels and controls into one menu
     CGSize screenSize = [[CCDirector sharedDirector] winSize];
     // Create 3 attack buttons
-    CCMenu *attackMenu = [[CCMenu alloc] init];
-    attackMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .75);
+    CCMenu *controlMenu = [[CCMenu alloc] init];
+    controlMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .75);
 
     // Create first shot label
     NSString *shotString = [NSString stringWithFormat:SHOT_ONE_TEXT];
@@ -239,7 +239,7 @@ UIRotationGestureRecognizer *rotateGesture;
                                            fontName:@"Marker Felt"
                                            fontSize:30];
     CCMenuItemLabel *menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
-    [attackMenu addChild:menuLabel z:2];
+    [controlMenu addChild:menuLabel];
     
     // Create second shot label
     shotString = [NSString stringWithFormat:SHOT_TWO_TEXT];
@@ -247,7 +247,7 @@ UIRotationGestureRecognizer *rotateGesture;
                                fontName:@"Marker Felt"
                                fontSize:30];
     menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
-    [attackMenu addChild:menuLabel z:2];
+    [controlMenu addChild:menuLabel];
     
     // Create special shot label
     shotString = [NSString stringWithFormat:SHOT_SPECIAL_TEXT];
@@ -255,7 +255,7 @@ UIRotationGestureRecognizer *rotateGesture;
                                fontName:@"Marker Felt"
                                fontSize:30];
     menuLabel = [CCMenuItemLabel itemWithLabel:label target:self selector:@selector(selectWeapon:)];
-    [attackMenu addChild:menuLabel z:2];
+    [controlMenu addChild:menuLabel];
     
     // Create fire shot label
     shotString = [NSString stringWithFormat:FIRE_SHOT_LABEL];
@@ -268,8 +268,8 @@ UIRotationGestureRecognizer *rotateGesture;
     }];
     
     // Add labels to the menu and align them vertically
-    [attackMenu addChild:menuLabel z:2];
-    [attackMenu alignItemsVertically];
+    [controlMenu addChild:menuLabel];
+    [controlMenu alignItemsVertically];
     
     // Show energy, power, and angle for current vehicle and selected weapon
     label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", _player1Vehicle.energy]
@@ -277,34 +277,32 @@ UIRotationGestureRecognizer *rotateGesture;
                                fontSize:20];
     label.color = ccBLACK;
     _energyLabel = [CCMenuItemLabel itemWithLabel:label];
-    //_energyLabel.position = CGPointMake(50, screenSize.height - 20);
-    
+    _energyLabel.position = CGPointMake(-(screenSize.width / 2) + 60, screenSize.width * .12);
+    [controlMenu addChild:_energyLabel];
     
     label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.selectedWeapon.lastShotPower]
                                fontName:@"Marker Felt"
                                fontSize:20];
     label.color = ccBLACK;
     _shotPowerLabel = [CCMenuItemLabel itemWithLabel:label];
-    //_shotPowerLabel.position = CGPointMake(50, screenSize.height - 40);
+    _shotPowerLabel.position = CGPointMake(-(screenSize.width / 2) + 60, screenSize.width * .07);
+    [controlMenu addChild:_shotPowerLabel];
     
     label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.selectedWeapon.lastAngle]
                                fontName:@"Marker Felt"
                                fontSize:20];
     label.color = ccBLACK;
     _angleLabel = [CCMenuItemLabel itemWithLabel:label];
-    
-    CCMenu *vehicleInfoLabels = [CCMenu menuWithItems:_energyLabel, _shotPowerLabel, _angleLabel, nil];
-    vehicleInfoLabels.position = CGPointMake(55, 275);
-    [vehicleInfoLabels alignItemsVertically];
+    _angleLabel.position = CGPointMake(-(screenSize.width / 2) + 60, screenSize.width * .02);
+    [controlMenu addChild:_angleLabel];
     
     // Create 2 arrows for movement
     _leftArrow = [CCSprite spriteWithFile:@"arrow_left.png"];
     _rightArrow = [CCSprite spriteWithFile:@"arrow_right.png"];
-    _leftArrow.position = CGPointMake([_leftArrow spriteWidth] / 2, screenSize.height / 2 - 100);
-    _rightArrow.position = CGPointMake([_rightArrow spriteWidth] / 2 + [_leftArrow spriteWidth], screenSize.height / 2 - 100);
+    _leftArrow.position = CGPointMake(25, 25);
+    _rightArrow.position = CGPointMake(60, 25);
     
-    [self addChild:attackMenu];
-    [self addChild:vehicleInfoLabels];
+    [self addChild:controlMenu];
     [self addChild:_leftArrow];
     [self addChild:_rightArrow];
 }
