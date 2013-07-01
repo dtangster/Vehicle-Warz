@@ -28,7 +28,7 @@ CGRect secondrect;
 NSMutableArray *blocks = [[NSMutableArray alloc] init];
 
 // Used for playing back actions of a vehicle
-int physicsHistoryIndex = 0;
+NSUInteger physicsHistoryIndex = 0;
 
 // UIKit Gestures
 UIPanGestureRecognizer *panGesture;
@@ -575,7 +575,6 @@ UIRotationGestureRecognizer *rotateGesture;
 
 - (BOOL)moveContinue:(NSString *) direction {
     Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
     
     if (_energyJustRestored) {
