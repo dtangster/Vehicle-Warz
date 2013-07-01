@@ -13,9 +13,10 @@
 
 #define PTM_RATIO 32.0f
 #define FLOOR_HEIGHT    50.0f
-#define SCREEN_PAN_RATIO 0.75
+#define SCREEN_PAN_RATIO 0.75f
 #define TORQUE_ADJUSTMENT 50
 #define MAX_TORQUE 1000
+#define VEHICLE_SPEED_RATIO 0.1f // This changes how much a vehicle's speed affects its acceleration
 #define SHOT_ONE_TEXT @"Shot 1"
 #define SHOT_TWO_TEXT @"Shot 2"
 #define SHOT_SPECIAL_TEXT @"Special"
@@ -90,7 +91,7 @@ UIRotationGestureRecognizer *rotateGesture;
         _world->SetAllowSleeping(YES);
         //world->SetContinuousPhysics(YES);
 
-        //create an object that will check for collisions
+        // Create an object that will check for collisions
         _contactListener = new ContactListener();
         _world->SetContactListener(_contactListener);
 
@@ -99,17 +100,11 @@ UIRotationGestureRecognizer *rotateGesture;
         CGSize screenSize = [CCDirector sharedDirector].winSize;
 
 
-        //Raise to floor height
-        b2Vec2 lowerLeftCorner =b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
-
-        //Raise to floor height, extend to end of game area
+        // Set up game height and width
+        b2Vec2 lowerLeftCorner = b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
         b2Vec2 lowerRightCorner = b2Vec2(screenSize.width * 2.0f / PTM_RATIO, FLOOR_HEIGHT / PTM_RATIO);
-
-        //No change
         b2Vec2 upperLeftCorner = b2Vec2(0,screenSize.height * 2.0f / PTM_RATIO);
-
-        //Extend to end of game area.
-        b2Vec2 upperRightCorner =b2Vec2(screenSize.width * 2.0f / PTM_RATIO, screenSize.height * 2.0f / PTM_RATIO);
+        b2Vec2 upperRightCorner = b2Vec2(screenSize.width * 2.0f / PTM_RATIO, screenSize.height * 2.0f / PTM_RATIO);
 
         // Define the static container body, which will provide the collisions at screen borders.
         b2BodyDef screenBorderDef;
@@ -576,6 +571,7 @@ UIRotationGestureRecognizer *rotateGesture;
 - (BOOL)moveContinue:(NSString *) direction {
     Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
+    b2Vec2 currentVec = bodyToMove->GetLinearVelocity();
     
     if (_energyJustRestored) {
         _energyJustRestored = NO;
@@ -584,11 +580,11 @@ UIRotationGestureRecognizer *rotateGesture;
     
     if ([direction isEqualToString:@"left"]) {
         vehicleToFlip.flipX = YES;
-        bodyToMove->SetLinearVelocity(b2Vec2(-vehicleToFlip.speed, 0));
+        bodyToMove->SetLinearVelocity(b2Vec2(-vehicleToFlip.speed * VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
     }
     else {
         vehicleToFlip.flipX = NO;
-        bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed, 0));
+        bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed *VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
     }
     
     // Deplete vehicle energy for moving
