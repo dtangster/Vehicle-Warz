@@ -56,7 +56,7 @@ static GameCenterHelper *sharedHelper = nil;
 - (void)findAMatchWith:(UIViewController *)viewController delegate:(id<GameCenterHelperDelegate>)theDelegate
 {
     matchDidStart = NO;
-    _theMatch = nil;
+    _match = nil;
     _matchViewController = viewController;
     _delegate = theDelegate;
     [_matchViewController dismissModalViewControllerAnimated:NO];
@@ -84,16 +84,16 @@ static GameCenterHelper *sharedHelper = nil;
     [_matchViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFindMatch:(GKMatch *)aMatch
+- (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFindMatch:(GKMatch *)match
 {
     [_matchViewController dismissModalViewControllerAnimated:YES];
-    _theMatch = aMatch;
-    _theMatch.delegate = self;
+    _match = match;
+    _match.delegate = self;
 }
 
 - (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
 {
-    if (_theMatch != aMatch) {
+    if (_match != aMatch) {
         return;
     }
     
@@ -102,7 +102,7 @@ static GameCenterHelper *sharedHelper = nil;
 
 - (void)match:(GKMatch *)theMatch player:(NSString *)playerID didChangeState:(GKPlayerConnectionState)state
 {
-    if (_theMatch != theMatch) {
+    if (_match != theMatch) {
         return;
     }
     
@@ -123,7 +123,7 @@ static GameCenterHelper *sharedHelper = nil;
 
 - (void)match:(GKMatch *)theMatch connectionWithPlayerFailed:(NSString *)playerID withError:(NSError *)error
 {
-    if (_theMatch != theMatch) {
+    if (_match != theMatch) {
         return;
     }
     

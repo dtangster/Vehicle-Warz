@@ -23,7 +23,7 @@
 }
 
 @property (strong) UIViewController *matchViewController;
-@property (strong) GKMatch *theMatch;
+@property (strong) GKMatch *match;
 @property (assign) id <GameCenterHelperDelegate> delegate;
 
 + (GameCenterHelper *)sharedInstance;
