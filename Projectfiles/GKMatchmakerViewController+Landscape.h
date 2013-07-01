@@ -12,6 +12,4 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterface;
 
-- (NSUInteger)supportedInterfaceOrientations;
-
 @end

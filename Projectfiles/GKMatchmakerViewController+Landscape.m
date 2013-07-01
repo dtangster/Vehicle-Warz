@@ -12,12 +12,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return UIInterfaceOrientation(toInterfaceOrientation);
-}
-
-- (NSUInterger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskLandscape;
+    return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
 }
 
 @end

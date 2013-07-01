@@ -29,4 +29,9 @@
 	return nil;
 }
 
+- (void)applicationDidFinishLaunching:(UIApplication *)application
+{
+    [[GameCenterHelper sharedInstance] authenticateLocalUser];
+}
+
 @end
