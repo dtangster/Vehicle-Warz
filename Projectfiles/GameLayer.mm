@@ -485,7 +485,6 @@ UIRotationGestureRecognizer *rotateGesture;
                 [self fire];
             }
             
-            [self updateBodyPositions];
             action = _physicsReplayData[physicsHistoryIndex++];
         }
     
@@ -498,8 +497,6 @@ UIRotationGestureRecognizer *rotateGesture;
         [self step];
         return;
     }
-
-    [self updateBodyPositions];
     
     // Change energy and angle labels when a vehicle turn ends
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
@@ -555,6 +552,7 @@ UIRotationGestureRecognizer *rotateGesture;
 
     [_physicsReplayData addObject:@"step"];
     [self step];
+    [self updateBodyPositions];
 }
 
 - (void)moveBegan:(NSString *) direction {
@@ -617,6 +615,8 @@ UIRotationGestureRecognizer *rotateGesture;
     // Prevent vehicles from flipping over
     [self stabilizeVehicle:_player1Vehicle.body withTimeStep:timeStep];
     [self stabilizeVehicle:_player2Vehicle.body withTimeStep:timeStep];
+    
+    [self updateBodyPositions];
 }
 
 - (void)updateBodyPositions {
