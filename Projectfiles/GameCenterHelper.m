@@ -46,7 +46,7 @@ static GameCenterHelper *sharedHelper = nil;
 {
     if (!([[GKLocalPlayer localPlayer] isAuthenticated])) {
         [[GKLocalPlayer localPlayer] authenticateWithCompletionHandler:nil];
-        NSLog(@"Trying to authenticate local user.");
+        NSLog(@"Trying to authenticate %@", [GKLocalPlayer localPlayer].playerID);
     }
     else {
         NSLog(@"Local user is already authenticated");
