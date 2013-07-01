@@ -497,11 +497,11 @@ UIRotationGestureRecognizer *rotateGesture;
     else if (current.position.x < (director.screenSize.width * SCREEN_PAN_RATIO + _panZoomLayer.position.x) * _panZoomLayer.scale) {
         _panZoomLayer.position = ccp(_panZoomLayer.position.x + 1, _panZoomLayer.position.y);
     }
-//    
-//    NSLog(@"vehicle x = %f, vehicle y = %f", current.position.x, current.position.y);
-//    NSLog(@"background x = %f, background y = %f", _panZoomLayer.position.x, _panZoomLayer.position.y);
-//    NSLog(@"director width = %f, director height = %f", director.screenSize.width, director.screenSize.height);
-//    NSLog(@"SCALE = %f", _panZoomLayer.scale);
+    
+    NSLog(@"vehicle x = %f, vehicle y = %f", current.position.x, current.position.y);
+    NSLog(@"background x = %f, background y = %f", _panZoomLayer.position.x, _panZoomLayer.position.y);
+    NSLog(@"director width = %f, director height = %f", director.screenSize.width, director.screenSize.height);
+    NSLog(@"SCALE = %f", _panZoomLayer.scale);
     
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
