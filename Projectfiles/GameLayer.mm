@@ -21,6 +21,14 @@
 #define SHOT_TWO_TEXT @"Shot 2"
 #define SHOT_SPECIAL_TEXT @"Special"
 #define FIRE_SHOT_LABEL @"Fire"
+#define CHANGE_POWER @"Change Power"
+#define CHANGE_ANGLE @"Change Angle"
+#define LEFT_MOVEMENT_BEGAN @"Left Movement Began"
+#define RIGHT_MOVEMENT_BEGAN @"Right Movement Began"
+#define LEFT_MOVEMENT_CONTINUE @"Left Movement Continue"
+#define RIGHT_MOVEMENT_CONTINUE @"Right Movement Continue"
+#define WORLD_STEP @"Step"
+#define ACTION_SEQUENCE_FILE @"actionSequence.data"
 
 CCSprite *projectile;
 CCSprite *block;
@@ -263,7 +271,7 @@ UIRotationGestureRecognizer *rotateGesture;
                                fontSize:30];
     menuLabel = [CCMenuItemLabel itemWithLabel:label block:^(id sender) {
         if (!_isReplaying && [self fire]) {
-            [_physicsReplayData addObject:@"fire"];
+            [_physicsReplayData addObject:FIRE_SHOT_LABEL];
         }
     }];
     
@@ -472,20 +480,20 @@ UIRotationGestureRecognizer *rotateGesture;
     if (_isReplaying) {
         NSString *action = _physicsReplayData[physicsHistoryIndex++];
         
-        while (![action isEqualToString:@"step"]) {
-            if ([action isEqualToString:@"leftBegan"]) {
-                [self moveBegan:@"left"];
+        while (![action isEqualToString:WORLD_STEP]) {
+            if ([action isEqualToString:LEFT_MOVEMENT_BEGAN]) {
+                [self moveBegan:LEFT_MOVEMENT_BEGAN];
             }
-            else if ([action isEqualToString:@"rightBegan"]) {
-                [self moveBegan:@"right"];
+            else if ([action isEqualToString:RIGHT_MOVEMENT_BEGAN]) {
+                [self moveBegan:RIGHT_MOVEMENT_BEGAN];
             }
-            else if ([action isEqualToString:@"leftContinue"]) {
-                [self moveContinue:@"left"];
+            else if ([action isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
+                [self moveContinue:LEFT_MOVEMENT_CONTINUE];
             }
-            else if ([action isEqualToString:@"rightContinue"]) {
-                [self moveContinue:@"right"];
+            else if ([action isEqualToString:RIGHT_MOVEMENT_CONTINUE]) {
+                [self moveContinue:RIGHT_MOVEMENT_CONTINUE];
             }
-            else if ([action isEqualToString:@"fire"]) {
+            else if ([action isEqualToString:FIRE_SHOT_LABEL]) {
                 [self fire];
             }
             
@@ -519,10 +527,10 @@ UIRotationGestureRecognizer *rotateGesture;
         _energyJustRestored = YES;
                 
         // Store the array
-        [NSKeyedArchiver archiveRootObject:_physicsReplayData toFile:@"sequenceHistory"];
+        [NSKeyedArchiver archiveRootObject:_physicsReplayData toFile:ACTION_SEQUENCE_FILE];
         
         // Load the array
-        _physicsReplayData = [NSKeyedUnarchiver unarchiveObjectWithFile:@"sequenceHistory"];
+        _physicsReplayData = [NSKeyedUnarchiver unarchiveObjectWithFile:ACTION_SEQUENCE_FILE];
         
         // Turn on replay mode
         _isReplaying = YES;
@@ -530,38 +538,38 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
-        [_physicsReplayData addObject:@"leftBegan"];
-        [self moveBegan:@"left"];
+        [_physicsReplayData addObject:LEFT_MOVEMENT_BEGAN];
+        [self moveBegan:LEFT_MOVEMENT_BEGAN];
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
-        [_physicsReplayData addObject:@"rightBegan"];
-        [self moveBegan:@"right"];
+        [_physicsReplayData addObject:RIGHT_MOVEMENT_BEGAN];
+        [self moveBegan:RIGHT_MOVEMENT_BEGAN];
     }
     
     // Move the vehicle left and drain energy when left arrow is pressed
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseAny]) {
-        if ([self moveContinue:@"left"]) {
-            [_physicsReplayData addObject:@"leftContinue"];
+        if ([self moveContinue:LEFT_MOVEMENT_CONTINUE]) {
+            [_physicsReplayData addObject:LEFT_MOVEMENT_CONTINUE];
         }
     }
     
     // Move vehicle right and drain energy when right arrow is pressed
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseAny]) {
-        if ([self moveContinue:@"right"]) {
-            [_physicsReplayData addObject:@"rightContinue"];
+        if ([self moveContinue:RIGHT_MOVEMENT_CONTINUE]) {
+            [_physicsReplayData addObject:RIGHT_MOVEMENT_CONTINUE];
         }
     }
 
-    [_physicsReplayData addObject:@"step"];
+    [_physicsReplayData addObject:WORLD_STEP];
     [self step];
 }
 
 - (void)moveBegan:(NSString *) direction {
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
-    if ([direction isEqualToString:@"left"]) {
+    if ([direction isEqualToString:LEFT_MOVEMENT_BEGAN]) {
         current.flipX = YES;
     }
     else {
@@ -579,7 +587,7 @@ UIRotationGestureRecognizer *rotateGesture;
         return NO;
     }
     
-    if ([direction isEqualToString:@"left"]) {
+    if ([direction isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
         vehicleToFlip.flipX = YES;
         bodyToMove->SetLinearVelocity(b2Vec2(-vehicleToFlip.speed * VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
     }
