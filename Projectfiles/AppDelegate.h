@@ -6,9 +6,12 @@
  */
 
 #import "KKAppDelegate.h"
+#import "GameCenterHelper.h"
 
-@interface AppDelegate : KKAppDelegate
+@interface AppDelegate : KKAppDelegate <GameCenterHelperDelegate>
 {
 }
+
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 
 @end

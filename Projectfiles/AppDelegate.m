@@ -6,7 +6,6 @@
  */
 
 #import "AppDelegate.h"
-#import "GameCenterHelper.h"
 
 @implementation AppDelegate
 
@@ -29,9 +28,25 @@
 	return nil;
 }
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[GameCenterHelper sharedInstance] authenticateLocalUser];
+    return [super application:application didFinishLaunchingWithOptions:launchOptions];
+}
+
+- (void)matchStarted
+{
+    
+}
+
+- (void)matchEnded
+{
+    
+}
+
+- (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
+{
+    
 }
 
 @end

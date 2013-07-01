@@ -28,7 +28,6 @@
         // Log in user to GameCenter.
         // NOTE: Currently, GameCenter won't be able to log in since
         // we have't register to the iOS Developer program
-        [[GameCenterHelper sharedInstance] authenticateLocalUser];
         [self setUpMenus];
     }
     
@@ -49,21 +48,6 @@
 {
     [[CCDirector sharedDirector] replaceScene:(CCScene *)[[GameLayer alloc] init]];
     // TODO: Find a match with Game Center with another player.
-}
-
-- (void)matchStarted
-{
-    
-}
-
-- (void)matchEnded
-{
-    
-}
-
-- (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
-{
-    
 }
 
 
