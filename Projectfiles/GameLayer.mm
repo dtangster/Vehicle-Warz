@@ -508,12 +508,19 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Change energy and angle labels when a vehicle turn ends
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
     if (_turnJustEnded) {
         _turnJustEnded = !_turnJustEnded;
+        
+        // Change labels to reflect the vehicle that is starting his turn
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
         _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
         _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+        
+        // Restore energy of vehicle that just ended its turn
+        other.energy = other.maxEnergy;
+        _energyJustRestored = YES;
                 
         // Store the array
         [NSKeyedArchiver archiveRootObject:_physicsReplayData toFile:@"sequenceHistory"];
@@ -571,9 +578,8 @@ UIRotationGestureRecognizer *rotateGesture;
     Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
     
-    // Skip if this vehicle has no energy left to move
-    if (!other.energy) {
-        other.energy = other.maxEnergy; // Reset energy to prepare for next turn
+    if (_energyJustRestored) {
+        _energyJustRestored = NO;
         return NO;
     }
     

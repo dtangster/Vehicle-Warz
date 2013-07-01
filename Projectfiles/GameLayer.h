@@ -29,6 +29,7 @@ enum
 @property (nonatomic) BOOL isFirstPlayerTurn;
 @property (nonatomic) BOOL turnJustEnded;
 @property (nonatomic) BOOL isReplaying;
+@property (nonatomic) BOOL energyJustRestored;
 @property (nonatomic) Vehicle *player1Vehicle;
 @property (nonatomic) Vehicle *player2Vehicle;
 @property (nonatomic) CCMenuItemLabel *energyLabel;
