@@ -30,7 +30,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[GameCenterHelper sharedInstance] authenticateLocalUser];
+    //[[GameCenterHelper sharedInstance] authenticateLocalUser];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
