@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import "UINavigationController+Landscape.h"
 
 @implementation AppDelegate
 

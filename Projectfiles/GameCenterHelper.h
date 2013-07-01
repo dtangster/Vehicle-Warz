@@ -25,10 +25,18 @@
 @property (strong) UIViewController *matchViewController;
 @property (strong) GKMatch *match;
 @property (assign) id <GameCenterHelperDelegate> delegate;
+@property (nonatomic) NSMutableArray *unsavedAchievements;
+@property (nonatomic) NSMutableDictionary *savedAchievements;
 
 + (GameCenterHelper *)sharedInstance;
+
+// Authentication
 - (void)authenticateLocalUser;
+
+// Matchmaking
 - (void)findAMatchWith:(UIViewController *)viewController
               delegate:(id<GameCenterHelperDelegate>)theDelegate;
 
+// Achievements
+- (void)reportAchievementIdentidier:(NSString *)identifier percentComplete:(float)percent;
 @end

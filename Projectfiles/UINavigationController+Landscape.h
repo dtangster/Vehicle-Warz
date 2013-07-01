@@ -12,4 +12,6 @@
 
 - (NSUInteger)supportedInterfaceOrientations;
 
+- (BOOL)shouldAutorotate;
+
 @end

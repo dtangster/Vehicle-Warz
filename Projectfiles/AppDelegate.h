@@ -14,4 +14,5 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 
+- (NSUInteger)supportedInterfaceOrientations;
 @end

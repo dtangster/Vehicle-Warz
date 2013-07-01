@@ -10,4 +10,14 @@
 
 @implementation UINavigationController (Landscape)
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [[UIDevice currentDevice] orientation] != UIInterfaceOrientationPortrait;
+}
+
 @end

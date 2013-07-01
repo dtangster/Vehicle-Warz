@@ -26,7 +26,6 @@ static GameCenterHelper *sharedHelper = nil;
     // NOTE: Game center is required for this game so no need to check if it's available
     // since this game will only work with iOS 4.1+
     if ((self = [super init])) {
-        
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc addObserver:self selector:@selector(authenticationChanged)
                    name:GKPlayerAuthenticationDidChangeNotificationName
@@ -129,6 +128,11 @@ static GameCenterHelper *sharedHelper = nil;
     
     matchDidStart = NO;
     [_delegate matchEnded];
+}
+
+- (void)reportAchievementIdentidier:(NSString *)identifier percentComplete:(float)percent
+{
+    
 }
 
 @end
