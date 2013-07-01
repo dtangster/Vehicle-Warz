@@ -64,6 +64,7 @@ static GameCenterHelper *sharedHelper = nil;
     GKMatchRequest *request = [[GKMatchRequest alloc] init];
     request.minPlayers = 2;
     request.maxPlayers = 2;
+    request.defaultNumberOfPlayers = 2;
     
     GKMatchmakerViewController *matchmaker = [[GKMatchmakerViewController alloc]
                                                initWithMatchRequest:request];

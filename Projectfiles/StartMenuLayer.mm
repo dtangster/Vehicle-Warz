@@ -47,7 +47,23 @@
 
 - (void)playGame:(CCMenuItem *)sender
 {
-    // Find a match with Game Center with another player.
+    [[CCDirector sharedDirector] replaceScene:(CCScene *)[[GameLayer alloc] init]];
+    // TODO: Find a match with Game Center with another player.
+}
+
+- (void)matchStarted
+{
+    
+}
+
+- (void)matchEnded
+{
+    
+}
+
+- (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
+{
+    
 }
 
 @end
