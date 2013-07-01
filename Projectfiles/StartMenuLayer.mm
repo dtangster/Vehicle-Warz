@@ -48,5 +48,19 @@
     // TODO: Find a match with Game Center with another player.
 }
 
+#pragma mark GameCenterHelperDelegate Methods
+- (void)matchStarted
+{
+}
+
+- (void)matchEnded
+{
+    // Maybe update the leaderboards/achievements here
+}
+
+- (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
+{
+}
+
 
 @end
