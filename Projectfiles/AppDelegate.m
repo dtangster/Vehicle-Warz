@@ -6,10 +6,11 @@
  */
 
 #import "AppDelegate.h"
+#import "GameCenterHelper.h"
 
 @implementation AppDelegate
 
--(void) initializationComplete
+- (void) initializationComplete
 {
 #ifdef KK_ARC_ENABLED
 	CCLOG(@"ARC is enabled");
@@ -18,14 +19,19 @@
 #endif
 }
 
--(id) alternateRootViewController
+- (id) alternateRootViewController
 {
 	return nil;
 }
 
--(id) alternateView
+- (id) alternateView
 {
 	return nil;
+}
+
+- (void)applicationDidFinishLaunching:(UIApplication *)application
+{
+    [[GameCenterHelper sharedInstance] authenticateLocalUser];
 }
 
 @end

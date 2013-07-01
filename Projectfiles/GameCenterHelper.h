@@ -10,7 +10,7 @@
 #import <GameKit/GameKit.h>
 
 @interface GameCenterHelper : NSObject {
-    BOOL isUserAuthenticated;
+    BOOL userAuthenticated;
 }
 
 + (GameCenterHelper *)sharedInstance;

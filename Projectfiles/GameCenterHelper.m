@@ -37,11 +37,14 @@ static GameCenterHelper *sharedHelper = nil;
 
 - (void)authenticationChanged
 {
-    if ([GKLocalPlayer localPlayer].isAuthenticated && !isUserAuthenticated) {
-        isUserAuthenticated = YES;
-    }
-    else {
-        isUserAuthenticated = NO;
+    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    userAuthenticated = ([localPlayer isAuthenticated] && !userAuthenticated) ? YES : NO;
+}
+
+- (void)authenticateLocalUser
+{
+    if (![[GKLocalPlayer localPlayer] isAuthenticated]) {
+        [[GKLocalPlayer localPlayer] authenticateWithCompletionHandler:nil];
     }
 }
 
