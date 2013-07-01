@@ -53,4 +53,81 @@ static GameCenterHelper *sharedHelper = nil;
     }
 }
 
+- (void)findAMatchWith:(UIViewController *)viewController delegate:(id<GameCenterHelperDelegate>)theDelegate
+{
+    matchDidStart = NO;
+    _theMatch = nil;
+    _matchViewController = viewController;
+    _delegate = theDelegate;
+    [_matchViewController dismissModalViewControllerAnimated:NO];
+    
+    GKMatchRequest *request = [[GKMatchRequest alloc] init];
+    request.minPlayers = 2;
+    request.maxPlayers = 2;
+    
+    GKMatchmakerViewController *matchmaker = [[GKMatchmakerViewController alloc]
+                                               initWithMatchRequest:request];
+    
+    [_matchViewController presentModalViewController:matchmaker animated:YES];
+}
+
+#pragma mark Callbacks
+
+- (void)matchmakerViewControllerWasCancelled:(GKMatchmakerViewController *)viewController
+{
+    [_matchViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFailWithError:(NSError *)error
+{
+    [_matchViewController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)matchmakerViewController:(GKMatchmakerViewController *)viewController didFindMatch:(GKMatch *)aMatch
+{
+    [_matchViewController dismissModalViewControllerAnimated:YES];
+    _theMatch = aMatch;
+    _theMatch.delegate = self;
+}
+
+- (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
+{
+    if (_theMatch != aMatch) {
+        return;
+    }
+    
+    [_delegate match:aMatch didReceiveData:data fromPlayer:playerID];
+}
+
+- (void)match:(GKMatch *)theMatch player:(NSString *)playerID didChangeState:(GKPlayerConnectionState)state
+{
+    if (_match != theMatch) {
+        return;
+    }
+    
+    switch (state) {
+        case GKPlayerStateConnected:
+            if (!matchDidStart && theMatch.expectedPlayerCount == 0) {
+                NSLog(@"Starting match");
+            }
+            break;
+        case GKPlayerStateDisconnected:
+            matchDidStart = NO;
+            [_delegate matchEnded];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)match:(GKMatch *)theMatch connectionWithPlayerFailed:(NSString *)playerID withError:(NSError *)error
+{
+    if (_theMatch != theMatch) {
+        return;
+    }
+    
+    matchDidStart = NO;
+    [_delegate matchEnded];
+}
+
 @end

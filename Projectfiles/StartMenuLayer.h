@@ -7,8 +7,9 @@
 //
 
 #import "CCLayer.h"
+#import "GameCenterHelper.h"
 
-@interface StartMenuLayer : CCLayer
+@interface StartMenuLayer : CCLayer <GameCenterHelperDelegate>
 
 + (id)scene;
 - (id)init;

@@ -8,7 +8,6 @@
 
 #import "StartMenuLayer.h"
 #import "GameLayer.h"
-#import "GameCenterHelper.h"
 
 @implementation StartMenuLayer
 
@@ -48,7 +47,7 @@
 
 - (void)playGame:(CCMenuItem *)sender
 {
-    [[CCDirector sharedDirector] replaceScene:(CCScene *)[[GameLayer alloc] init]];
+    // Find a match with Game Center with another player.
 }
 
 @end
