@@ -28,6 +28,7 @@ enum
 @property (nonatomic) b2Body *screenBorderBody;
 @property (nonatomic) BOOL isFirstPlayerTurn;
 @property (nonatomic) BOOL turnJustEnded;
+@property (nonatomic) BOOL isReplaying;
 @property (nonatomic) Vehicle *player1Vehicle;
 @property (nonatomic) Vehicle *player2Vehicle;
 @property (nonatomic) CCMenuItemLabel *energyLabel;
@@ -37,6 +38,7 @@ enum
 @property (nonatomic) CCMenuItemImage *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
 @property (nonatomic) NSDictionary *soundEffects;
+@property (nonatomic) NSMutableArray *physicsReplayData;
 
 + (id)scene;
 - (id)init;

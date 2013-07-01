@@ -27,6 +27,10 @@ CGRect firstrect;
 CGRect secondrect;
 NSMutableArray *blocks = [[NSMutableArray alloc] init];
 
+
+NSMutableArray* myArray;
+int temp = 0;
+
 // UIKit Gestures
 UIPanGestureRecognizer *panGesture;
 UIPanGestureRecognizer *threeFingerGesture;
@@ -59,6 +63,7 @@ UIRotationGestureRecognizer *rotateGesture;
     if ((self = [super init]))
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
+        _physicsReplayData = [[NSMutableArray alloc] init];
         panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                   action:@selector(handlePanGesture:)];
         [panGesture setMinimumNumberOfTouches:2];
@@ -186,6 +191,7 @@ UIRotationGestureRecognizer *rotateGesture;
         [self setUpSounds];
         [self setUpMenu];
         _isFirstPlayerTurn = YES;
+        
         // Schedules a call to the update method every frame
         [self scheduleUpdate];
     }
@@ -263,8 +269,8 @@ UIRotationGestureRecognizer *rotateGesture;
                                fontName:@"Marker Felt"
                                fontSize:30];
     menuLabel = [CCMenuItemLabel itemWithLabel:label block:^(id sender) {
-        Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        [current.selectedWeapon executeAttackOnScreen:self];
+        [_physicsReplayData addObject:@"fire"];
+        [self fire];
     }];
     
     // Add labels to the menu and align them vertically
@@ -464,6 +470,51 @@ UIRotationGestureRecognizer *rotateGesture;
         [self detectCollisions];
     }
     */
+    
+    if (_isReplaying) {
+        NSString *action = myArray[temp++];
+        
+        while (![action isEqualToString:@"step"]) {
+            if ([action isEqualToString:@"leftBegan"]) {
+                [self leftBegan];
+            }
+            else if ([action isEqualToString:@"rightBegan"]) {
+                [self rightBegan];
+            }
+            else if ([action isEqualToString:@"leftContinue"]) {
+                [self leftContinue];
+            }
+            else if ([action isEqualToString:@"rightContinue"]) {
+                [self rightContinue];
+            }
+            else if ([action isEqualToString:@"fire"]) {
+                [self fire];
+            }
+            
+            // Get all the bodies in the world
+            for (b2Body* body = _world->GetBodyList(); body != nil; body = body->GetNext())
+            {
+                // Get the sprite associated with the body
+                CCSprite* sprite = (__bridge CCSprite*)body->GetUserData();
+                if (sprite != NULL)
+                {
+                    // Update the sprite's position to where their physics bodies are
+                    sprite.position = [self toPixels:body->GetPosition()];
+                    sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
+                }
+            }
+            
+            action = myArray[temp++];
+        }
+    
+        if (temp == myArray.count) {
+            _isReplaying = !_isReplaying;
+            temp = 0;
+        }
+        
+        [self step];
+        return;
+    }
 
     // Get all the bodies in the world
     for (b2Body* body = _world->GetBodyList(); body != nil; body = body->GetNext())
@@ -488,79 +539,110 @@ UIRotationGestureRecognizer *rotateGesture;
         _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
         _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
         other.energy = other.maxEnergy; // Reset energy to prepare for next turn
+        
+        // Store the array
+        [NSKeyedArchiver archiveRootObject:_physicsReplayData toFile:@"sequenceHistory"];
+        
+        // Clear history
+        _physicsReplayData = [[NSMutableArray alloc] init];
+        
+        // Retrieve physics data to another variable for test
+        myArray = [NSKeyedUnarchiver unarchiveObjectWithFile:@"sequenceHistory"];
+        
+        // Turn on replay mode
+        _isReplaying = YES;
     }
-    
-    // Pan the screen if a vehicle moves close enough to the border    
-    if (current.position.x > (director.screenSize.width * SCREEN_PAN_RATIO - _panZoomLayer.position.x) * _panZoomLayer.scale) {
-        _panZoomLayer.position = ccp(_panZoomLayer.position.x - 1, _panZoomLayer.position.y);
-    }
-    else if (current.position.x < (director.screenSize.width * SCREEN_PAN_RATIO + _panZoomLayer.position.x) * _panZoomLayer.scale) {
-        _panZoomLayer.position = ccp(_panZoomLayer.position.x + 1, _panZoomLayer.position.y);
-    }
-    
-    NSLog(@"vehicle x = %f, vehicle y = %f", current.position.x, current.position.y);
-    NSLog(@"background x = %f, background y = %f", _panZoomLayer.position.x, _panZoomLayer.position.y);
-    NSLog(@"director width = %f, director height = %f", director.screenSize.width, director.screenSize.height);
-    NSLog(@"SCALE = %f", _panZoomLayer.scale);
     
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
-        current.flipX = YES;
+        [_physicsReplayData addObject:@"leftBegan"];
+        [self leftBegan];
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
-        current.flipX = NO;
+        [_physicsReplayData addObject:@"rightBegan"];
+        [self rightBegan];
     }
     
     // Move the vehicle left and drain energy when left arrow is pressed
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseAny]) {
-        Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        vehicleToFlip.flipX = YES;
-        
-        // Maintains a constant velocity for the vehicle
-        b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
-        bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed * -1, 0));
-
-        // Deplete vehicle energy for moving
-        vehicleToFlip.energy--;
-        
-        // Switch turns when out of energy
-        if (!vehicleToFlip.energy) {
-            _isFirstPlayerTurn = !_isFirstPlayerTurn;
-            _turnJustEnded = YES;
-            bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
-        }
-
-        // Update energy label
-        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
+        [_physicsReplayData addObject:@"leftContinue"];
+        [self leftContinue];
     }
     
     // Move vehicle right and drain energy when right arrow is pressed
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseAny]) {
-        Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        vehicleToFlip.flipX = NO;
-        b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
-        bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed, 0));
-        
-        // Deplete vehicle energy for moving
-        vehicleToFlip.energy--;
-        
-        // Switch turns when out of energy
-        if (!vehicleToFlip.energy) {
-            _isFirstPlayerTurn = !_isFirstPlayerTurn;
-            _turnJustEnded = YES;
-            bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
-        }
-
-        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
+        [_physicsReplayData addObject:@"rightContinue"];
+        [self rightContinue];
     }
 
+    [_physicsReplayData addObject:@"step"];
+    [self step];
+}
+
+- (void)leftBegan {
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    current.flipX = YES;
+}
+
+- (void)rightBegan {
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    current.flipX = NO;
+}
+
+- (void)leftContinue {
+    Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    vehicleToFlip.flipX = YES;
+    
+    // Maintains a constant velocity for the vehicle
+    b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
+    bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed * -1, 0));
+    
+    // Deplete vehicle energy for moving
+    vehicleToFlip.energy--;
+    
+    // Switch turns when out of energy
+    if (!vehicleToFlip.energy) {
+        _isFirstPlayerTurn = !_isFirstPlayerTurn;
+        _turnJustEnded = YES;
+        bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
+    }
+    
+    // Update energy label
+    _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
+}
+
+- (void)rightContinue {
+    Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    vehicleToFlip.flipX = NO;
+    b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
+    bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed, 0));
+    
+    // Deplete vehicle energy for moving
+    vehicleToFlip.energy--;
+    
+    // Switch turns when out of energy
+    if (!vehicleToFlip.energy) {
+        _isFirstPlayerTurn = !_isFirstPlayerTurn;
+        _turnJustEnded = YES;
+        bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
+    }
+    
+    _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
+}
+
+- (void)fire {
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    [current.selectedWeapon executeAttackOnScreen:self];
+}
+
+- (void)step {
     float timeStep = 0.03f;
     int32 velocityIterations = 8;
     int32 positionIterations = 1;
     _world->Step(timeStep, velocityIterations, positionIterations);
-
+    
     // Prevent vehicles from flipping over
     [self stabilizeVehicle:_player1Vehicle.body withTimeStep:timeStep];
     [self stabilizeVehicle:_player2Vehicle.body withTimeStep:timeStep];
