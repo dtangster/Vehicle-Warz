@@ -503,63 +503,7 @@ UIRotationGestureRecognizer *rotateGesture;
     */
     
     if (_isReplaying) {
-        Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-        NSString *action = _actionReplayData[physicsHistoryIndex++];
-        
-        while (![action isEqualToString:WORLD_STEP]) {
-            if ([action isEqualToString:LEFT_MOVEMENT_BEGAN]) {
-                [self moveBegan:LEFT_MOVEMENT_BEGAN];
-            }
-            else if ([action isEqualToString:RIGHT_MOVEMENT_BEGAN]) {
-                [self moveBegan:RIGHT_MOVEMENT_BEGAN];
-            }
-            else if ([action isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
-                [self moveContinue:LEFT_MOVEMENT_CONTINUE];
-            }
-            else if ([action isEqualToString:RIGHT_MOVEMENT_CONTINUE]) {
-                [self moveContinue:RIGHT_MOVEMENT_CONTINUE];
-            }
-            else if ([action isEqualToString:DECREASE_ANGLE]) {
-                [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.selectedWeapon.lastAngle]];
-            }
-            else if ([action isEqualToString:INCREASE_ANGLE]) {
-                [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.selectedWeapon.lastAngle]];
-            }
-            else if ([action isEqualToString:DECREASE_POWER]) {
-                [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
-            }
-            else if ([action isEqualToString:INCREASE_POWER]) {
-                [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
-            }
-            else if ([action isEqualToString:FIRE_SHOT_LABEL]) {
-                [self fire];
-            }
-            else if ([action isEqualToString:SHOT_ONE_LABEL]) {
-                current.selectedWeapon = current.weapon1;
-                _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
-                _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
-            }
-            else if ([action isEqualToString:SHOT_TWO_LABEL]) {
-                current.selectedWeapon = current.weapon2;
-                _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
-                _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
-            }
-            else if ([action isEqualToString:SHOT_SPECIAL_LABEL]) {
-                current.selectedWeapon = current.special;
-                _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
-                _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
-            }     
-            
-            action = _actionReplayData[physicsHistoryIndex++];
-        }
-    
-        if (physicsHistoryIndex == _actionReplayData.count) {
-            physicsHistoryIndex = 0;
-            _actionReplayData = [[NSMutableArray alloc] init];
-            _isReplaying = !_isReplaying;
-        }
-        
-        [self step];
+        [self replayActions];
         return;
     }
     
@@ -697,6 +641,66 @@ UIRotationGestureRecognizer *rotateGesture;
             sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
         }
     }
+}
+
+- (void)replayActions {
+    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+    NSString *action = _actionReplayData[physicsHistoryIndex++];
+    
+    while (![action isEqualToString:WORLD_STEP]) {
+        if ([action isEqualToString:LEFT_MOVEMENT_BEGAN]) {
+            [self moveBegan:LEFT_MOVEMENT_BEGAN];
+        }
+        else if ([action isEqualToString:RIGHT_MOVEMENT_BEGAN]) {
+            [self moveBegan:RIGHT_MOVEMENT_BEGAN];
+        }
+        else if ([action isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
+            [self moveContinue:LEFT_MOVEMENT_CONTINUE];
+        }
+        else if ([action isEqualToString:RIGHT_MOVEMENT_CONTINUE]) {
+            [self moveContinue:RIGHT_MOVEMENT_CONTINUE];
+        }
+        else if ([action isEqualToString:DECREASE_ANGLE]) {
+            [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.selectedWeapon.lastAngle]];
+        }
+        else if ([action isEqualToString:INCREASE_ANGLE]) {
+            [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.selectedWeapon.lastAngle]];
+        }
+        else if ([action isEqualToString:DECREASE_POWER]) {
+            [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
+        }
+        else if ([action isEqualToString:INCREASE_POWER]) {
+            [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
+        }
+        else if ([action isEqualToString:FIRE_SHOT_LABEL]) {
+            [self fire];
+        }
+        else if ([action isEqualToString:SHOT_ONE_LABEL]) {
+            current.selectedWeapon = current.weapon1;
+            _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+            _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+        }
+        else if ([action isEqualToString:SHOT_TWO_LABEL]) {
+            current.selectedWeapon = current.weapon2;
+            _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+            _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+        }
+        else if ([action isEqualToString:SHOT_SPECIAL_LABEL]) {
+            current.selectedWeapon = current.special;
+            _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+            _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+        }
+        
+        action = _actionReplayData[physicsHistoryIndex++];
+    }
+    
+    if (physicsHistoryIndex == _actionReplayData.count) {
+        physicsHistoryIndex = 0;
+        _actionReplayData = [[NSMutableArray alloc] init];
+        _isReplaying = !_isReplaying;
+    }
+    
+    [self step];
 }
 
 - (void)stabilizeVehicle:(b2Body *)vehicleBody withTimeStep:(float)timeStep
