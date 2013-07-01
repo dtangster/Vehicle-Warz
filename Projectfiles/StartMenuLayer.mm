@@ -26,10 +26,11 @@
     self = [super init];
     
     if (self) {
-        // Log in user to Game center.
+        // Log in user to GameCenter.
+        // NOTE: Currently, GameCenter won't be able to log in since
+        // we have't register to the iOS Developer program
         [[GameCenterHelper sharedInstance] authenticateLocalUser];
         [self setUpMenus];
-        // TODO: Set up game center stuff here for a turnbased matchmaking game / leaderboards
     }
     
     return self;
