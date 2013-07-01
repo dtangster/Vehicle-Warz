@@ -17,9 +17,9 @@
 #define TORQUE_ADJUSTMENT 50.0f
 #define MAX_TORQUE 1000.0f
 #define VEHICLE_SPEED_RATIO 0.1f // This changes how much a vehicle's speed affects its acceleration
-#define SHOT_ONE_TEXT @"Shot 1"
-#define SHOT_TWO_TEXT @"Shot 2"
-#define SHOT_SPECIAL_TEXT @"Special"
+#define SHOT_ONE_LABEL @"Shot 1"
+#define SHOT_TWO_LABEL @"Shot 2"
+#define SHOT_SPECIAL_LABEL @"Special"
 #define FIRE_SHOT_LABEL @"Fire"
 #define DECREASE_POWER @"Decrease Power"
 #define DECREASE_ANGLE @"Decrease Angle"
@@ -243,7 +243,7 @@ UIRotationGestureRecognizer *rotateGesture;
     controlMenu.position = CGPointMake(screenSize.width / 2, screenSize.height * .75);
 
     // Create first shot label
-    NSString *shotString = [NSString stringWithFormat:SHOT_ONE_TEXT];
+    NSString *shotString = [NSString stringWithFormat:SHOT_ONE_LABEL];
     CCLabelTTF *label = [CCLabelTTF labelWithString:shotString
                                            fontName:@"Marker Felt"
                                            fontSize:30];
@@ -251,7 +251,7 @@ UIRotationGestureRecognizer *rotateGesture;
     [controlMenu addChild:menuLabel];
     
     // Create second shot label
-    shotString = [NSString stringWithFormat:SHOT_TWO_TEXT];
+    shotString = [NSString stringWithFormat:SHOT_TWO_LABEL];
     label = [CCLabelTTF labelWithString:shotString
                                fontName:@"Marker Felt"
                                fontSize:30];
@@ -259,7 +259,7 @@ UIRotationGestureRecognizer *rotateGesture;
     [controlMenu addChild:menuLabel];
     
     // Create special shot label
-    shotString = [NSString stringWithFormat:SHOT_SPECIAL_TEXT];
+    shotString = [NSString stringWithFormat:SHOT_SPECIAL_LABEL];
     label = [CCLabelTTF labelWithString:shotString
                                fontName:@"Marker Felt"
                                fontSize:30];
@@ -402,19 +402,18 @@ UIRotationGestureRecognizer *rotateGesture;
 
 - (void)selectWeapon:(CCMenuItemLabel *) sender
 {
-    if (_isReplaying) {
-        return;
-    }
-    
     Vehicle *vehicle = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
 
-    if ([sender.label.string isEqualToString:SHOT_ONE_TEXT]) {
+    if ([sender.label.string isEqualToString:SHOT_ONE_LABEL] && !_isReplaying && vehicle.selectedWeapon != vehicle.weapon1) {
+        [_actionReplayData addObject:SHOT_ONE_LABEL];
         vehicle.selectedWeapon = vehicle.weapon1;
     }
-    else if ([sender.label.string isEqualToString:SHOT_TWO_TEXT]) {
+    else if ([sender.label.string isEqualToString:SHOT_TWO_LABEL] && !_isReplaying && vehicle.selectedWeapon != vehicle.weapon2) {
+        [_actionReplayData addObject:SHOT_TWO_LABEL];
         vehicle.selectedWeapon = vehicle.weapon2;
     }
-    else if ([sender.label.string isEqualToString:SHOT_SPECIAL_TEXT]) {
+    else if ([sender.label.string isEqualToString:SHOT_SPECIAL_LABEL] && !_isReplaying && vehicle.selectedWeapon != vehicle.special) {
+        [_actionReplayData addObject:SHOT_SPECIAL_LABEL];
         vehicle.selectedWeapon = vehicle.special;
     }
     
@@ -535,6 +534,21 @@ UIRotationGestureRecognizer *rotateGesture;
             else if ([action isEqualToString:FIRE_SHOT_LABEL]) {
                 [self fire];
             }
+            else if ([action isEqualToString:SHOT_ONE_LABEL]) {
+                current.selectedWeapon = current.weapon1;
+                _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+                _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+            }
+            else if ([action isEqualToString:SHOT_TWO_LABEL]) {
+                current.selectedWeapon = current.weapon2;
+                _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+                _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+            }
+            else if ([action isEqualToString:SHOT_SPECIAL_LABEL]) {
+                current.selectedWeapon = current.special;
+                _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
+                _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
+            }     
             
             action = _actionReplayData[physicsHistoryIndex++];
         }
