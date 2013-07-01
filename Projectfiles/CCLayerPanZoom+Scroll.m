@@ -42,11 +42,9 @@ CAScrollLayer *scrollLayer;
     if (enable) {
         [self removeAllTouches];
         [[[CCDirector sharedDirector] touchDispatcher] addStandardDelegate:self priority:0];
-        NSLog(@"Touch enabled.");
     }
     else {
         [[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
-        NSLog(@"Touch disabled.");
     }
 }
 

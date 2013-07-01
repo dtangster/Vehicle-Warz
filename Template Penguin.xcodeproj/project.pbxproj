@@ -657,6 +657,7 @@
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "Template Penguin-iOS";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -666,6 +667,7 @@
 			buildSettings = {
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "Template Penguin-iOS";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
