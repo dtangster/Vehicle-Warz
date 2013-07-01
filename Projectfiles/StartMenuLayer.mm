@@ -6,6 +6,7 @@
 //
 //
 
+#import "AppDelegate.h"
 #import "StartMenuLayer.h"
 #import "GameLayer.h"
 
@@ -25,9 +26,6 @@
     self = [super init];
     
     if (self) {
-        // Log in user to GameCenter.
-        // NOTE: Currently, GameCenter won't be able to log in since
-        // we have't register to the iOS Developer program
         [self setUpMenus];
     }
     

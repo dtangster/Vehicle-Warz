@@ -34,19 +34,4 @@
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (void)matchStarted
-{
-    
-}
-
-- (void)matchEnded
-{
-    
-}
-
-- (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
-{
-    
-}
-
 @end

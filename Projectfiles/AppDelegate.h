@@ -8,7 +8,7 @@
 #import "KKAppDelegate.h"
 #import "GameCenterHelper.h"
 
-@interface AppDelegate : KKAppDelegate <GameCenterHelperDelegate>
+@interface AppDelegate : KKAppDelegate
 {
 }
 
