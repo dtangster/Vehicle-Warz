@@ -491,19 +491,7 @@ UIRotationGestureRecognizer *rotateGesture;
                 [self fire];
             }
             
-            // Get all the bodies in the world
-            for (b2Body* body = _world->GetBodyList(); body != nil; body = body->GetNext())
-            {
-                // Get the sprite associated with the body
-                CCSprite* sprite = (__bridge CCSprite*)body->GetUserData();
-                if (sprite != NULL)
-                {
-                    // Update the sprite's position to where their physics bodies are
-                    sprite.position = [self toPixels:body->GetPosition()];
-                    sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
-                }
-            }
-            
+            [self updateBodyPositions]
             action = myArray[temp++];
         }
     
@@ -516,18 +504,7 @@ UIRotationGestureRecognizer *rotateGesture;
         return;
     }
 
-    // Get all the bodies in the world
-    for (b2Body* body = _world->GetBodyList(); body != nil; body = body->GetNext())
-    {
-        // Get the sprite associated with the body
-        CCSprite* sprite = (__bridge CCSprite*)body->GetUserData();
-        if (sprite != NULL)
-        {
-            // Update the sprite's position to where their physics bodies are
-            sprite.position = [self toPixels:body->GetPosition()];
-            sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
-        }
-    }
+    [self updateBodyPositions];
     
     // Change energy and angle labels when a vehicle turn ends
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
@@ -646,6 +623,21 @@ UIRotationGestureRecognizer *rotateGesture;
     // Prevent vehicles from flipping over
     [self stabilizeVehicle:_player1Vehicle.body withTimeStep:timeStep];
     [self stabilizeVehicle:_player2Vehicle.body withTimeStep:timeStep];
+}
+
+- (void)updateBodyPositions {
+    // Get all the bodies in the world
+    for (b2Body* body = _world->GetBodyList(); body != nil; body = body->GetNext())
+    {
+        // Get the sprite associated with the body
+        CCSprite* sprite = (__bridge CCSprite*)body->GetUserData();
+        if (sprite != NULL)
+        {
+            // Update the sprite's position to where their physics bodies are
+            sprite.position = [self toPixels:body->GetPosition()];
+            sprite.rotation = CC_RADIANS_TO_DEGREES(body->GetAngle()) * -1;
+        }
+    }
 }
 
 - (void)stabilizeVehicle:(b2Body *)vehicleBody withTimeStep:(float)timeStep
