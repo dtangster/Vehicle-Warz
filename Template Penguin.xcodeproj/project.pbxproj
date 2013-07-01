@@ -18,7 +18,6 @@
 		248667C51778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667C61778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667FD177FEEA800DE5743 /* sound_effects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667FC177FEEA800DE5743 /* sound_effects.plist */; };
-		3D1109B9178189BF00B44320 /* UINavigationController+Landscape.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D1109B8178189BF00B44320 /* UINavigationController+Landscape.m */; };
 		3D23DE70178014BA0011020E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D23DE6F178014BA0011020E /* QuartzCore.framework */; };
 		3D5099BD177BBC5200C691D1 /* bgImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5099BC177BBC5200C691D1 /* bgImage.png */; };
 		3D5099C0177BC74100C691D1 /* CCSprite+SpriteSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.m */; };
@@ -113,8 +112,6 @@
 		248667C11778EFC300DE5743 /* triceratops.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = triceratops.plist; sourceTree = "<group>"; };
 		248667C41778EFDF00DE5743 /* mammoth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mammoth.plist; sourceTree = "<group>"; };
 		248667FC177FEEA800DE5743 /* sound_effects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = sound_effects.plist; sourceTree = "<group>"; };
-		3D1109B7178189BF00B44320 /* UINavigationController+Landscape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Landscape.h"; sourceTree = "<group>"; };
-		3D1109B8178189BF00B44320 /* UINavigationController+Landscape.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Landscape.m"; sourceTree = "<group>"; };
 		3D23DE6F178014BA0011020E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		3D5099BC177BBC5200C691D1 /* bgImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgImage.png; sourceTree = "<group>"; };
 		3D5099BE177BC74100C691D1 /* CCSprite+SpriteSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+SpriteSize.h"; sourceTree = "<group>"; };
@@ -416,8 +413,6 @@
 				3D709706177FD50B006704EF /* StartMenuLayer.mm */,
 				3D7A6F0C17810E4000047229 /* GameCenterHelper.h */,
 				3D7A6F0D17810E4000047229 /* GameCenterHelper.m */,
-				3D1109B7178189BF00B44320 /* UINavigationController+Landscape.h */,
-				3D1109B8178189BF00B44320 /* UINavigationController+Landscape.m */,
 				3D82C6EC17801A4A00011498 /* CCLayerPanZoom+Scroll.h */,
 				3D82C6ED17801A4A00011498 /* CCLayerPanZoom+Scroll.m */,
 				3D5099BE177BC74100C691D1 /* CCSprite+SpriteSize.h */,
@@ -608,7 +603,6 @@
 				3D709707177FD50B006704EF /* StartMenuLayer.mm in Sources */,
 				3D82C6EE17801A4A00011498 /* CCLayerPanZoom+Scroll.m in Sources */,
 				3D7A6F0E17810E4000047229 /* GameCenterHelper.m in Sources */,
-				3D1109B9178189BF00B44320 /* UINavigationController+Landscape.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
