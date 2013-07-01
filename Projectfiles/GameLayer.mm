@@ -27,9 +27,8 @@ CGRect firstrect;
 CGRect secondrect;
 NSMutableArray *blocks = [[NSMutableArray alloc] init];
 
-
-NSMutableArray* myArray;
-int temp = 0;
+// Used for playing back actions of a vehicle
+int physicsHistoryIndex = 0;
 
 // UIKit Gestures
 UIPanGestureRecognizer *panGesture;
@@ -472,7 +471,7 @@ UIRotationGestureRecognizer *rotateGesture;
     */
     
     if (_isReplaying) {
-        NSString *action = myArray[temp++];
+        NSString *action = _physicsReplayData[physicsHistoryIndex++];
         
         while (![action isEqualToString:@"step"]) {
             if ([action isEqualToString:@"leftBegan"]) {
@@ -492,12 +491,13 @@ UIRotationGestureRecognizer *rotateGesture;
             }
             
             [self updateBodyPositions];
-            action = myArray[temp++];
+            action = _physicsReplayData[physicsHistoryIndex++];
         }
     
-        if (temp == myArray.count) {
+        if (physicsHistoryIndex == _physicsReplayData.count) {
+            physicsHistoryIndex = 0;
+            _physicsReplayData = [[NSMutableArray alloc] init];
             _isReplaying = !_isReplaying;
-            temp = 0;
         }
         
         [self step];
@@ -508,7 +508,6 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Change energy and angle labels when a vehicle turn ends
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
     if (_turnJustEnded) {
         _turnJustEnded = !_turnJustEnded;
@@ -519,11 +518,8 @@ UIRotationGestureRecognizer *rotateGesture;
         // Store the array
         [NSKeyedArchiver archiveRootObject:_physicsReplayData toFile:@"sequenceHistory"];
         
-        // Clear history
-        _physicsReplayData = [[NSMutableArray alloc] init];
-        
-        // Retrieve physics data to another variable for test
-        myArray = [NSKeyedUnarchiver unarchiveObjectWithFile:@"sequenceHistory"];
+        // Load the array
+        _physicsReplayData = [NSKeyedUnarchiver unarchiveObjectWithFile:@"sequenceHistory"];
         
         // Turn on replay mode
         _isReplaying = YES;
