@@ -1,6 +1,6 @@
 //
 //  GameCenterHelper.m
-//  Template Penguin
+//  Vehicle Warz
 //
 //  Created by Akshay on 6/30/13.
 //

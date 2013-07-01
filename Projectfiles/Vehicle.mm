@@ -1,6 +1,6 @@
 //
 //  Vehicle.m
-//  Template Penguin
+//  Vehicle Warz
 //
 //  Created by David Tang on 6/24/13.
 //

@@ -1,6 +1,6 @@
 //
 //  StartMenuLayer.m
-//  Template Penguin
+//  Vehicle Warz
 //
 //  Created by Akshay on 6/29/13.
 //
