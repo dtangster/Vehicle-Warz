@@ -101,7 +101,7 @@ static GameCenterHelper *sharedHelper = nil;
 
 - (void)match:(GKMatch *)theMatch player:(NSString *)playerID didChangeState:(GKPlayerConnectionState)state
 {
-    if (_match != theMatch) {
+    if (_theMatch != theMatch) {
         return;
     }
     

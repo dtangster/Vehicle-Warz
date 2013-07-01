@@ -314,7 +314,6 @@
 		DCC1A0D613A94EC0005BD75D = {
 			isa = PBXGroup;
 			children = (
-				3D7A6F0F178112DE00047229 /* GameKit.framework */,
 				DCC1A38C13A94F1A005BD75D /* Projectfiles */,
 				DCC1A0F713A94ED5005BD75D /* Projectfiles-iOS */,
 				DCC1A26413A94EE6005BD75D /* Projectfiles-Mac */,
@@ -336,6 +335,7 @@
 		DCC1A0E613A94ED5005BD75D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3D7A6F0F178112DE00047229 /* GameKit.framework */,
 				3D23DE6F178014BA0011020E /* QuartzCore.framework */,
 			);
 			name = Frameworks;
