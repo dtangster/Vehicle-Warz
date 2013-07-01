@@ -21,14 +21,16 @@
 #define SHOT_TWO_TEXT @"Shot 2"
 #define SHOT_SPECIAL_TEXT @"Special"
 #define FIRE_SHOT_LABEL @"Fire"
-#define CHANGE_POWER @"Change Power"
-#define CHANGE_ANGLE @"Change Angle"
+#define DECREASE_POWER @"Decrease Power"
+#define DECREASE_ANGLE @"Decrease Angle"
+#define INCREASE_POWER @"Increase Power"
+#define INCREASE_ANGLE @"Increase Angle"
 #define LEFT_MOVEMENT_BEGAN @"Left Movement Began"
 #define RIGHT_MOVEMENT_BEGAN @"Right Movement Began"
 #define LEFT_MOVEMENT_CONTINUE @"Left Movement Continue"
 #define RIGHT_MOVEMENT_CONTINUE @"Right Movement Continue"
 #define WORLD_STEP @"Step"
-#define ACTION_SEQUENCE_FILE @"actionSequence.data"
+#define ACTION_SEQUENCE_FILE @"action_sequence.data"
 
 CCSprite *projectile;
 CCSprite *block;
@@ -40,7 +42,7 @@ NSMutableArray *blocks = [[NSMutableArray alloc] init];
 NSUInteger physicsHistoryIndex = 0;
 
 // UIKit Gestures
-UIPanGestureRecognizer *panGesture;
+UIPanGestureRecognizer *twoFingerPanGesture;
 UIPanGestureRecognizer *threeFingerGesture;
 
 //-------------------------------TEMPORARY--------------------------------
@@ -71,11 +73,11 @@ UIRotationGestureRecognizer *rotateGesture;
     if ((self = [super init]))
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
-        _physicsReplayData = [[NSMutableArray alloc] init];
-        panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                  action:@selector(handlePanGesture:)];
-        [panGesture setMinimumNumberOfTouches:2];
-        [panGesture setMaximumNumberOfTouches:2];
+        _actionReplayData = [[NSMutableArray alloc] init];
+        twoFingerPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                  action:@selector(handleTwoFingerPanGesture:)];
+        [twoFingerPanGesture setMinimumNumberOfTouches:2];
+        [twoFingerPanGesture setMaximumNumberOfTouches:2];
         threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
                                                                      action:@selector(handleThreeFingers:)];
         [threeFingerGesture setMinimumNumberOfTouches:3];
@@ -86,7 +88,7 @@ UIRotationGestureRecognizer *rotateGesture;
                                                                      action:@selector(handleRotateGesture:)];
         //-------------------------------TEMPORARY--------------------------------
 
-        [[[CCDirector sharedDirector] view] addGestureRecognizer:panGesture];
+        [[[CCDirector sharedDirector] view] addGestureRecognizer:twoFingerPanGesture];
         [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
         
         //-------------------------------TEMPORARY--------------------------------
@@ -271,7 +273,7 @@ UIRotationGestureRecognizer *rotateGesture;
                                fontSize:30];
     menuLabel = [CCMenuItemLabel itemWithLabel:label block:^(id sender) {
         if (!_isReplaying && [self fire]) {
-            [_physicsReplayData addObject:FIRE_SHOT_LABEL];
+            [_actionReplayData addObject:FIRE_SHOT_LABEL];
         }
     }];
     
@@ -322,7 +324,7 @@ UIRotationGestureRecognizer *rotateGesture;
 }
 
 #pragma mark Gesture Handlers
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
+- (void)handleTwoFingerPanGesture:(UIPanGestureRecognizer *)gesture
 {
     if (gesture.state == UIGestureRecognizerStateEnded) {
         return;
@@ -332,9 +334,17 @@ UIRotationGestureRecognizer *rotateGesture;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
     if ([gesture velocityInView:view].y < 0 && current.selectedWeapon.lastAngle < current.maxFrontUpperAngle) {
+        if (!_isReplaying) {
+            [_actionReplayData addObject:INCREASE_ANGLE];
+        }
+        
         [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.selectedWeapon.lastAngle]];
     }
     else if ([gesture velocityInView:view].y > 0 && current.selectedWeapon.lastAngle > current.maxFrontLowerAngle) {
+        if (!_isReplaying) {
+            [_actionReplayData addObject:DECREASE_ANGLE];
+        }
+        
         [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.selectedWeapon.lastAngle]];
     }
 }
@@ -349,9 +359,17 @@ UIRotationGestureRecognizer *rotateGesture;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
     if ([gesture velocityInView:view].x > 0 && current.selectedWeapon.lastShotPower < current.power) {
+        if (!_isReplaying) {
+            [_actionReplayData addObject:INCREASE_POWER];
+        }
+        
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
     }
     else if ([gesture velocityInView:view].x < 0 && current.selectedWeapon.lastShotPower > 0) {
+        if (!_isReplaying) {
+            [_actionReplayData addObject:DECREASE_POWER];
+        }
+        
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
     }
 }
@@ -366,9 +384,17 @@ UIRotationGestureRecognizer *rotateGesture;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
 
     if (gesture.velocity > 0 && current.selectedWeapon.lastShotPower < current.power) {
+        if (!_isReplaying) {
+            [_actionReplayData addObject:INCREASE_POWER];
+        }
+        
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
     }
     else if (gesture.velocity < 0 && current.selectedWeapon.lastShotPower > 0) {
+        if (!_isReplaying) {
+            [_actionReplayData addObject:DECREASE_POWER];
+        }
+        
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
     }
 }
@@ -478,7 +504,8 @@ UIRotationGestureRecognizer *rotateGesture;
     */
     
     if (_isReplaying) {
-        NSString *action = _physicsReplayData[physicsHistoryIndex++];
+        Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+        NSString *action = _actionReplayData[physicsHistoryIndex++];
         
         while (![action isEqualToString:WORLD_STEP]) {
             if ([action isEqualToString:LEFT_MOVEMENT_BEGAN]) {
@@ -493,16 +520,28 @@ UIRotationGestureRecognizer *rotateGesture;
             else if ([action isEqualToString:RIGHT_MOVEMENT_CONTINUE]) {
                 [self moveContinue:RIGHT_MOVEMENT_CONTINUE];
             }
+            else if ([action isEqualToString:DECREASE_ANGLE]) {
+                [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.selectedWeapon.lastAngle]];
+            }
+            else if ([action isEqualToString:INCREASE_ANGLE]) {
+                [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.selectedWeapon.lastAngle]];
+            }
+            else if ([action isEqualToString:DECREASE_POWER]) {
+                [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
+            }
+            else if ([action isEqualToString:INCREASE_POWER]) {
+                [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
+            }
             else if ([action isEqualToString:FIRE_SHOT_LABEL]) {
                 [self fire];
             }
             
-            action = _physicsReplayData[physicsHistoryIndex++];
+            action = _actionReplayData[physicsHistoryIndex++];
         }
     
-        if (physicsHistoryIndex == _physicsReplayData.count) {
+        if (physicsHistoryIndex == _actionReplayData.count) {
             physicsHistoryIndex = 0;
-            _physicsReplayData = [[NSMutableArray alloc] init];
+            _actionReplayData = [[NSMutableArray alloc] init];
             _isReplaying = !_isReplaying;
         }
         
@@ -527,10 +566,10 @@ UIRotationGestureRecognizer *rotateGesture;
         _energyJustRestored = YES;
                 
         // Store the array
-        [NSKeyedArchiver archiveRootObject:_physicsReplayData toFile:ACTION_SEQUENCE_FILE];
+        [NSKeyedArchiver archiveRootObject:_actionReplayData toFile:ACTION_SEQUENCE_FILE];
         
         // Load the array
-        _physicsReplayData = [NSKeyedUnarchiver unarchiveObjectWithFile:ACTION_SEQUENCE_FILE];
+        _actionReplayData = [NSKeyedUnarchiver unarchiveObjectWithFile:ACTION_SEQUENCE_FILE];
         
         // Turn on replay mode
         _isReplaying = YES;
@@ -538,31 +577,31 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
-        [_physicsReplayData addObject:LEFT_MOVEMENT_BEGAN];
+        [_actionReplayData addObject:LEFT_MOVEMENT_BEGAN];
         [self moveBegan:LEFT_MOVEMENT_BEGAN];
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
-        [_physicsReplayData addObject:RIGHT_MOVEMENT_BEGAN];
+        [_actionReplayData addObject:RIGHT_MOVEMENT_BEGAN];
         [self moveBegan:RIGHT_MOVEMENT_BEGAN];
     }
     
     // Move the vehicle left and drain energy when left arrow is pressed
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseAny]) {
         if ([self moveContinue:LEFT_MOVEMENT_CONTINUE]) {
-            [_physicsReplayData addObject:LEFT_MOVEMENT_CONTINUE];
+            [_actionReplayData addObject:LEFT_MOVEMENT_CONTINUE];
         }
     }
     
     // Move vehicle right and drain energy when right arrow is pressed
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseAny]) {
         if ([self moveContinue:RIGHT_MOVEMENT_CONTINUE]) {
-            [_physicsReplayData addObject:RIGHT_MOVEMENT_CONTINUE];
+            [_actionReplayData addObject:RIGHT_MOVEMENT_CONTINUE];
         }
     }
 
-    [_physicsReplayData addObject:WORLD_STEP];
+    [_actionReplayData addObject:WORLD_STEP];
     [self step];
 }
 

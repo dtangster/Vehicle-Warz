@@ -39,7 +39,7 @@ enum
 @property (nonatomic) CCMenuItemImage *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
 @property (nonatomic) NSDictionary *soundEffects;
-@property (nonatomic) NSMutableArray *physicsReplayData;
+@property (nonatomic) NSMutableArray *actionReplayData;
 
 + (id)scene;
 - (id)init;
