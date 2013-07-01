@@ -11,8 +11,8 @@
 #import "GameLayer.h"
 
 #define PTM_RATIO 32.0f
-#define PI 3.14159265
-#define POWER_DOWN_SCALE 3
+#define PI 3.14159265f
+#define POWER_DOWN_SCALE 3.0f
 
 @implementation Weapon
 

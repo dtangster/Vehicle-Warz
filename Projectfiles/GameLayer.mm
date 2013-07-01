@@ -12,10 +12,10 @@
 #import "CCLayerPanZoom+Scroll.h"
 
 #define PTM_RATIO 32.0f
-#define FLOOR_HEIGHT    50.0f
+#define FLOOR_HEIGHT 50.0f
 #define SCREEN_PAN_RATIO 0.75f
-#define TORQUE_ADJUSTMENT 50
-#define MAX_TORQUE 1000
+#define TORQUE_ADJUSTMENT 50.0f
+#define MAX_TORQUE 1000.0f
 #define VEHICLE_SPEED_RATIO 0.1f // This changes how much a vehicle's speed affects its acceleration
 #define SHOT_ONE_TEXT @"Shot 1"
 #define SHOT_TWO_TEXT @"Shot 2"
@@ -98,7 +98,6 @@ UIRotationGestureRecognizer *rotateGesture;
         glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
 
         CGSize screenSize = [CCDirector sharedDirector].winSize;
-
 
         // Set up game height and width
         b2Vec2 lowerLeftCorner = b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
@@ -604,10 +603,6 @@ UIRotationGestureRecognizer *rotateGesture;
 
 - (BOOL)fire {
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    
-    if (_isReplaying) {
-        return NO;
-    }
     
     return [current.selectedWeapon executeAttackOnScreen:self];
 }
