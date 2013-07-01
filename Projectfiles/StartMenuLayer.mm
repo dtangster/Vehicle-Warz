@@ -26,6 +26,7 @@
     self = [super init];
     
     if (self) {
+        // Log in user to Game center.
         [[GameCenterHelper sharedInstance] authenticateLocalUser];
         [self setUpMenus];
         // TODO: Set up game center stuff here for a turnbased matchmaking game / leaderboards
