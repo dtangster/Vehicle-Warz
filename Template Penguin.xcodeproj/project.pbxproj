@@ -103,8 +103,6 @@
 
 /* Begin PBXFileReference section */
 		2471E19217810BA50008359B /* history.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = history.plist; sourceTree = "<group>"; };
-		2471E2241781137F0008359B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		2471E2261781137F0008359B /* ActionLogger.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = ActionLogger.1; sourceTree = "<group>"; };
 		248667B21778E4D000DE5743 /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
 		248667B31778E4D000DE5743 /* Vehicle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Vehicle.mm; sourceTree = "<group>"; };
 		248667BA1778EAEB00DE5743 /* Weapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Weapon.h; sourceTree = "<group>"; };
@@ -251,15 +249,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2471E2231781137F0008359B /* ActionLogger */ = {
-			isa = PBXGroup;
-			children = (
-				2471E2241781137F0008359B /* main.c */,
-				2471E2261781137F0008359B /* ActionLogger.1 */,
-			);
-			path = ActionLogger;
-			sourceTree = "<group>";
-		};
 		AA3296D515CEC40D00DEE33D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,7 +316,6 @@
 				DCC1A0F713A94ED5005BD75D /* Projectfiles-iOS */,
 				DCC1A26413A94EE6005BD75D /* Projectfiles-Mac */,
 				DCFA90ED13B4F6A0009DD35A /* BuildSettings */,
-				2471E2231781137F0008359B /* ActionLogger */,
 				DCC1A0E613A94ED5005BD75D /* Frameworks */,
 				DCC1A0E413A94ED5005BD75D /* Products */,
 			);
