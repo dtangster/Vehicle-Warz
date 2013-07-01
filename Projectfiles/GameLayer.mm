@@ -263,8 +263,9 @@ UIRotationGestureRecognizer *rotateGesture;
                                fontName:@"Marker Felt"
                                fontSize:30];
     menuLabel = [CCMenuItemLabel itemWithLabel:label block:^(id sender) {
-        [_physicsReplayData addObject:@"fire"];
-        [self fire];
+        if ([self fire]) {
+            [_physicsReplayData addObject:@"fire"];
+        }
     }];
     
     // Add labels to the menu and align them vertically
@@ -601,9 +602,14 @@ UIRotationGestureRecognizer *rotateGesture;
     return YES;
 }
 
-- (void)fire {
+- (BOOL)fire {
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    [current.selectedWeapon executeAttackOnScreen:self];
+    
+    if (_isReplaying) {
+        return NO;
+    }
+    
+    return [current.selectedWeapon executeAttackOnScreen:self];
 }
 
 - (void)step {
