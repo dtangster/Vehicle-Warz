@@ -11,7 +11,10 @@
 
 @interface GameCenterHelper : NSObject {
     BOOL userAuthenticated;
+    BOOL gameCenterAvailable; // Temporary
 }
+
+@property (assign, readonly) BOOL gameCenterAvailable;
 
 + (GameCenterHelper *)sharedInstance;
 - (void)authenticateLocalUser;

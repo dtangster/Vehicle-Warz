@@ -8,6 +8,7 @@
 
 #import "StartMenuLayer.h"
 #import "GameLayer.h"
+#import "GameCenterHelper.h"
 
 @implementation StartMenuLayer
 
@@ -25,6 +26,7 @@
     self = [super init];
     
     if (self) {
+        [[GameCenterHelper sharedInstance] authenticateLocalUser];
         [self setUpMenus];
         // TODO: Set up game center stuff here for a turnbased matchmaking game / leaderboards
     }
