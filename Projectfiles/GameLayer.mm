@@ -455,10 +455,11 @@ NSUInteger physicsHistoryIndex = 0;
         _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
         _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
         
-        // Restore shield and energy of vehicle that just ended its turn
+        // Restore shields of vehicle beginning its turn
         other.shield = other.maxShield;
+        
+        // Restore energy of vehicle that just ended its turn
         other.energy = other.maxEnergy;
-        _energyJustRestored = YES;
                 
         // Store the array
         [NSKeyedArchiver archiveRootObject:_actionReplayData toFile:ACTION_SEQUENCE_FILE];
@@ -470,14 +471,15 @@ NSUInteger physicsHistoryIndex = 0;
         _isReplaying = YES;
         
         _turnJustEnded = !_turnJustEnded;
+        _vehicleTurnJustBegan = YES;
     }
     
     // This IF block prevents action events from overlapping when a player turn changes
-    if (!_energyJustRestored) {
+    if (!_vehicleTurnJustBegan) {
         [self checkTouchEvents];
     }
     
-    _energyJustRestored = NO;
+    _vehicleTurnJustBegan = NO;
     
     [self step];
     [_actionReplayData addObject:WORLD_STEP];
