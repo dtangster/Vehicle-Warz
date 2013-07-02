@@ -39,6 +39,8 @@ enum
 @property (nonatomic) CCMenuItemImage *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
 @property (nonatomic) NSDictionary *soundEffects;
+
+// The last action should always be @"Step" in order to work
 @property (nonatomic) NSMutableArray *actionReplayData;
 
 + (id)scene;

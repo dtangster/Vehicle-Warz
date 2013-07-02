@@ -473,7 +473,6 @@ UIRotationGestureRecognizer *rotateGesture;
 - (void)update:(ccTime)delta
 {
     //Check for inputs and create a bullet if there is a tap
-    KKInput *input = [KKInput sharedInput];
     CCDirector* director = [CCDirector sharedDirector];
     
     /*
@@ -536,6 +535,14 @@ UIRotationGestureRecognizer *rotateGesture;
         _isReplaying = YES;
     }
     
+    [self checkTouchEvents];
+    [self step];
+    [_actionReplayData addObject:WORLD_STEP];
+}
+
+- (void)checkTouchEvents {
+    KKInput *input = [KKInput sharedInput];
+    
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan] && [self move:LEFT_MOVEMENT_BEGAN]) {
         [_actionReplayData addObject:LEFT_MOVEMENT_BEGAN];
@@ -548,7 +555,7 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Move the vehicle left and drain energy when left arrow is pressed
     if (([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseStationary]
-        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved])
+         || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved])
         && [self move:LEFT_MOVEMENT_CONTINUE]) {
         
         [_actionReplayData addObject:LEFT_MOVEMENT_CONTINUE];
@@ -556,14 +563,11 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Move vehicle right and drain energy when right arrow is pressed
     if (([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseStationary]
-        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved])
+         || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved])
         && [self move:RIGHT_MOVEMENT_CONTINUE]) {
         
         [_actionReplayData addObject:RIGHT_MOVEMENT_CONTINUE];
     }
-
-    [_actionReplayData addObject:WORLD_STEP];
-    [self step];
 }
 
 - (BOOL)move:(NSString *) direction {
