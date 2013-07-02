@@ -513,6 +513,7 @@ UIRotationGestureRecognizer *rotateGesture;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
+    // This IF block should always go immediately after the IF (_isReplaying) block
     if (_turnJustEnded) {
         _turnJustEnded = !_turnJustEnded;
         
@@ -537,14 +538,16 @@ UIRotationGestureRecognizer *rotateGesture;
     
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
-        [_actionReplayData addObject:LEFT_MOVEMENT_BEGAN];
-        [self move:LEFT_MOVEMENT_BEGAN];
+        if ([self move:LEFT_MOVEMENT_BEGAN]) {
+            [_actionReplayData addObject:LEFT_MOVEMENT_BEGAN];
+        }
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
-        [_actionReplayData addObject:RIGHT_MOVEMENT_BEGAN];
-        [self move:RIGHT_MOVEMENT_BEGAN];
+        if ([self move:RIGHT_MOVEMENT_BEGAN]) {
+            [_actionReplayData addObject:RIGHT_MOVEMENT_BEGAN];
+        }
     }
     
     // Move the vehicle left and drain energy when left arrow is pressed
