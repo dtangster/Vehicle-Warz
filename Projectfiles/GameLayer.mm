@@ -507,14 +507,11 @@ UIRotationGestureRecognizer *rotateGesture;
         [self replayActions];
         return;
     }
-    
-    // Change energy and angle labels when a vehicle turn ends
-    Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    
+
     // This IF block should always go immediately after the IF (_isReplaying) block
     if (_turnJustEnded) {
-        _turnJustEnded = !_turnJustEnded;
+        Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+        Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         
         // Change labels to reflect the vehicle that is starting his turn
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
@@ -533,6 +530,8 @@ UIRotationGestureRecognizer *rotateGesture;
         
         // Turn on replay mode
         _isReplaying = YES;
+        
+        _turnJustEnded = !_turnJustEnded;
     }
     
     [self checkTouchEvents];
