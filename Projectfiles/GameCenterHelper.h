@@ -25,6 +25,7 @@
 @property (strong) UIViewController *matchViewController;
 @property (strong) GKMatch *match;
 @property (assign) id <GameCenterHelperDelegate> delegate;
+@property NSMutableDictionary *playerList;
 @property (nonatomic) NSMutableArray *unsavedAchievements;
 @property (nonatomic) NSMutableDictionary *savedAchievements;
 

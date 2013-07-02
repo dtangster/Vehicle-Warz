@@ -52,6 +52,26 @@ static GameCenterHelper *sharedHelper = nil;
     }
 }
 
+// Find players for a match
+- (void)findPlayers
+{
+    [GKPlayer loadPlayersForIdentifiers:[_match playerIDs]
+                  withCompletionHandler:^(NSArray *players, NSError *error) {
+        if (error) {
+            matchDidStart = NO;
+            [_delegate matchEnded];
+        }
+        else {
+            _playerList = [NSMutableDictionary dictionaryWithCapacity:[players count]];
+            for (GKPlayer *aPlayer in players) {
+                _playerList[aPlayer.playerID] = aPlayer;
+            }
+            matchDidStart = YES;
+            [_delegate matchStarted];
+        }
+    }];
+}
+
 - (void)findAMatchWith:(UIViewController *)viewController delegate:(id<GameCenterHelperDelegate>)theDelegate
 {
     matchDidStart = NO;
@@ -88,6 +108,10 @@ static GameCenterHelper *sharedHelper = nil;
     [_matchViewController dismissModalViewControllerAnimated:YES];
     _match = match;
     _match.delegate = self;
+    
+    if (!matchDidStart && ([match expectedPlayerCount] == 0)) {
+        [self findPlayers];
+    }
 }
 
 - (void)match:(GKMatch *)aMatch didReceiveData:(NSData *)data fromPlayer:(NSString *)playerID
@@ -108,7 +132,7 @@ static GameCenterHelper *sharedHelper = nil;
     switch (state) {
         case GKPlayerStateConnected:
             if (!matchDidStart && theMatch.expectedPlayerCount == 0) {
-                NSLog(@"Starting match");
+                [self findPlayers];
             }
             break;
         case GKPlayerStateDisconnected:
