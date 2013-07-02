@@ -74,26 +74,6 @@ UIRotationGestureRecognizer *rotateGesture;
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
         _actionReplayData = [[NSMutableArray alloc] init];
-        twoFingerPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                  action:@selector(handleTwoFingerPanGesture:)];
-        [twoFingerPanGesture setMinimumNumberOfTouches:2];
-        [twoFingerPanGesture setMaximumNumberOfTouches:2];
-        threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                     action:@selector(handleThreeFingers:)];
-        [threeFingerGesture setMinimumNumberOfTouches:3];
-        [threeFingerGesture setMaximumNumberOfTouches:3];
-        
-        //-------------------------------TEMPORARY--------------------------------
-        rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
-                                                                     action:@selector(handleRotateGesture:)];
-        //-------------------------------TEMPORARY--------------------------------
-
-        [[[CCDirector sharedDirector] view] addGestureRecognizer:twoFingerPanGesture];
-        [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
-        
-        //-------------------------------TEMPORARY--------------------------------
-        [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
-        //-------------------------------TEMPORARY--------------------------------
         
         // Construct a world object, which will hold and simulate the rigid bodies.
         b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
@@ -191,6 +171,7 @@ UIRotationGestureRecognizer *rotateGesture;
         _player2Vehicle.fixture = _player2Vehicle.body->CreateFixture(&fixtureDef);
         
         [self addChild:_panZoomLayer];
+        [self setUpGestures];
         [self setUpSounds];
         [self setUpMenu];
         _isFirstPlayerTurn = YES;
@@ -202,7 +183,28 @@ UIRotationGestureRecognizer *rotateGesture;
     return self;
 }
 
-#pragma mark Sounds and Menu
+#pragma mark Setups
+- (void)setUpGestures
+{
+    twoFingerPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                  action:@selector(handleTwoFingerPanGesture:)];
+    [twoFingerPanGesture setMinimumNumberOfTouches:2];
+    [twoFingerPanGesture setMaximumNumberOfTouches:2];
+    threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                 action:@selector(handleThreeFingers:)];
+    [threeFingerGesture setMinimumNumberOfTouches:3];
+    [threeFingerGesture setMaximumNumberOfTouches:3];
+    
+    // Temporary
+    rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
+                                                                 action:@selector(handleRotateGesture:)];    
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:twoFingerPanGesture];
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
+    
+    // Temporary
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
+}
+
 - (void)setUpSounds
 {
     // Load sound effects
@@ -374,7 +376,7 @@ UIRotationGestureRecognizer *rotateGesture;
     }
 }
 
-//-------------------------------TEMPORARY--------------------------------
+// Temporary method
 - (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
 {
     if (gesture.state == UIGestureRecognizerStateEnded) {
@@ -398,8 +400,8 @@ UIRotationGestureRecognizer *rotateGesture;
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
     }
 }
-//-------------------------------TEMPORARY--------------------------------
 
+#pragma mark Physics/Logic
 - (void)selectWeapon:(CCMenuItemLabel *) sender
 {
     Vehicle *vehicle = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
