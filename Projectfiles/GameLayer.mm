@@ -455,7 +455,8 @@ NSUInteger physicsHistoryIndex = 0;
         _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
         _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
         
-        // Restore energy of vehicle that just ended its turn
+        // Restore shield and energy of vehicle that just ended its turn
+        other.shield = other.maxShield;
         other.energy = other.maxEnergy;
         _energyJustRestored = YES;
                 
