@@ -536,25 +536,29 @@ UIRotationGestureRecognizer *rotateGesture;
     // Ensure that the current vehicle is facing left when they press the left arrow
     if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
         [_actionReplayData addObject:LEFT_MOVEMENT_BEGAN];
-        [self moveBegan:LEFT_MOVEMENT_BEGAN];
+        [self move:LEFT_MOVEMENT_BEGAN];
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
     if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
         [_actionReplayData addObject:RIGHT_MOVEMENT_BEGAN];
-        [self moveBegan:RIGHT_MOVEMENT_BEGAN];
+        [self move:RIGHT_MOVEMENT_BEGAN];
     }
     
     // Move the vehicle left and drain energy when left arrow is pressed
-    if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseAny]) {
-        if ([self moveContinue:LEFT_MOVEMENT_CONTINUE]) {
+    if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseStationary]
+        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved]) {
+        
+        if ([self move:LEFT_MOVEMENT_CONTINUE]) {
             [_actionReplayData addObject:LEFT_MOVEMENT_CONTINUE];
         }
     }
     
     // Move vehicle right and drain energy when right arrow is pressed
-    if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseAny]) {
-        if ([self moveContinue:RIGHT_MOVEMENT_CONTINUE]) {
+    if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseStationary]
+        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved]) {
+        
+        if ([self move:RIGHT_MOVEMENT_CONTINUE]) {
             [_actionReplayData addObject:RIGHT_MOVEMENT_CONTINUE];
         }
     }
@@ -563,48 +567,42 @@ UIRotationGestureRecognizer *rotateGesture;
     [self step];
 }
 
-- (void)moveBegan:(NSString *) direction {
+- (BOOL)move:(NSString *) direction {
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
-    
-    if ([direction isEqualToString:LEFT_MOVEMENT_BEGAN]) {
-        current.flipX = YES;
-    }
-    else {
-        current.flipX = NO;
-    }
-}
-
-- (BOOL)moveContinue:(NSString *) direction {
-    Vehicle *vehicleToFlip = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
     b2Vec2 currentVec = bodyToMove->GetLinearVelocity();
     
-    if (_energyJustRestored) {
+    if (_energyJustRestored || _turnJustEnded) {
         _energyJustRestored = NO;
         return NO;
     }
     
-    if ([direction isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
-        vehicleToFlip.flipX = YES;
-        bodyToMove->SetLinearVelocity(b2Vec2(-vehicleToFlip.speed * VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
+    if (current.energy) {
+        if ([direction isEqualToString:LEFT_MOVEMENT_BEGAN]) {
+            current.flipX = YES;
+        }
+        else if ([direction isEqualToString:RIGHT_MOVEMENT_BEGAN]) {
+            current.flipX = NO;
+        }
+        else if ([direction isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
+            current.flipX = YES;
+            bodyToMove->SetLinearVelocity(b2Vec2(-current.speed * VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
+        }
+        else if ([direction isEqualToString:RIGHT_MOVEMENT_CONTINUE]) {
+            current.flipX = NO;
+            bodyToMove->SetLinearVelocity(b2Vec2(current.speed *VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
+        }
+        
+        // Switch turns when out of energy
+        if (!--current.energy) {
+            _isFirstPlayerTurn = !_isFirstPlayerTurn;
+            _turnJustEnded = YES;
+            bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
+        }
+        
+        // Update energy label
+        _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
     }
-    else {
-        vehicleToFlip.flipX = NO;
-        bodyToMove->SetLinearVelocity(b2Vec2(vehicleToFlip.speed *VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
-    }
-    
-    // Deplete vehicle energy for moving
-    vehicleToFlip.energy--;
-    
-    // Switch turns when out of energy
-    if (!vehicleToFlip.energy) {
-        _isFirstPlayerTurn = !_isFirstPlayerTurn;
-        _turnJustEnded = YES;
-        bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
-    }
-    
-    // Update energy label
-    _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", vehicleToFlip.energy];
     
     return YES;
 }
@@ -649,16 +647,16 @@ UIRotationGestureRecognizer *rotateGesture;
     
     while (![action isEqualToString:WORLD_STEP]) {
         if ([action isEqualToString:LEFT_MOVEMENT_BEGAN]) {
-            [self moveBegan:LEFT_MOVEMENT_BEGAN];
+            [self move:LEFT_MOVEMENT_BEGAN];
         }
         else if ([action isEqualToString:RIGHT_MOVEMENT_BEGAN]) {
-            [self moveBegan:RIGHT_MOVEMENT_BEGAN];
+            [self move:RIGHT_MOVEMENT_BEGAN];
         }
         else if ([action isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
-            [self moveContinue:LEFT_MOVEMENT_CONTINUE];
+            [self move:LEFT_MOVEMENT_CONTINUE];
         }
         else if ([action isEqualToString:RIGHT_MOVEMENT_CONTINUE]) {
-            [self moveContinue:RIGHT_MOVEMENT_CONTINUE];
+            [self move:RIGHT_MOVEMENT_CONTINUE];
         }
         else if ([action isEqualToString:DECREASE_ANGLE]) {
             [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.selectedWeapon.lastAngle]];
