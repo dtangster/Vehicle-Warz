@@ -276,13 +276,29 @@ NSUInteger physicsHistoryIndex = 0;
     [controlMenu addChild:menuLabel];
     [controlMenu alignItemsVertically];
     
-    // Show energy, power, and angle for current vehicle and selected weapon
+    // Show health, shield, energy, power, and angle for current vehicle and selected weapon
+    label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Health: %i", _player1Vehicle.health]
+                               fontName:@"Marker Felt"
+                               fontSize:20];
+    label.color = ccBLACK;
+    _healthLabel = [CCMenuItemLabel itemWithLabel:label];
+    _healthLabel.position = CGPointMake(-(screenSize.width / 2) + 60, 60);
+    [controlMenu addChild:_healthLabel];
+    
+    label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Shield: %i", _player1Vehicle.shield]
+                               fontName:@"Marker Felt"
+                               fontSize:20];
+    label.color = ccBLACK;
+    _shieldLabel = [CCMenuItemLabel itemWithLabel:label];
+    _shieldLabel.position = CGPointMake(-(screenSize.width / 2) + 60, 35);
+    [controlMenu addChild:_shieldLabel];
+    
     label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Energy: %i", _player1Vehicle.energy]
                                fontName:@"Marker Felt"
                                fontSize:20];
     label.color = ccBLACK;
     _energyLabel = [CCMenuItemLabel itemWithLabel:label];
-    _energyLabel.position = CGPointMake(-(screenSize.width / 2) + 60, screenSize.width * .12);
+    _energyLabel.position = CGPointMake(-(screenSize.width / 2) + 60, 10);
     [controlMenu addChild:_energyLabel];
     
     label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Power: %i", _player1Vehicle.selectedWeapon.lastShotPower]
@@ -290,7 +306,7 @@ NSUInteger physicsHistoryIndex = 0;
                                fontSize:20];
     label.color = ccBLACK;
     _shotPowerLabel = [CCMenuItemLabel itemWithLabel:label];
-    _shotPowerLabel.position = CGPointMake(-(screenSize.width / 2) + 60, screenSize.width * .07);
+    _shotPowerLabel.position = CGPointMake(-(screenSize.width / 2) + 60, -15);
     [controlMenu addChild:_shotPowerLabel];
     
     label = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"Angle: %i", _player1Vehicle.selectedWeapon.lastAngle]
@@ -298,7 +314,7 @@ NSUInteger physicsHistoryIndex = 0;
                                fontSize:20];
     label.color = ccBLACK;
     _angleLabel = [CCMenuItemLabel itemWithLabel:label];
-    _angleLabel.position = CGPointMake(-(screenSize.width / 2) + 60, screenSize.width * .02);
+    _angleLabel.position = CGPointMake(-(screenSize.width / 2) + 60, -40);
     [controlMenu addChild:_angleLabel];
     
     // Create 2 arrows for movement
@@ -433,6 +449,8 @@ NSUInteger physicsHistoryIndex = 0;
         Vehicle *other = !_isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
         
         // Change labels to reflect the vehicle that is starting his turn
+        _healthLabel.string = [NSString stringWithFormat:@"Health: %i", current.health];
+        _shieldLabel.string = [NSString stringWithFormat:@"Shield: %i", current.shield];
         _energyLabel.string = [NSString stringWithFormat:@"Energy: %i", current.energy];
         _angleLabel.string = [NSString stringWithFormat:@"Angle: %i", current.selectedWeapon.lastAngle];
         _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", current.selectedWeapon.lastShotPower];
