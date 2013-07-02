@@ -534,7 +534,15 @@ UIRotationGestureRecognizer *rotateGesture;
         _turnJustEnded = !_turnJustEnded;
     }
     
-    [self checkTouchEvents];
+    // This IF-ELSE block prevents action events from overlapping when a player turn changes
+    if (!_energyJustRestored) {
+        [self checkTouchEvents];
+        _energyJustRestored = NO;
+    }
+    else {
+        _energyJustRestored = NO;
+    }
+    
     [self step];
     [_actionReplayData addObject:WORLD_STEP];
 }
@@ -573,11 +581,6 @@ UIRotationGestureRecognizer *rotateGesture;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     b2Body *bodyToMove = _isFirstPlayerTurn ? _player1Vehicle.body : _player2Vehicle.body;
     b2Vec2 currentVec = bodyToMove->GetLinearVelocity();
-    
-    if (_energyJustRestored || _turnJustEnded) {
-        _energyJustRestored = NO;
-        return NO;
-    }
     
     if (current.energy) {
         if ([direction isEqualToString:LEFT_MOVEMENT_BEGAN]) {

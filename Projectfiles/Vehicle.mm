@@ -19,8 +19,8 @@
         _baseHealth = 2;
         _baseShield = 2;
         _basePower = 100;
-        _baseSpeed = 1;
-        _baseEnergy = 100;
+        _baseSpeed = 10;
+        _baseEnergy = 5;
         
         // These should be some formula using the base as a multiplier
         _maxHealth = _baseHealth; 
