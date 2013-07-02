@@ -537,35 +537,29 @@ UIRotationGestureRecognizer *rotateGesture;
     }
     
     // Ensure that the current vehicle is facing left when they press the left arrow
-    if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan]) {
-        if ([self move:LEFT_MOVEMENT_BEGAN]) {
-            [_actionReplayData addObject:LEFT_MOVEMENT_BEGAN];
-        }
+    if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseBegan] && [self move:LEFT_MOVEMENT_BEGAN]) {
+        [_actionReplayData addObject:LEFT_MOVEMENT_BEGAN];
     }
     
     // Ensure that the current vehicle is facing right when they press right arrow
-    if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan]) {
-        if ([self move:RIGHT_MOVEMENT_BEGAN]) {
-            [_actionReplayData addObject:RIGHT_MOVEMENT_BEGAN];
-        }
+    if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseBegan] && [self move:RIGHT_MOVEMENT_BEGAN]) {
+        [_actionReplayData addObject:RIGHT_MOVEMENT_BEGAN];
     }
     
     // Move the vehicle left and drain energy when left arrow is pressed
-    if ([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseStationary]
-        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved]) {
+    if (([input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseStationary]
+        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved])
+        && [self move:LEFT_MOVEMENT_CONTINUE]) {
         
-        if ([self move:LEFT_MOVEMENT_CONTINUE]) {
-            [_actionReplayData addObject:LEFT_MOVEMENT_CONTINUE];
-        }
+        [_actionReplayData addObject:LEFT_MOVEMENT_CONTINUE];
     }
     
     // Move vehicle right and drain energy when right arrow is pressed
-    if ([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseStationary]
-        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved]) {
+    if (([input isAnyTouchOnNode:_rightArrow touchPhase:KKTouchPhaseStationary]
+        || [input isAnyTouchOnNode:_leftArrow touchPhase:KKTouchPhaseMoved])
+        && [self move:RIGHT_MOVEMENT_CONTINUE]) {
         
-        if ([self move:RIGHT_MOVEMENT_CONTINUE]) {
-            [_actionReplayData addObject:RIGHT_MOVEMENT_CONTINUE];
-        }
+        [_actionReplayData addObject:RIGHT_MOVEMENT_CONTINUE];
     }
 
     [_actionReplayData addObject:WORLD_STEP];
