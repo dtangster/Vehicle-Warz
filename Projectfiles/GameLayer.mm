@@ -534,14 +534,12 @@ UIRotationGestureRecognizer *rotateGesture;
         _turnJustEnded = !_turnJustEnded;
     }
     
-    // This IF-ELSE block prevents action events from overlapping when a player turn changes
+    // This IF block prevents action events from overlapping when a player turn changes
     if (!_energyJustRestored) {
         [self checkTouchEvents];
-        _energyJustRestored = NO;
     }
-    else {
-        _energyJustRestored = NO;
-    }
+    
+    _energyJustRestored = NO;
     
     [self step];
     [_actionReplayData addObject:WORLD_STEP];
