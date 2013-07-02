@@ -34,7 +34,7 @@
 
 // UIKit Gestures
 UIPanGestureRecognizer *twoFingerPanGesture;
-UIPanGestureRecognizer *threeFingerGesture;
+UIPanGestureRecognizer *threeFingerPanGesture;
 
 // Temporary
 UIRotationGestureRecognizer *rotateGesture;
@@ -183,16 +183,16 @@ NSUInteger physicsHistoryIndex = 0;
                                                                   action:@selector(handleTwoFingerPanGesture:)];
     [twoFingerPanGesture setMinimumNumberOfTouches:2];
     [twoFingerPanGesture setMaximumNumberOfTouches:2];
-    threeFingerGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
-                                                                 action:@selector(handleThreeFingers:)];
-    [threeFingerGesture setMinimumNumberOfTouches:3];
-    [threeFingerGesture setMaximumNumberOfTouches:3];
+    threeFingerPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                 action:@selector(handleThreeFingerPanGesture:)];
+    [threeFingerPanGesture setMinimumNumberOfTouches:3];
+    [threeFingerPanGesture setMaximumNumberOfTouches:3];
     
     // Temporary
     rotateGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self
                                                                  action:@selector(handleRotateGesture:)];    
     [[[CCDirector sharedDirector] view] addGestureRecognizer:twoFingerPanGesture];
-    [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerGesture];
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:threeFingerPanGesture];
     
     // Temporary
     [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
@@ -344,7 +344,7 @@ NSUInteger physicsHistoryIndex = 0;
     }
 }
 
-- (void)handleThreeFingers:(UIPanGestureRecognizer *)gesture
+- (void)handleThreeFingerPanGesture:(UIPanGestureRecognizer *)gesture
 {
     if (gesture.state == UIGestureRecognizerStateEnded) {
         return;
