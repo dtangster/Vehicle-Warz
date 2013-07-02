@@ -32,22 +32,15 @@
 #define WORLD_STEP @"Step"
 #define ACTION_SEQUENCE_FILE @"action_sequence.data"
 
-CCSprite *projectile;
-CCSprite *block;
-CGRect firstrect;
-CGRect secondrect;
-NSMutableArray *blocks = [[NSMutableArray alloc] init];
-
-// Used for playing back actions of a vehicle
-NSUInteger physicsHistoryIndex = 0;
-
 // UIKit Gestures
 UIPanGestureRecognizer *twoFingerPanGesture;
 UIPanGestureRecognizer *threeFingerGesture;
 
-//-------------------------------TEMPORARY--------------------------------
+// Temporary
 UIRotationGestureRecognizer *rotateGesture;
-//-------------------------------TEMPORARY--------------------------------
+
+// Used for playing back actions of a vehicle
+NSUInteger physicsHistoryIndex = 0;
 
 @interface GameLayer (PrivateMethods)
 - (void) enableBox2dDebugDrawing;

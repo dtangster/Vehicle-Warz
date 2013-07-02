@@ -10,18 +10,9 @@
 #import "ContactListener.h"
 #import "CCLayerPanZoom.h"
 
-enum
-{
-	kTagBatchNode,
-};
-
 @class Vehicle;
 
 @interface GameLayer : CCLayer
-{
-    int currentBullet;
-    NSMutableArray *bullets;
-}
 
 @property (nonatomic) b2World *world;
 @property (nonatomic) ContactListener *contactListener;
