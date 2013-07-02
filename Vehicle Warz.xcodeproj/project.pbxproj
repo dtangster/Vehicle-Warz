@@ -401,9 +401,9 @@
 		DCC1A38C13A94F1A005BD75D /* Projectfiles */ = {
 			isa = PBXGroup;
 			children = (
+				AA47749E15CED021009A911F /* Box2DDebugLayer.h */,
 				AA47749C15CED021009A911F /* AppDelegate.h */,
 				AA47749D15CED021009A911F /* AppDelegate.m */,
-				AA47749E15CED021009A911F /* Box2DDebugLayer.h */,
 				AA47749F15CED021009A911F /* Box2DDebugLayer.mm */,
 				AA4774A015CED021009A911F /* ContactListener.h */,
 				AA4774A115CED021009A911F /* ContactListener.mm */,

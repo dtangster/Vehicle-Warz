@@ -423,86 +423,12 @@ UIRotationGestureRecognizer *rotateGesture;
     _shotPowerLabel.string = [NSString stringWithFormat:@"Power: %i", vehicle.selectedWeapon.lastShotPower];
 }
 
-/*
-//Create the bullets, add them to the list of bullets so they can be referred to later
-- (void)createBullets
-{
-    CCSprite *bullet = [CCSprite spriteWithFile:@"flyingpenguin.png"];
-    bullet.position = CGPointMake(250.0f, FLOOR_HEIGHT+190.0f);
-    [_panZoomLayer addChild:bullet z:9];
-    [bullets addObject:bullet];
-}
-
-//Check through all the bullets and blocks and see if they intersect
--(void) detectCollisions
-{
-    for(unsigned int i = 0; i < [bullets count]; i++)
-    {
-        for(unsigned int j = 0; j < [blocks count]; j++)
-        {
-            if([bullets count]>0)
-            {
-                NSInteger first = i;
-                NSInteger second = j;
-                block = [blocks objectAtIndex:second];
-                projectile = [bullets objectAtIndex:first];
-
-                firstrect = [projectile textureRect];
-                secondrect = [block textureRect];
-                //check if their x coordinates match
-                if(projectile.position.x == block.position.x)
-                {
-                    //check if their y coordinates are within the height of the block
-                    if(projectile.position.y < (block.position.y + 23.0f) && projectile.position.y > block.position.y - 23.0f)
-                    {
-                        [self removeChild:block cleanup:YES];
-                        [self removeChild:projectile cleanup:YES];
-                        [blocks removeObjectAtIndex:second];
-                        [bullets removeObjectAtIndex:first];
-
-                    }
-                }
-            }
-
-        }
-
-    }
-}
-*/
-
 - (void)update:(ccTime)delta
 {
-    //Check for inputs and create a bullet if there is a tap
+    // Will probably use this variable later for implementing automatic panning
     CCDirector* director = [CCDirector sharedDirector];
     
-    /*
-    if(input.anyTouchEndedThisFrame)
-    {
-        //[self createBullets];
-    }
-    //Move the projectiles to the right and down
-    for(unsigned int i = 0; i < [bullets count]; i++)
-    {
-        NSInteger j = i;
-        projectile = [bullets objectAtIndex:j];
-        projectile.position = ccp(projectile.position.x + 1.0f,projectile.position.y - 0.25f);
-    }
-    //Move the screen if the bullets move too far right
-    if([bullets count] > 0)
-    {
-        projectile = [bullets objectAtIndex:0];
-        if(projectile.position.x > 320 && self.position.x > -480)
-        {
-            self.position = ccp(self.position.x - 1, self.position.y);
-        }
-    }
-    //If there are bullets and blocks in existence, check if they are colliding
-    if([bullets count] > 0 && [blocks count] > 0)
-    {
-        [self detectCollisions];
-    }
-    */
-    
+    // Keep running this IF block when the game is in replay mode
     if (_isReplaying) {
         [self replayActions];
         return;
