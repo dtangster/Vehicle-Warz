@@ -505,6 +505,8 @@ NSUInteger physicsHistoryIndex = 0;
         
         _turnJustEnded = !_turnJustEnded;
         _vehicleTurnJustBegan = YES;
+        
+        [_timer stopAllActions];
         [_timer runAction:_decrementTimer];
     }
     
