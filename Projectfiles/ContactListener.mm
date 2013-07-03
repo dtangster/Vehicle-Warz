@@ -8,6 +8,8 @@
 #import "ContactListener.h"
 #import "cocos2d.h"
 
+// This is called when two fixtures begin to overlap. This is called for sensors and non-sensors.
+// This event can only occur inside the time step.
 void ContactListener::BeginContact(b2Contact* contact)
 {
 	b2Body* bodyA = contact->GetFixtureA()->GetBody();
@@ -15,13 +17,14 @@ void ContactListener::BeginContact(b2Contact* contact)
 	CCSprite* spriteA = (__bridge CCSprite*)bodyA->GetUserData();
 	CCSprite* spriteB = (__bridge CCSprite*)bodyB->GetUserData();
 	
-	if (spriteA != NULL && spriteB != NULL)
+	if (spriteA && spriteB)
 	{
-		//spriteA.color = ccMAGENTA;
-		//spriteB.color = ccMAGENTA;
+
 	}
 }
 
+// This is called when two fixtures cease to overlap. This is called for sensors and non-sensors.
+// This may be called when a body is destroyed, so this event can occur outside the time step.
 void ContactListener::EndContact(b2Contact* contact)
 {
 	b2Body* bodyA = contact->GetFixtureA()->GetBody();
@@ -29,18 +32,21 @@ void ContactListener::EndContact(b2Contact* contact)
 	CCSprite* spriteA = (__bridge CCSprite*)bodyA->GetUserData();
 	CCSprite* spriteB = (__bridge CCSprite*)bodyB->GetUserData();
 	
-	if (spriteA != NULL && spriteB != NULL)
+	if (spriteA && spriteB)
 	{
-		spriteA.color = ccWHITE;
-		spriteB.color = ccWHITE;
+
 	}
 }
 
+// This is called after collision detection, but before collision resolution.
+// This gives you a chance to disable the contact based on the current configuration.
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
     
 }
 
+// The post solve event is where you can gather collision impulse results.
+// NOTE: Do not alter physics world here!
 void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 {
     

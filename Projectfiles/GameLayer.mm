@@ -503,11 +503,12 @@ NSUInteger physicsHistoryIndex = 0;
         // Turn on replay mode
         _isReplaying = YES;
         
-        _turnJustEnded = !_turnJustEnded;
-        _vehicleTurnJustBegan = YES;
-        
+        // Reset timer
         [_timer stopAllActions];
         [_timer runAction:_decrementTimer];
+        
+        _turnJustEnded = !_turnJustEnded;
+        _vehicleTurnJustBegan = YES;
     }
     
     // This IF block prevents action events from overlapping when a player turn changes

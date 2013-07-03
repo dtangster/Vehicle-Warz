@@ -16,6 +16,8 @@
     if ((self = [super initWithFile:fileName]))
     {
         _vehicleName = vehicleName;
+        _experience = 0;
+        _level = 1;
         _baseHealth = 100;
         _baseShield = 20;
         _basePower = 100;

@@ -14,6 +14,8 @@
 @interface Vehicle : CCSprite
 
 @property (nonatomic) NSString *vehicleName;
+@property (nonatomic) int experience; // When this reaches a certain number, the vehicle levels up
+@property (nonatomic) int level;
 @property (nonatomic) b2Fixture *fixture; // Will store the shape and density information
 @property (nonatomic) b2Body *body;  // Will store the position and type
 @property (nonatomic) Weapon *weapon1;
