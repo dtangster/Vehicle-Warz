@@ -164,6 +164,7 @@ NSUInteger physicsHistoryIndex = 0;
         _player2Vehicle.fixture = _player2Vehicle.body->CreateFixture(&fixtureDef);
         
         [self addChild:_panZoomLayer];
+        [self setUpSpriteSheets];
         [self setUpGestures];
         [self setUpSounds];
         [self setUpMenu];
@@ -177,6 +178,33 @@ NSUInteger physicsHistoryIndex = 0;
 }
 
 #pragma mark Setups
+- (void)setUpSpriteSheets
+{
+    CGSize screenSize = [CCDirector sharedDirector].winSize;
+    CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"timer.png"];
+    CCSpriteFrameCache *frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
+    [frameCache addSpriteFramesWithFile: @"timer.plist"];
+    [self addChild:spriteSheet];
+    
+    _timerFrames = [[NSMutableArray alloc] init];
+    
+    for(int i = 10; i >= 1; --i)
+    {
+        [_timerFrames addObject:[frameCache spriteFrameByName: [NSString stringWithFormat:@"%d.png", i]]];
+    }
+    
+    CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:@"10.png"];
+    sprite.position = CGPointMake(screenSize.width - 25, screenSize.height - 25);
+    
+    // Create an animation from the set of frames
+    _countDown = [CCAnimation animationWithFrames: _timerFrames delay:1.0f];
+    
+    //Create an action with the animation that can then be assigned to a sprite
+    _decrementTimer = [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO];
+    [sprite runAction:_decrementTimer];
+    [self addChild:sprite];
+}
+
 - (void)setUpGestures
 {
     twoFingerPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self

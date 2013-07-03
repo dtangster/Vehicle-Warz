@@ -33,6 +33,11 @@
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
 @property (nonatomic) NSDictionary *soundEffects;
 
+// Properties used for the countdown timer
+@property (nonatomic) NSMutableArray *timerFrames;
+@property (nonatomic) CCAction *decrementTimer;
+@property (nonatomic) CCAnimation *countDown;
+
 // The last action should always be @"Step" in order to work
 @property (nonatomic) NSMutableArray *actionReplayData;
 
