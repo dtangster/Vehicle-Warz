@@ -34,6 +34,7 @@
 @property (nonatomic) NSDictionary *soundEffects;
 
 // Properties used for the countdown timer
+@property (nonatomic) CCSprite *timer;
 @property (nonatomic) NSMutableArray *timerFrames;
 @property (nonatomic) CCAction *decrementTimer;
 @property (nonatomic) CCAnimation *countDown;

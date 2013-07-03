@@ -193,16 +193,16 @@ NSUInteger physicsHistoryIndex = 0;
         [_timerFrames addObject:[frameCache spriteFrameByName: [NSString stringWithFormat:@"%d.png", i]]];
     }
     
-    CCSprite *sprite = [CCSprite spriteWithSpriteFrameName:@"10.png"];
-    sprite.position = CGPointMake(screenSize.width - 25, screenSize.height - 25);
+    _timer = [CCSprite spriteWithSpriteFrameName:@"10.png"];
+    _timer.position = CGPointMake(screenSize.width - 25, screenSize.height - 25);
     
     // Create an animation from the set of frames
     _countDown = [CCAnimation animationWithFrames: _timerFrames delay:1.0f];
     
     //Create an action with the animation that can then be assigned to a sprite
     _decrementTimer = [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO];
-    [sprite runAction:_decrementTimer];
-    [self addChild:sprite];
+    [_timer runAction:_decrementTimer];
+    [self addChild:_timer];
 }
 
 - (void)setUpGestures
@@ -471,6 +471,11 @@ NSUInteger physicsHistoryIndex = 0;
         return;
     }
 
+    if ([_decrementTimer isDone]) {
+        _turnJustEnded = YES;
+        _isFirstPlayerTurn = !_isFirstPlayerTurn;
+    }
+    
     // This IF block should always go immediately after the IF (_isReplaying) block
     if (_turnJustEnded) {
         Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
@@ -500,6 +505,7 @@ NSUInteger physicsHistoryIndex = 0;
         
         _turnJustEnded = !_turnJustEnded;
         _vehicleTurnJustBegan = YES;
+        [_timer runAction:_decrementTimer];
     }
     
     // This IF block prevents action events from overlapping when a player turn changes
