@@ -29,7 +29,11 @@
 @property (nonatomic) int lastAngle;
 @property (nonatomic) int lastRotation; // Just in case we want to allow players to set the rotation of the shot
 
-- (id)initWithName:(NSString *) weaponName withEnergyCost:(int) energyCost usingImage:(NSString *)fileName usingSound:(NSString *)weaponSound;
+- (id)initWithName:(NSString *) weaponName
+    withEnergyCost:(int) energyCost
+        usingImage:(NSString *)fileName
+        usingSound:(NSString *)weaponSound;
+
 - (BOOL)executeAttackOnScreen: (GameLayer *) screen;
 - (b2Vec2)calculateInitialVector;
 

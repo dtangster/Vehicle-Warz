@@ -7,6 +7,9 @@
 
 #import "ContactListener.h"
 #import "cocos2d.h"
+#import "Vehicle.h"
+#import "Weapon.h"
+#import "WeaponEffect.h"
 
 // This is called when two fixtures begin to overlap. This is called for sensors and non-sensors.
 // This event can only occur inside the time step.
@@ -49,5 +52,35 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 // NOTE: Do not alter physics world here!
 void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 {
+    b2Body* bodyA = contact->GetFixtureA()->GetBody();
+	b2Body* bodyB = contact->GetFixtureB()->GetBody();
+	CCSprite* spriteA = (__bridge CCSprite*)bodyA->GetUserData();
+	CCSprite* spriteB = (__bridge CCSprite*)bodyB->GetUserData();
     
+    // Handles the case when a collision happens between a vehicle and a weapon
+    if (([spriteA isKindOfClass:[Vehicle class]] && [spriteB isKindOfClass:[Weapon class]])
+        || ([spriteB isKindOfClass:[Vehicle class]] && [spriteA isKindOfClass:[Weapon class]])) {
+        
+        Vehicle *vehicle;
+        Weapon *weapon;
+        
+        if ([spriteA isKindOfClass:[Vehicle class]]) {
+            vehicle = (Vehicle *)spriteA;
+            weapon = (Weapon *)spriteB;
+        }
+        else {
+            vehicle = (Vehicle *)spriteB;
+            weapon = (Weapon *)spriteA;
+        }
+        
+        // Delegate any events to the WeaponEffect class
+        [weapon.effect damageVehicle:vehicle withContactData:contact withImpulse:impulse];
+    }
+    // Handles the case when two weapons collide
+    else if ([spriteA isKindOfClass:[Weapon class]] && [spriteB isKindOfClass:[Weapon class]]) {
+        Weapon *weapon1 = (Weapon *)spriteA;
+        Weapon *weapon2 = (Weapon *)spriteB;
+        
+        // Do something here!
+    }
 }

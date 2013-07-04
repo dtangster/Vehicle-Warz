@@ -22,8 +22,8 @@
 		24BCB4951784CEB2003535BD /* timer.plist in Resources */ = {isa = PBXBuildFile; fileRef = 24BCB4921784CEB2003535BD /* timer.plist */; };
 		24BCB4961784CEB2003535BD /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = 24BCB4931784CEB2003535BD /* timer.png */; };
 		24BCB4971784CEB2003535BD /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = 24BCB4931784CEB2003535BD /* timer.png */; };
-		24BCB4A61784EAF5003535BD /* WeaponEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4A51784EAF5003535BD /* WeaponEffect.m */; };
-		24BCB4A71784EAF5003535BD /* WeaponEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4A51784EAF5003535BD /* WeaponEffect.m */; };
+		24BCB4A61784EAF5003535BD /* WeaponEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4A51784EAF5003535BD /* WeaponEffect.mm */; };
+		24BCB4A71784EAF5003535BD /* WeaponEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4A51784EAF5003535BD /* WeaponEffect.mm */; };
 		3D23DE70178014BA0011020E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D23DE6F178014BA0011020E /* QuartzCore.framework */; };
 		3D5099BD177BBC5200C691D1 /* bgImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5099BC177BBC5200C691D1 /* bgImage.png */; };
 		3D5099C0177BC74100C691D1 /* CCSprite+SpriteSize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.mm */; };
@@ -121,7 +121,7 @@
 		24BCB4921784CEB2003535BD /* timer.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = timer.plist; sourceTree = "<group>"; };
 		24BCB4931784CEB2003535BD /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
 		24BCB4A41784EAF5003535BD /* WeaponEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeaponEffect.h; sourceTree = "<group>"; };
-		24BCB4A51784EAF5003535BD /* WeaponEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeaponEffect.m; sourceTree = "<group>"; };
+		24BCB4A51784EAF5003535BD /* WeaponEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WeaponEffect.mm; sourceTree = "<group>"; };
 		3D23DE6F178014BA0011020E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		3D5099BC177BBC5200C691D1 /* bgImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgImage.png; sourceTree = "<group>"; };
 		3D5099BE177BC74100C691D1 /* CCSprite+SpriteSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+SpriteSize.h"; sourceTree = "<group>"; };
@@ -440,7 +440,7 @@
 				248667BA1778EAEB00DE5743 /* Weapon.h */,
 				248667BB1778EAEB00DE5743 /* Weapon.mm */,
 				24BCB4A41784EAF5003535BD /* WeaponEffect.h */,
-				24BCB4A51784EAF5003535BD /* WeaponEffect.m */,
+				24BCB4A51784EAF5003535BD /* WeaponEffect.mm */,
 			);
 			path = Projectfiles;
 			sourceTree = "<group>";
@@ -621,7 +621,7 @@
 				3D709707177FD50B006704EF /* StartMenuLayer.mm in Sources */,
 				3D82C6EE17801A4A00011498 /* CCLayerPanZoom+Scroll.mm in Sources */,
 				3D7A6F0E17810E4000047229 /* GameCenterHelper.m in Sources */,
-				24BCB4A61784EAF5003535BD /* WeaponEffect.m in Sources */,
+				24BCB4A61784EAF5003535BD /* WeaponEffect.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,7 +631,7 @@
 			files = (
 				248667B51778E4D000DE5743 /* Vehicle.mm in Sources */,
 				248667BD1778EAEB00DE5743 /* Weapon.mm in Sources */,
-				24BCB4A71784EAF5003535BD /* WeaponEffect.m in Sources */,
+				24BCB4A71784EAF5003535BD /* WeaponEffect.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
