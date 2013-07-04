@@ -27,7 +27,7 @@
 @property (nonatomic) int energyCost;
 @property (nonatomic) int explosionTimer;
 @property (nonatomic) BOOL isPersistentWeapon; // Allows the weapon to persist multiple rounds
-@property (nonatomic) WeaponEffect *effect; // Behavior of the weapon
+@property (nonatomic) NSMutableArray *effects; // Behavior of the weapon. Weapons can have multiple WeaponEffect
 
 // Store last shot settings
 @property (nonatomic) int lastShotPower;
@@ -47,7 +47,6 @@
           withImpulse:(const b2ContactImpulse *) impulse;
 
 - (BOOL)executeAttackOnScreen: (GameLayer *) screen;
-- (void)executeLaunchEffects; // The behavior of the weapon from the time it is launched until it is detonated
 - (b2Vec2)calculateInitialVector;
 
 @end

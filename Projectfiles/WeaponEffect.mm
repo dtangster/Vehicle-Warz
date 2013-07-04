@@ -10,9 +10,4 @@
 
 @implementation WeaponEffect
 
-- (void)executeEffects
-{
-    
-}
-
 @end

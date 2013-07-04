@@ -34,6 +34,7 @@
         _lastShotPower = 0;
         _lastAngle = 0;
         _lastRotation = 30;
+        _effects = [NSMutableArray array];
         [[SimpleAudioEngine sharedEngine] preloadEffect:weaponSound];
     }
     
@@ -120,14 +121,10 @@
     return success;
 }
 
+// Weapon to Vehicle collisions from ContactListener will be delegated to this method
 - (void)damageVehicle:(Vehicle *) vehicle
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse
-{
-    
-}
-
-- (void)executeLaunchEffects
 {
     
 }
