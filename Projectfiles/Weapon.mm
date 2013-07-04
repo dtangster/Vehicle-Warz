@@ -152,6 +152,7 @@
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse
 {
+    NSLog(@"Collision from weapon to vehicle detected");
     [self notifyEffectsWithStartEvent:OnImpact];
 }
 
