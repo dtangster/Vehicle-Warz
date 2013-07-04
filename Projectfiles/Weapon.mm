@@ -128,7 +128,6 @@
     for (WeaponEffect *effect in _effects) {
         if (effect.startType == type) {
             effect.isRunning = YES;
-            [effect executeEffect];
         }
     }
 }

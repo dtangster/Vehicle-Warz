@@ -8,6 +8,7 @@
 #import "GameLayer.h"
 #import "Vehicle.h"
 #import "Weapon.h"
+#import "WeaponEffect.h"
 #import "CCSprite+SpriteSize.h"
 #import "CCLayerPanZoom+Scroll.h"
 
@@ -523,6 +524,13 @@ NSUInteger physicsHistoryIndex = 0;
     }
     
     _vehicleTurnJustBegan = NO;
+    
+    // Apply effects on all active weapons on the screen
+    for (Weapon *weapon in _activeProjectiles) {
+        for (WeaponEffect *effect in weapon.effects) {
+            [effect executeEffect];
+        }
+    }
     
     [self step];
     [_actionReplayData addObject:WORLD_STEP];
