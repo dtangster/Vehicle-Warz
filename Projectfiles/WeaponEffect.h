@@ -25,8 +25,8 @@ typedef NS_ENUM(NSInteger, Event)
 @property (nonatomic) BOOL isRunning;
 @property (nonatomic) Event startType;
 @property (nonatomic) Event stopType;
-@property (nonatomic) float startDelay; // Used with happensAfterDelay
-@property (nonatomic) float stopDelay; // Used with stopAfterDelay
+@property (nonatomic) float startDelay; // Used only if startType is AfterDelay or OnImpactAfterDelay
+@property (nonatomic) float stopDelay; // Used only if stopType is AfterDelay or OnImpactAfterDelay
 @property (nonatomic) int damage;
 
 // The behavior of the weapon from the time it is launched until it is detonated
