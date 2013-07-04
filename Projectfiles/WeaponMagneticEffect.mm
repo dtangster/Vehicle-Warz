@@ -51,7 +51,8 @@
     // Do something here
     
     // Of course this arbitrary action is just for testing
-    screen.player2Vehicle.body->ApplyForceToCenter(b2Vec2(0,10));
+    screen.player2Vehicle.body->ApplyForceToCenter(b2Vec2(0,5));
+    screen.player2Vehicle.body->ApplyTorque(9);
     
     // Flag as started so we know to use delay timer if needed
     self.isWaitingToStop = YES;
