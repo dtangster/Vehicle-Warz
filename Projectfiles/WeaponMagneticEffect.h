@@ -10,7 +10,6 @@
 
 @interface WeaponMagneticEffect : WeaponEffect
 
-@property (nonatomic) int damage;
 @property (nonatomic) int attractionPower; // Negative means repulsion
 @property (nonatomic) float distanceAffected;
 

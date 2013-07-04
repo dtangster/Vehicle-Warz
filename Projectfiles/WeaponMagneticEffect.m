@@ -8,6 +8,8 @@
 
 #import "WeaponMagneticEffect.h"
 
+BOOL began;
+
 @implementation WeaponMagneticEffect
 
 - (id)initWithDamage:(int) damage
@@ -17,7 +19,6 @@ withAffectedDistance:(float) distance
 {
     if (self = [super init])
     {
-        _damage = damage;
         _attractionPower = attraction;
         _distanceAffected = distance;
     }
@@ -27,28 +28,26 @@ withAffectedDistance:(float) distance
 
 - (void)executeEffect
 {
-    if (self.happensAtLaunch) {
-        
+    if (!self.isRunning) {
+        return;
     }
-    else if (self.happensAfterDelay) {
-        
+    if (self.startDelay) {
+        self.startDelay--;
     }
-    else if (self.happensOnImpact) {
-        
+    if (began && self.stopDelay && (self.stopType == AfterDelay || self.stopType == OnImpactAfterDelay)) {
+        self.stopDelay--;
     }
-    else if (self.happensAfterDelayOnImpact) {
-        
+    if (!self.stopDelay) {
+        began = NO;
+        self.isRunning = NO;
     }
     
-    if (self.stopAfterDelay) {
-        
-    }
-    else if (self.stopOnImpact) {
-        
-    }
-    else if (self.stopOnDelayAfterImpact) {
-        
-    }
+    // Do something here
+    
+    
+    
+    // Flag as started so we know to use delay timer if needed
+    began = YES;
 }
 
 @end

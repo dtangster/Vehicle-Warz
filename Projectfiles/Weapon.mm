@@ -7,6 +7,7 @@
 //
 
 #import "Weapon.h"
+#import "WeaponEffect.h"
 #import "Vehicle.h"
 #import "GameLayer.h"
 
@@ -108,6 +109,7 @@
         projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
         [[SimpleAudioEngine sharedEngine] playEffect:_weaponSound];
+        [self notifyEffectsWithStartEvent:OnLaunch];
         
         // If energy is depleted, refill energy and switch player turns
         if (clone.carrier.energy <= 0) {
@@ -121,12 +123,37 @@
     return success;
 }
 
+- (void)notifyEffectsWithStartEvent:(Event) type
+{
+    for (WeaponEffect *effect in _effects) {
+        if (effect.startType == type) {
+            effect.isRunning = YES;
+            [effect executeEffect];
+        }
+    }
+}
+- (void)notifyEffectsWithStopEvent:(Event) type
+{
+    for (WeaponEffect *effect in _effects) {
+        if (effect.stopType == type) {
+            effect.isRunning = NO;
+        }
+    }
+}
+
+- (void)applyEffects
+{
+    for (WeaponEffect *effect in _effects) {
+        [effect executeEffect];
+    }
+}
+
 // Weapon to Vehicle collisions from ContactListener will be delegated to this method
 - (void)damageVehicle:(Vehicle *) vehicle
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse
 {
-    
+    [self notifyEffectsWithStartEvent:OnImpact];
 }
 
 - (b2Vec2)calculateInitialVector

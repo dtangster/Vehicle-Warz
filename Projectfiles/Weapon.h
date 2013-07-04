@@ -46,6 +46,7 @@
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse;
 
+- (void)applyEffects;
 - (BOOL)executeAttackOnScreen: (GameLayer *) screen;
 - (b2Vec2)calculateInitialVector;
 
