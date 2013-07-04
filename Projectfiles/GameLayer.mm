@@ -389,7 +389,7 @@ NSUInteger physicsHistoryIndex = 0;
 #pragma mark Gesture Handlers
 - (void)handleTwoFingerPanGesture:(UIPanGestureRecognizer *)gesture
 {
-    if (gesture.state == UIGestureRecognizerStateEnded) {
+    if (_isReplaying || gesture.state == UIGestureRecognizerStateEnded) {
         return;
     }
     
@@ -397,24 +397,18 @@ NSUInteger physicsHistoryIndex = 0;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
     if ([gesture velocityInView:view].y < 0 && current.selectedWeapon.lastAngle < current.maxFrontUpperAngle) {
-        if (!_isReplaying) {
-            [_actionReplayData addObject:INCREASE_ANGLE];
-        }
-        
+        [_actionReplayData addObject:INCREASE_ANGLE];
         [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", ++current.selectedWeapon.lastAngle]];
     }
     else if ([gesture velocityInView:view].y > 0 && current.selectedWeapon.lastAngle > current.maxFrontLowerAngle) {
-        if (!_isReplaying) {
-            [_actionReplayData addObject:DECREASE_ANGLE];
-        }
-        
+        [_actionReplayData addObject:DECREASE_ANGLE];
         [_angleLabel setString:[NSString stringWithFormat:@"Angle: %i", --current.selectedWeapon.lastAngle]];
     }
 }
 
 - (void)handleThreeFingerPanGesture:(UIPanGestureRecognizer *)gesture
 {
-    if (gesture.state == UIGestureRecognizerStateEnded) {
+    if (_isReplaying || gesture.state == UIGestureRecognizerStateEnded) {
         return;
     }
     
@@ -422,17 +416,11 @@ NSUInteger physicsHistoryIndex = 0;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
     if ([gesture velocityInView:view].x > 0 && current.selectedWeapon.lastShotPower < current.power) {
-        if (!_isReplaying) {
-            [_actionReplayData addObject:INCREASE_POWER];
-        }
-        
+        [_actionReplayData addObject:INCREASE_POWER];
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
     }
     else if ([gesture velocityInView:view].x < 0 && current.selectedWeapon.lastShotPower > 0) {
-        if (!_isReplaying) {
-            [_actionReplayData addObject:DECREASE_POWER];
-        }
-        
+        [_actionReplayData addObject:DECREASE_POWER];
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
     }
 }
@@ -440,24 +428,18 @@ NSUInteger physicsHistoryIndex = 0;
 // Temporary method
 - (void)handleRotateGesture:(UIRotationGestureRecognizer *)gesture
 {
-    if (gesture.state == UIGestureRecognizerStateEnded) {
+    if (_isReplaying || gesture.state == UIGestureRecognizerStateEnded) {
         return;
     }
     
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
 
     if (gesture.velocity > 0 && current.selectedWeapon.lastShotPower < current.power) {
-        if (!_isReplaying) {
-            [_actionReplayData addObject:INCREASE_POWER];
-        }
-        
+        [_actionReplayData addObject:INCREASE_POWER];
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", ++current.selectedWeapon.lastShotPower]];
     }
     else if (gesture.velocity < 0 && current.selectedWeapon.lastShotPower > 0) {
-        if (!_isReplaying) {
-            [_actionReplayData addObject:DECREASE_POWER];
-        }
-        
+        [_actionReplayData addObject:DECREASE_POWER];
         [_shotPowerLabel setString:[NSString stringWithFormat:@"Power: %i", --current.selectedWeapon.lastShotPower]];
     }
 }
