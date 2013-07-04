@@ -32,6 +32,8 @@
 @property (nonatomic) CCMenuItemImage *rightArrow;
 @property (nonatomic) CCLayerPanZoom *panZoomLayer;
 @property (nonatomic) NSDictionary *soundEffects;
+@property (nonatomic) NSMutableArray *activeProjectiles; // Weapons that detonate before next player's turn
+@property (nonatomic) NSMutableArray *persistingProjectiles; // Weapons that stay on the screen for multiple rounds
 
 // Properties used for the countdown timer
 @property (nonatomic) CCSprite *timer;
@@ -45,6 +47,11 @@
 + (id)scene;
 - (id)init;
 - (CGPoint)toPixels:(b2Vec2)vec;
-- (void)createBullets;
+
+- (b2BodyDef)createBodyDefWithType:(b2BodyType) type
+                 withLinearDamping:(float) linearDamp
+                withAngularDamping:(float) angularDamp;
+
+- (b2FixtureDef)createCircleFixtureDef:(BOOL) isCircle;
 
 @end

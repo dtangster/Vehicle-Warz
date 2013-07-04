@@ -16,14 +16,21 @@
 
 @implementation Weapon
 
-- (id)initWithName:(NSString *)weaponName withEnergyCost:(int)energyCost usingImage:(NSString *)fileName usingSound:(NSString *)weaponSound
+- (id)initWithName:(NSString *) weaponName
+        usingImage:(NSString *) fileName
+        usingSound:(NSString *) weaponSound
+      usingBodyDef:(b2BodyDef) bodyDef
+    withEnergyCost:(int) energyCost
+          isCircle:(BOOL) isCircle;
 {
     if ((self = [super initWithFile:fileName]))
     {
         _weaponName = weaponName;
         _imageFile = fileName;
-        _energyCost = energyCost;
+        _bodyDef = bodyDef;
+        _isCircle = isCircle;
         _weaponSound = weaponSound;
+        _energyCost = energyCost;
         _lastShotPower = 0;
         _lastAngle = 0;
         _lastRotation = 30;
@@ -43,34 +50,58 @@
         
         // Create clone of itself to shoot because you cannot have multiple instances of yourself on the screen.
         Weapon *clone = [[Weapon alloc] initWithName:_weaponName
-                                           withEnergyCost:_energyCost
-                                               usingImage:_imageFile
-                                                usingSound:_weaponSound];
+                                          usingImage:_imageFile
+                                          usingSound:_weaponSound
+                                        usingBodyDef:_bodyDef
+                                      withEnergyCost:_energyCost
+                                            isCircle:_isCircle
+                         ];
+        
+        if (_isPersistentWeapon) {
+            [screen.persistingProjectiles addObject: clone];
+        }
+        else {
+            [screen.activeProjectiles addObject: clone];
+        }
+        
         clone.carrier = _carrier;
-        [screen.panZoomLayer addChild:clone z:-1];
-        b2BodyDef bodyDef;
-        bodyDef.type = _carrier.body->GetType();
-        bodyDef.linearDamping = _carrier.body->GetLinearDamping();
-        bodyDef.angularDamping = _carrier.body->GetAngularDamping();
+        [screen.panZoomLayer addChild:clone];
         
         CGPoint pos = [screen toPixels:clone.carrier.body->GetPosition()];
+        b2BodyDef tempBodyDef = _bodyDef;
         
         if (clone.carrier.flipX) {
             pos.x -= 50;
-            bodyDef.angularVelocity = -_lastRotation; // In radians
+            tempBodyDef.angularVelocity = -_lastRotation; // In radians
         }
         else {
             pos.x += 50;
-            bodyDef.angularVelocity = _lastRotation; // In radians
+            tempBodyDef.angularVelocity = _lastRotation; // In radians
         }
         
-        bodyDef.position.Set(pos.x/PTM_RATIO, (pos.y + 25)/PTM_RATIO);
-        bodyDef.linearVelocity = [self calculateInitialVector];
-        bodyDef.bullet = true;
-        bodyDef.userData = (__bridge void*)clone; // This tells the Box2D body which sprite to update.
-        clone.body = screen.world->CreateBody(&bodyDef);
+        tempBodyDef.position.Set(pos.x / PTM_RATIO, (pos.y + 25) / PTM_RATIO);
+        tempBodyDef.linearVelocity = [self calculateInitialVector];
+        tempBodyDef.userData = (__bridge void*)clone; // This tells the Box2D body which sprite to update.
+        clone.body = screen.world->CreateBody(&tempBodyDef);
+        
+        // Create a physical body for the projectile
         b2CircleShape projectileShape;
         b2FixtureDef projectileFixtureDef;
+        
+        if (_isCircle) {
+            b2CircleShape circle;
+            circle.m_radius = clone.contentSize.width / 2.0f / PTM_RATIO;
+            projectileFixtureDef.shape = &circle;
+        }
+        else
+        {
+            
+            b2PolygonShape box;
+            box.SetAsBox(clone.contentSize.width / 2.0f / PTM_RATIO,
+                         clone.contentSize.height / 2.0f / PTM_RATIO);
+            projectileFixtureDef.shape = &box;
+        }
+        
         projectileShape.m_radius = clone.contentSize.width/2.0f/PTM_RATIO;
         projectileFixtureDef.shape = &projectileShape;
         projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
@@ -87,6 +118,18 @@
     }
     
     return success;
+}
+
+- (void)damageVehicle:(Vehicle *) vehicle
+      withContactData:(b2Contact *) contact
+          withImpulse:(const b2ContactImpulse *) impulse
+{
+    
+}
+
+- (void)executeLaunchEffects
+{
+    
 }
 
 - (b2Vec2)calculateInitialVector

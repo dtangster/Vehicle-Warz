@@ -66,7 +66,8 @@ NSUInteger physicsHistoryIndex = 0;
     if ((self = [super init]))
     {
         CCLOG(@"%@ init", NSStringFromClass([self class]));
-        _actionReplayData = [[NSMutableArray alloc] init];
+        
+        CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         // Construct a world object, which will hold and simulate the rigid bodies.
         b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
@@ -79,8 +80,6 @@ NSUInteger physicsHistoryIndex = 0;
         _world->SetContactListener(_contactListener);
 
         glClearColor(0.1f, 0.0f, 0.2f, 1.0f);
-
-        CGSize screenSize = [CCDirector sharedDirector].winSize;
 
         // Set up game height and width
         b2Vec2 lowerLeftCorner = b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
@@ -106,67 +105,19 @@ NSUInteger physicsHistoryIndex = 0;
         // Set up a layer that restricts panning and zooming to within the background's content size
         _panZoomLayer = [[CCLayerPanZoom alloc] init];
 
-        CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage-big.png"];
-        bgSprite.anchorPoint = CGPointZero;
-        [_panZoomLayer addChild:bgSprite z:-1];
+        // Initialize arrays
+        _activeProjectiles = [NSMutableArray array];
+        _persistingProjectiles = [NSMutableArray array];
+        _actionReplayData = [NSMutableArray array];
+        _timerFrames = [NSMutableArray array];
         
-        // Set up the zooming restrictions
-        // NOTE: Apparently the order these properties are set actually matters
-        [_panZoomLayer setMaxScale:2.0f];
-        [_panZoomLayer setMinScale:0.0f];
-        [_panZoomLayer setRubberEffectRatio:0.0f];
-        
-        // Set up the content size for restricting panning
-        [_panZoomLayer setContentSize:CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight])];
-        [_panZoomLayer setPanBoundsRect:CGRectMake(0, 0, screenSize.width, screenSize.height)];
-        [_panZoomLayer setAnchorPoint:CGPointZero];
-        [_panZoomLayer setScale:1.0f];
-        [_panZoomLayer setPosition:CGPointZero];
-
-        // Create first player vehicle
-        _player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
-        [_panZoomLayer addChild:_player1Vehicle z:1 tag:1];
-
-        // Setting the properties of our definition
-        b2BodyDef bodyDef;
-        bodyDef.type = b2_dynamicBody;
-        bodyDef.linearDamping = 1;
-        bodyDef.angularDamping = 1;
-        bodyDef.position.Set(450.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
-        bodyDef.linearVelocity = b2Vec2(-5,0);
-        bodyDef.angularVelocity = -110;
-        
-        // This tells the Box2D body which sprite to update.
-        bodyDef.userData = (__bridge void*)_player1Vehicle;
-
-        // Create a body with the definition we just created
-        _player1Vehicle.body = _world->CreateBody(&bodyDef);
-
-        // Create a physical body for the vehicle
-        b2PolygonShape playerShape;
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &playerShape;
-        fixtureDef.density = 0.3F; // Affects collision momentum and inertia
-        playerShape.SetAsBox([_player1Vehicle spriteWidth] / 3 / PTM_RATIO, [_player1Vehicle spriteHeight] / 3 / PTM_RATIO);
-        _player1Vehicle.fixture = _player1Vehicle.body->CreateFixture(&fixtureDef);
-
-        // Create second player vehicle
-        _player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
-        [_panZoomLayer addChild:_player2Vehicle z:1 tag:2];
-        bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
-        bodyDef.linearVelocity = b2Vec2(5,0);
-        bodyDef.angularVelocity = 90;
-        bodyDef.userData = (__bridge void*)_player2Vehicle;
-        _player2Vehicle.body = _world->CreateBody(&bodyDef);
-        fixtureDef.shape = &playerShape;
-        fixtureDef.density = 0.3F; //affects collision momentum and inertia
-        playerShape.SetAsBox([_player2Vehicle spriteWidth] / 4 / PTM_RATIO, [_player2Vehicle spriteHeight] / 4 / PTM_RATIO);
-        _player2Vehicle.fixture = _player2Vehicle.body->CreateFixture(&fixtureDef);
+        // Load sound effects
+        _soundEffects = [[NSDictionary alloc] initWithContentsOfFile:@"sound_effects.plist"];
         
         [self addChild:_panZoomLayer];
         [self setUpSpriteSheets];
         [self setUpGestures];
-        [self setUpSounds];
+        [self setUpWeapons];
         [self setUpMenu];
         _isFirstPlayerTurn = YES;
         
@@ -181,12 +132,68 @@ NSUInteger physicsHistoryIndex = 0;
 - (void)setUpSpriteSheets
 {
     CGSize screenSize = [CCDirector sharedDirector].winSize;
+    CCSprite *bgSprite = [CCSprite spriteWithFile:@"bgImage-big.png"];
+    bgSprite.anchorPoint = CGPointZero;
+    [_panZoomLayer addChild:bgSprite z:-1];
+    
+    // Set up the zooming restrictions
+    // NOTE: Apparently the order these properties are set actually matters
+    [_panZoomLayer setMaxScale:2.0f];
+    [_panZoomLayer setMinScale:0.0f];
+    [_panZoomLayer setRubberEffectRatio:0.0f];
+    
+    // Set up the content size for restricting panning
+    [_panZoomLayer setContentSize:CGSizeMake([bgSprite spriteWidth], [bgSprite spriteHeight])];
+    [_panZoomLayer setPanBoundsRect:CGRectMake(0, 0, screenSize.width, screenSize.height)];
+    [_panZoomLayer setAnchorPoint:CGPointZero];
+    [_panZoomLayer setScale:1.0f];
+    [_panZoomLayer setPosition:CGPointZero];
+    
+    // Create first player vehicle
+    _player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
+    [_panZoomLayer addChild:_player1Vehicle z:1 tag:1];
+    
+    // Setting the properties of our definition
+    b2BodyDef bodyDef;
+    bodyDef.type = b2_dynamicBody;
+    bodyDef.linearDamping = 1;
+    bodyDef.angularDamping = 1;
+    bodyDef.position.Set(450.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
+    bodyDef.linearVelocity = b2Vec2(-5,0);
+    bodyDef.angularVelocity = -110;
+    
+    // This tells the Box2D body which sprite to update.
+    bodyDef.userData = (__bridge void*)_player1Vehicle;
+    
+    // Create a body with the definition we just created
+    _player1Vehicle.body = _world->CreateBody(&bodyDef);
+    
+    // Create a physical body for the vehicle
+    b2PolygonShape playerShape;
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &playerShape;
+    fixtureDef.density = 0.3F; // Affects collision momentum and inertia
+    playerShape.SetAsBox([_player1Vehicle spriteWidth] / 3 / PTM_RATIO, [_player1Vehicle spriteHeight] / 3 / PTM_RATIO);
+    _player1Vehicle.fixture = _player1Vehicle.body->CreateFixture(&fixtureDef);
+    
+    // Create second player vehicle
+    _player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
+    [_panZoomLayer addChild:_player2Vehicle z:1 tag:2];
+    bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
+    bodyDef.linearVelocity = b2Vec2(5,0);
+    bodyDef.angularVelocity = 90;
+    bodyDef.userData = (__bridge void*)_player2Vehicle;
+    _player2Vehicle.body = _world->CreateBody(&bodyDef);
+    fixtureDef.shape = &playerShape;
+    fixtureDef.density = 0.3F; //affects collision momentum and inertia
+    playerShape.SetAsBox([_player2Vehicle spriteWidth] / 4 / PTM_RATIO, [_player2Vehicle spriteHeight] / 4 / PTM_RATIO);
+    _player2Vehicle.fixture = _player2Vehicle.body->CreateFixture(&fixtureDef);
+
+    // Set up sprite sheets for countdown timer
     CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"timer.png"];
     CCSpriteFrameCache *frameCache = [CCSpriteFrameCache sharedSpriteFrameCache];
     [frameCache addSpriteFramesWithFile: @"timer.plist"];
     [self addChild:spriteSheet];
-    
-    _timerFrames = [[NSMutableArray alloc] init];
     
     for(int i = 10; i >= 1; --i)
     {
@@ -226,35 +233,52 @@ NSUInteger physicsHistoryIndex = 0;
     [[[CCDirector sharedDirector] view] addGestureRecognizer:rotateGesture];
 }
 
-- (void)setUpSounds
+- (void)setUpWeapons
 {
-    // Load sound effects
-    _soundEffects = [[NSDictionary alloc] initWithContentsOfFile:@"sound_effects.plist"];
+    b2BodyDef bodyDef = [self createBodyDefWithType:b2_dynamicBody withLinearDamping:1.0 withAngularDamping:1.0];
     
     // Create a temporary seal weapon and assign to all weapon shots for both players
-    Weapon *tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
+    Weapon *tempWeapon = [[Weapon alloc] initWithName:@"Seal"
                                            usingImage:@"seal.png"
-                                           usingSound:_soundEffects[@"vehicle1-shot1"]];
+                                           usingSound:_soundEffects[@"vehicle1-shot1"]
+                                        usingBodyDef:bodyDef
+                                       withEnergyCost:20
+                                             isCircle:YES];
     _player1Vehicle.weapon1 = tempWeapon;
-    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                   usingImage:@"seal.png"
-                                   usingSound:_soundEffects[@"vehicle1-shot2"]];
+    tempWeapon = tempWeapon = [[Weapon alloc] initWithName:@"Seal"
+                                                usingImage:@"seal.png"
+                                                usingSound:_soundEffects[@"vehicle1-shot1"]
+                                              usingBodyDef:bodyDef
+                                            withEnergyCost:20
+                                                  isCircle:YES];
     _player1Vehicle.weapon2 = tempWeapon;
-    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                   usingImage:@"seal.png"
-                                   usingSound:_soundEffects[@"vehicle1-special"]];
+    tempWeapon = tempWeapon = [[Weapon alloc] initWithName:@"Seal"
+                                                usingImage:@"seal.png"
+                                                usingSound:_soundEffects[@"vehicle1-shot1"]
+                                              usingBodyDef:bodyDef
+                                            withEnergyCost:20
+                                                  isCircle:YES];
     _player1Vehicle.special = tempWeapon;
-    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                   usingImage:@"seal.png"
-                                   usingSound:_soundEffects[@"vehicle2-shot1"]];
+    tempWeapon = tempWeapon = [[Weapon alloc] initWithName:@"Seal"
+                                                usingImage:@"seal.png"
+                                                usingSound:_soundEffects[@"vehicle1-shot1"]
+                                              usingBodyDef:bodyDef
+                                            withEnergyCost:20
+                                                  isCircle:YES];
     _player2Vehicle.weapon1 = tempWeapon;
-    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                   usingImage:@"seal.png"
-                                   usingSound:_soundEffects[@"vehicle2-shot2"]];
+    tempWeapon = tempWeapon = [[Weapon alloc] initWithName:@"Seal"
+                                                usingImage:@"seal.png"
+                                                usingSound:_soundEffects[@"vehicle1-shot1"]
+                                              usingBodyDef:bodyDef
+                                            withEnergyCost:20
+                                                  isCircle:YES];
     _player2Vehicle.weapon2 = tempWeapon;
-    tempWeapon = [[Weapon alloc] initWithName:@"Seal" withEnergyCost:20
-                                   usingImage:@"seal.png"
-                                   usingSound:_soundEffects[@"vehicle2-special"]];
+    tempWeapon = tempWeapon = [[Weapon alloc] initWithName:@"Seal"
+                                                usingImage:@"seal.png"
+                                                usingSound:_soundEffects[@"vehicle1-shot1"]
+                                              usingBodyDef:bodyDef
+                                            withEnergyCost:20
+                                                  isCircle:YES];
     _player2Vehicle.special = tempWeapon;
 }
 
@@ -674,7 +698,7 @@ NSUInteger physicsHistoryIndex = 0;
     
     if (physicsHistoryIndex == _actionReplayData.count) {
         physicsHistoryIndex = 0;
-        _actionReplayData = [[NSMutableArray alloc] init];
+        _actionReplayData = [NSMutableArray array];
         _isReplaying = !_isReplaying;
     }
     
@@ -699,6 +723,21 @@ NSUInteger physicsHistoryIndex = 0;
     }
     
     vehicleBody->ApplyTorque(torque);
+}
+
+// Convenience method to create a body definition
+- (b2BodyDef)createBodyDefWithType:(b2BodyType) type
+                 withLinearDamping:(float) linearDamp
+                withAngularDamping:(float) angularDamp
+{
+    b2BodyDef bodyDef;
+    
+    bodyDef.type = type;
+    bodyDef.linearDamping = linearDamp;
+    bodyDef.angularDamping = angularDamp;
+    bodyDef.bullet = true;
+    
+    return bodyDef;
 }
 
 // Convenience method to convert a b2Vec2 to a CGPoint

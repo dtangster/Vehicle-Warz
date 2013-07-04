@@ -9,7 +9,6 @@
 #import "cocos2d.h"
 #import "Vehicle.h"
 #import "Weapon.h"
-#import "WeaponEffect.h"
 
 // This is called when two fixtures begin to overlap. This is called for sensors and non-sensors.
 // This event can only occur inside the time step.
@@ -73,8 +72,8 @@ void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impu
             weapon = (Weapon *)spriteA;
         }
         
-        // Delegate any events to the WeaponEffect class
-        [weapon.effect damageVehicle:vehicle withContactData:contact withImpulse:impulse];
+        // Delegate any events to the Weapon class
+        [weapon damageVehicle:vehicle withContactData:contact withImpulse:impulse];
     }
     // Handles the case when two weapons collide
     else if ([spriteA isKindOfClass:[Weapon class]] && [spriteB isKindOfClass:[Weapon class]]) {

@@ -10,19 +10,7 @@
 
 @implementation WeaponEffect
 
-- (void)damageVehicle:(Vehicle *) vehicle
-      withContactData:(b2Contact *) contact
-         withImpulse:(const b2ContactImpulse *) impulse
-{
-    
-}
-
-- (void)executeLaunchEffects
-{
-    
-}
-
-- (void)launchSubWeapons
+- (void)executeEffects
 {
     
 }
