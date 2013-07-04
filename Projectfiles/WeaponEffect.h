@@ -11,25 +11,29 @@
 typedef NS_ENUM(NSInteger, Event)
 {
     OnLaunch,
-    AfterDelay,
-    OnImpact,
-    OnImpactAfterDelay
+    OnImpact
 };
 
+@class GameLayer;
 @class Weapon;
 
-@interface WeaponEffect : NSObject
+@interface WeaponEffect : NSObject <NSCopying>
 
 @property (nonatomic) Weapon *weapon; // The effect applies to this weapon
 @property (nonatomic) NSString *soundEffect;
-@property (nonatomic) BOOL isRunning;
+@property (nonatomic) BOOL isRunning; // Is actively running
+@property (nonatomic) BOOL isWaitingToStop;
 @property (nonatomic) Event startType;
 @property (nonatomic) Event stopType;
-@property (nonatomic) int startDelay; // Used only if startType is AfterDelay or OnImpactAfterDelay
-@property (nonatomic) int stopDelay; // Used only if stopType is AfterDelay or OnImpactAfterDelay
+@property (nonatomic) int startDelay; // This value should not change when set
+@property (nonatomic) int stopDelay; // This value should not change when set
+@property (nonatomic) int startTimer; // Each new run of the effect will copy startDelay here
+@property (nonatomic) int stopTimer; // Each new run of the effect will copy stopDelay here
 @property (nonatomic) int damage;
 
 // The behavior of the weapon from the time it is launched until it is detonated
-- (void)executeEffect;
+- (void)executeEffectOnScreen:(GameLayer *) screen;
+
+- (id)copyWithZone:(NSZone *) zone;
 
 @end

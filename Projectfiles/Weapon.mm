@@ -109,6 +109,11 @@
         projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
         [[SimpleAudioEngine sharedEngine] playEffect:_weaponSound];
+        
+        // Create clones of weapon effects
+        for (WeaponEffect *effect in _effects) {
+            [clone.effects addObject:[effect copy]];
+        }
         [self notifyEffectsWithStartEvent:OnLaunch];
         
         // If energy is depleted, refill energy and switch player turns
@@ -137,13 +142,6 @@
         if (effect.stopType == type) {
             effect.isRunning = NO;
         }
-    }
-}
-
-- (void)applyEffects
-{
-    for (WeaponEffect *effect in _effects) {
-        [effect executeEffect];
     }
 }
 

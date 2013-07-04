@@ -9,6 +9,7 @@
 #import "Vehicle.h"
 #import "Weapon.h"
 #import "WeaponEffect.h"
+#import "WeaponMagneticEffect.h"
 #import "CCSprite+SpriteSize.h"
 #import "CCLayerPanZoom+Scroll.h"
 
@@ -281,6 +282,14 @@ NSUInteger physicsHistoryIndex = 0;
                                             withEnergyCost:20
                                                   isCircle:YES];
     _player2Vehicle.special = tempWeapon;
+    
+    // PROTOTYPE TESTING OF WEAPONEFFECT
+    WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:10 withAffectedDistance:10];
+    effect.startType = OnLaunch;
+    effect.stopType = OnImpact;
+    effect.stopDelay = 5;
+    effect.weapon = _player1Vehicle.weapon1;
+    [_player1Vehicle.weapon1.effects addObject:effect];
 }
 
 - (void)setUpMenu
@@ -525,10 +534,10 @@ NSUInteger physicsHistoryIndex = 0;
     
     _vehicleTurnJustBegan = NO;
     
-    // Apply effects on all active weapons on the screen
+    // Apply weapon effects
     for (Weapon *weapon in _activeProjectiles) {
         for (WeaponEffect *effect in weapon.effects) {
-            [effect executeEffect];
+            [effect executeEffectOnScreen:self];
         }
     }
     

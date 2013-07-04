@@ -24,8 +24,8 @@
 		24BCB4971784CEB2003535BD /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = 24BCB4931784CEB2003535BD /* timer.png */; };
 		24BCB4AA1785342C003535BD /* WeaponEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4A91785342C003535BD /* WeaponEffect.mm */; };
 		24BCB4AB1785342C003535BD /* WeaponEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4A91785342C003535BD /* WeaponEffect.mm */; };
-		24BCB4B617855313003535BD /* WeaponMagneticEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4B517855313003535BD /* WeaponMagneticEffect.m */; };
-		24BCB4B717855313003535BD /* WeaponMagneticEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4B517855313003535BD /* WeaponMagneticEffect.m */; };
+		24BCB4B617855313003535BD /* WeaponMagneticEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4B517855313003535BD /* WeaponMagneticEffect.mm */; };
+		24BCB4B717855313003535BD /* WeaponMagneticEffect.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24BCB4B517855313003535BD /* WeaponMagneticEffect.mm */; };
 		3D23DE70178014BA0011020E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D23DE6F178014BA0011020E /* QuartzCore.framework */; };
 		3D5099BD177BBC5200C691D1 /* bgImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D5099BC177BBC5200C691D1 /* bgImage.png */; };
 		3D5099C0177BC74100C691D1 /* CCSprite+SpriteSize.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D5099BF177BC74100C691D1 /* CCSprite+SpriteSize.mm */; };
@@ -125,7 +125,7 @@
 		24BCB4A81785342C003535BD /* WeaponEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeaponEffect.h; sourceTree = "<group>"; };
 		24BCB4A91785342C003535BD /* WeaponEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WeaponEffect.mm; sourceTree = "<group>"; };
 		24BCB4B417855313003535BD /* WeaponMagneticEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeaponMagneticEffect.h; sourceTree = "<group>"; };
-		24BCB4B517855313003535BD /* WeaponMagneticEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeaponMagneticEffect.m; sourceTree = "<group>"; };
+		24BCB4B517855313003535BD /* WeaponMagneticEffect.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WeaponMagneticEffect.mm; sourceTree = "<group>"; };
 		3D23DE6F178014BA0011020E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		3D5099BC177BBC5200C691D1 /* bgImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bgImage.png; sourceTree = "<group>"; };
 		3D5099BE177BC74100C691D1 /* CCSprite+SpriteSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+SpriteSize.h"; sourceTree = "<group>"; };
@@ -446,7 +446,7 @@
 				24BCB4A81785342C003535BD /* WeaponEffect.h */,
 				24BCB4A91785342C003535BD /* WeaponEffect.mm */,
 				24BCB4B417855313003535BD /* WeaponMagneticEffect.h */,
-				24BCB4B517855313003535BD /* WeaponMagneticEffect.m */,
+				24BCB4B517855313003535BD /* WeaponMagneticEffect.mm */,
 			);
 			path = Projectfiles;
 			sourceTree = "<group>";
@@ -628,7 +628,7 @@
 				3D82C6EE17801A4A00011498 /* CCLayerPanZoom+Scroll.mm in Sources */,
 				3D7A6F0E17810E4000047229 /* GameCenterHelper.m in Sources */,
 				24BCB4AA1785342C003535BD /* WeaponEffect.mm in Sources */,
-				24BCB4B617855313003535BD /* WeaponMagneticEffect.m in Sources */,
+				24BCB4B617855313003535BD /* WeaponMagneticEffect.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,7 +639,7 @@
 				248667B51778E4D000DE5743 /* Vehicle.mm in Sources */,
 				248667BD1778EAEB00DE5743 /* Weapon.mm in Sources */,
 				24BCB4AB1785342C003535BD /* WeaponEffect.mm in Sources */,
-				24BCB4B717855313003535BD /* WeaponMagneticEffect.m in Sources */,
+				24BCB4B717855313003535BD /* WeaponMagneticEffect.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
