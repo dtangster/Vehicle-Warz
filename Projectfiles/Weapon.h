@@ -43,6 +43,7 @@
 
 // Weapon to vehicle collisions will be delegated to this method from ContactListener
 - (void)damageVehicle:(Vehicle *) vehicle
+           fromWeapon:(Weapon *) weapon
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse;
 

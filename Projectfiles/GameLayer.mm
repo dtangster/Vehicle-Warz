@@ -536,8 +536,8 @@ NSUInteger physicsHistoryIndex = 0;
     
     _vehicleTurnJustBegan = NO;
     
-    // Apply weapon effects and remove finished effects
-    [self applyWeaponEffects];
+    // Apply damage to vehicles and apply any weapon effects
+    [self applyDamageAndEffects];
     
     [self step];
     [_actionReplayData addObject:WORLD_STEP];
@@ -620,24 +620,30 @@ NSUInteger physicsHistoryIndex = 0;
     return [current.selectedWeapon executeAttackOnScreen:self];
 }
 
-- (void)applyWeaponEffects {
+- (void)applyDamageAndEffects {
     NSMutableArray *weaponsDestroyed = [NSMutableArray array];
-    
+        
     for (Weapon *weapon in _activeProjectiles) {
-        if (weapon.body == nil) {
+        // If the body was destroyed, that means the weapon has detonated and should be removed
+        if (weapon.tag == 9) {
+            _world->DestroyBody(weapon.body);
             [weaponsDestroyed addObject:weapon];
             continue;
         }
+        
+        NSMutableArray *effectsFinished = [NSMutableArray array];
         
         for (WeaponEffect *effect in weapon.effects) {
             [effect executeEffectOnScreen:self];
             
             if (effect.isFinished) {
-                [weapon.effects removeObject:effect];
+                [effectsFinished addObject:effect];
             }
         }
+        
+        [weapon.effects removeObjectsInArray:effectsFinished];
     }
-    
+
     [_activeProjectiles removeObjectsInArray:weaponsDestroyed];
 }
 

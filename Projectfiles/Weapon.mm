@@ -97,7 +97,6 @@
         }
         else
         {
-            
             b2PolygonShape box;
             box.SetAsBox(clone.contentSize.width / 2.0f / PTM_RATIO,
                          clone.contentSize.height / 2.0f / PTM_RATIO);
@@ -108,13 +107,14 @@
         projectileFixtureDef.shape = &projectileShape;
         projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
-        [[SimpleAudioEngine sharedEngine] playEffect:_weaponSound];
         
         // Create clones of weapon effects
         for (WeaponEffect *effect in _effects) {
             [clone.effects addObject:[effect copy]];
             effect.affectedWeapon = clone;
         }
+        
+        [[SimpleAudioEngine sharedEngine] playEffect:_weaponSound];
         [self notifyEffectsWithStartEvent:OnLaunch];
         
         // If energy is depleted, refill energy and switch player turns
@@ -140,10 +140,13 @@
 
 // Weapon to Vehicle collisions from ContactListener will be delegated to this method
 - (void)damageVehicle:(Vehicle *) vehicle
+           fromWeapon:(Weapon *) weapon
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse
 {
+    NSLog(@"Collision detected");
     [self notifyEffectsWithStartEvent:OnImpact];
+    weapon.tag = 9;
 }
 
 - (b2Vec2)calculateInitialVector

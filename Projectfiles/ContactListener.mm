@@ -73,7 +73,7 @@ void ContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impu
         }
         
         // Delegate any events to the Weapon class
-        [weapon damageVehicle:vehicle withContactData:contact withImpulse:impulse];
+        [weapon damageVehicle:vehicle fromWeapon:weapon withContactData:contact withImpulse:impulse];
     }
     // Handles the case when two weapons collide
     else if ([spriteA isKindOfClass:[Weapon class]] && [spriteB isKindOfClass:[Weapon class]]) {
