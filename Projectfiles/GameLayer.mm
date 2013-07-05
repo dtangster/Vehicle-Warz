@@ -291,7 +291,7 @@ NSUInteger physicsHistoryIndex = 0;
     effect.startType = OnLaunch;
     effect.stopType = OnImpact;
     effect.startDelay = 20;
-    effect.stopDelay = 20;
+    effect.stopDelay = 500;
     [_player1Vehicle.weapon1 addEffect:effect];
 }
 
@@ -592,18 +592,24 @@ NSUInteger physicsHistoryIndex = 0;
         }
         else if ([direction isEqualToString:LEFT_MOVEMENT_CONTINUE]) {
             current.flipX = YES;
-            bodyToMove->SetLinearVelocity(b2Vec2(-current.speed * VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
+            
+            if (-bodyToMove->GetLinearVelocity().x <= current.speed * VEHICLE_SPEED_RATIO) {
+                bodyToMove->ApplyForceToCenter(b2Vec2(-current.speed * VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
+            }
         }
         else if ([direction isEqualToString:RIGHT_MOVEMENT_CONTINUE]) {
             current.flipX = NO;
-            bodyToMove->SetLinearVelocity(b2Vec2(current.speed *VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
+            
+            if (bodyToMove->GetLinearVelocity().x <= current.speed * VEHICLE_SPEED_RATIO) {
+                bodyToMove->ApplyForceToCenter(b2Vec2(current.speed * VEHICLE_SPEED_RATIO + currentVec.x, currentVec.y));
+            }
         }
         
         // Switch turns when out of energy
         if (!--current.energy) {
             _isFirstPlayerTurn = !_isFirstPlayerTurn;
             _turnJustEnded = YES;
-            bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted
+            //bodyToMove->SetLinearVelocity(b2Vec2(0, 0)); // Prevents sliding when energy is depleted, but resets forces
         }
         
         // Update energy label

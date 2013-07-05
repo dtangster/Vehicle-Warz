@@ -21,7 +21,7 @@
         _baseHealth = 100;
         _baseShield = 20;
         _basePower = 100;
-        _baseSpeed = 5;
+        _baseSpeed = 10;
         _baseEnergy = 1000;
         
         // These should be some formula using the base as a multiplier

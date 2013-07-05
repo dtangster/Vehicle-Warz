@@ -11,11 +11,9 @@
 #import "Vehicle.h"
 #import "Weapon.h"
 
-#define EFFECT_DAMP 100.0f
-
 @implementation WeaponMagneticEffect
 
-- (id)initWithAttractionPower:(int) attraction withAffectedDistance:(float) distance
+- (id)initWithAttractionPower:(float) attraction withAffectedDistance:(float) distance
 {
     if (self = [super init])
     {
@@ -38,8 +36,9 @@
     Vehicle *other = !screen.isFirstPlayerTurn ? screen.player1Vehicle : screen.player2Vehicle;
     CGPoint bodyPos = [screen toPixels:other.body->GetPosition()];
     CGPoint shotPos = self.affectedWeapon.position;
-    float newX = (shotPos.x - bodyPos.x) / EFFECT_DAMP * _attractionPower;
-    float newY = (shotPos.y - bodyPos.y) / EFFECT_DAMP * _attractionPower;
+    float distance = ccpDistance(bodyPos, shotPos);
+    float newX = (shotPos.x - bodyPos.x) / distance * _attractionPower;
+    float newY = (shotPos.y - bodyPos.y) / distance * _attractionPower;
     b2Vec2 attractionVec = b2Vec2(newX, newY);
 
     other.body->ApplyForceToCenter(attractionVec);
