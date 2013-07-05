@@ -209,7 +209,10 @@ NSUInteger physicsHistoryIndex = 0;
     _countDown = [CCAnimation animationWithFrames: _timerFrames delay:1.0f];
     
     //Create an action with the animation that can then be assigned to a sprite
-    _decrementTimer = [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO];
+    //_decrementTimer = [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO];
+    _decrementTimer = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO]];
+    
+    
     [_timer runAction:_decrementTimer];
     [self addChild:_timer];
 }
@@ -284,7 +287,7 @@ NSUInteger physicsHistoryIndex = 0;
     _player2Vehicle.special = tempWeapon;
     
     // PROTOTYPE TESTING OF WEAPONEFFECT
-    WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:2 withAffectedDistance:10];
+    WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:1 withAffectedDistance:10];
     effect.startType = OnLaunch;
     effect.stopType = OnImpact;
     effect.startDelay = 20;
