@@ -137,6 +137,7 @@
         }
     }
 }
+
 - (void)notifyEffectsWithStopEvent:(Event) type
 {
     for (WeaponEffect *effect in _effects) {

@@ -32,6 +32,7 @@
         self.isWaitingToStart = YES;
         self.isWaitingToStop = NO;
         self.isRunning = NO;
+        self.isFinished = YES;
         return NO;
     }
     
@@ -45,7 +46,9 @@
     copy.affectedWeapon = _affectedWeapon;
     copy.soundEffect = _soundEffect;
     copy.isRunning = _isRunning;
+    copy.isWaitingToStart = _isWaitingToStart;
     copy.isWaitingToStop = _isWaitingToStop;
+    copy.isFinished = _isFinished;
     copy.startType = _startType;
     copy.stopType = _stopType;
     copy.startDelay = _startDelay;

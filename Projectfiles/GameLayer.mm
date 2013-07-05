@@ -288,10 +288,10 @@ NSUInteger physicsHistoryIndex = 0;
     
     // PROTOTYPE TESTING OF WEAPONEFFECT
     WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:1 withAffectedDistance:10];
-    effect.startType = OnLaunch;
+    effect.startType = OnImpact;
     effect.stopType = OnImpact;
     effect.startDelay = 20;
-    effect.stopDelay = 500;
+    effect.stopDelay = 20;
     [_player1Vehicle.weapon1 addEffect:effect];
 }
 
@@ -541,6 +541,10 @@ NSUInteger physicsHistoryIndex = 0;
     for (Weapon *weapon in _activeProjectiles) {
         for (WeaponEffect *effect in weapon.effects) {
             [effect executeEffectOnScreen:self];
+            
+            if (effect.isFinished) {
+                [weapon.effects removeObject:effect];
+            }
         }
     }
     
