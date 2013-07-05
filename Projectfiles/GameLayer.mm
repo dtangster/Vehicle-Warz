@@ -33,6 +33,7 @@
 #define RIGHT_MOVEMENT_CONTINUE @"Right Movement Continue"
 #define WORLD_STEP @"Step"
 #define ACTION_SEQUENCE_FILE @"action_sequence.data"
+#define DESTROY_TAG 99
 
 // UIKit Gestures
 UIPanGestureRecognizer *twoFingerPanGesture;
@@ -625,7 +626,7 @@ NSUInteger physicsHistoryIndex = 0;
         
     for (Weapon *weapon in _activeProjectiles) {
         // If the body was destroyed, that means the weapon has detonated and should be removed
-        if (weapon.tag == 9) {
+        if (weapon.tag == DESTROY_TAG) {
             [_panZoomLayer removeChild:weapon];
             _world->DestroyBody(weapon.body);
             [weaponsDestroyed addObject:weapon];

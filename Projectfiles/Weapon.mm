@@ -14,6 +14,7 @@
 #define PTM_RATIO 32.0f
 #define PI 3.14159265f
 #define POWER_DOWN_SCALE 3.0f
+#define DESTROY_TAG 99
 
 @implementation Weapon
 
@@ -146,7 +147,7 @@
 {
     NSLog(@"Collision detected");
     [self notifyEffectsWithStartEvent:OnImpact];
-    weapon.tag = 9;
+    weapon.tag = DESTROY_TAG;
 }
 
 - (b2Vec2)calculateInitialVector
