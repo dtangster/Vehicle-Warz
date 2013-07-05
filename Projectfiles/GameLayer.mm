@@ -85,9 +85,9 @@ NSUInteger physicsHistoryIndex = 0;
 
         // Set up game height and width
         b2Vec2 lowerLeftCorner = b2Vec2(0,FLOOR_HEIGHT/PTM_RATIO);
-        b2Vec2 lowerRightCorner = b2Vec2(screenSize.width * 2.0f / PTM_RATIO, FLOOR_HEIGHT / PTM_RATIO);
-        b2Vec2 upperLeftCorner = b2Vec2(0,screenSize.height * 2.0f / PTM_RATIO);
-        b2Vec2 upperRightCorner = b2Vec2(screenSize.width * 2.0f / PTM_RATIO, screenSize.height * 2.0f / PTM_RATIO);
+        b2Vec2 lowerRightCorner = b2Vec2(screenSize.width * 4.0f / PTM_RATIO, FLOOR_HEIGHT / PTM_RATIO);
+        b2Vec2 upperLeftCorner = b2Vec2(0,screenSize.height * 4.0f / PTM_RATIO);
+        b2Vec2 upperRightCorner = b2Vec2(screenSize.width * 4.0f / PTM_RATIO, screenSize.height * 4.0f / PTM_RATIO);
 
         // Define the static container body, which will provide the collisions at screen borders.
         b2BodyDef screenBorderDef;
@@ -284,12 +284,12 @@ NSUInteger physicsHistoryIndex = 0;
     _player2Vehicle.special = tempWeapon;
     
     // PROTOTYPE TESTING OF WEAPONEFFECT
-    WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:10 withAffectedDistance:10];
+    WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:2 withAffectedDistance:10];
     effect.startType = OnLaunch;
     effect.stopType = OnImpact;
-    effect.stopDelay = 5;
-    effect.weapon = _player1Vehicle.weapon1;
-    [_player1Vehicle.weapon1.effects addObject:effect];
+    effect.startDelay = 20;
+    effect.stopDelay = 20;
+    [_player1Vehicle.weapon1 addEffect:effect];
 }
 
 - (void)setUpMenu

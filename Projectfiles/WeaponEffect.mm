@@ -10,11 +10,39 @@
 
 @implementation WeaponEffect
 
+- (BOOL)initAndOkToRun
+{
+    if (!self.isRunning) {
+        return NO;
+    }
+    else if (self.isWaitingToStart) {
+        self.startTimer = self.startDelay;
+        self.stopTimer = self.stopDelay;
+        self.isWaitingToStart = NO;
+    }
+    
+    if (self.startTimer) {
+        self.startTimer--;
+        return NO;
+    }
+    if (self.isWaitingToStop && self.stopTimer) {
+        self.stopTimer--;
+    }
+    if (!self.stopTimer) {
+        self.isWaitingToStart = YES;
+        self.isWaitingToStop = NO;
+        self.isRunning = NO;
+        return NO;
+    }
+    
+    return YES;
+}
+
 - (id)copyWithZone:(NSZone *) zone
 {
     WeaponEffect *copy = [[WeaponEffect alloc] init];
     
-    copy.weapon = _weapon;
+    copy.affectedWeapon = _affectedWeapon;
     copy.soundEffect = _soundEffect;
     copy.isRunning = _isRunning;
     copy.isWaitingToStop = _isWaitingToStop;

@@ -113,6 +113,7 @@
         // Create clones of weapon effects
         for (WeaponEffect *effect in _effects) {
             [clone.effects addObject:[effect copy]];
+            effect.affectedWeapon = clone;
         }
         [self notifyEffectsWithStartEvent:OnLaunch];
         
@@ -167,6 +168,12 @@
     }
     
     return b2Vec2(x, y);
+}
+
+- (void)addEffect:(WeaponEffect *) effect
+{
+    [_effects addObject:effect];
+    effect.affectedWeapon = self;
 }
 
 @end

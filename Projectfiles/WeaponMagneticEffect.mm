@@ -9,6 +9,9 @@
 #import "WeaponMagneticEffect.h"
 #import "GameLayer.h"
 #import "Vehicle.h"
+#import "Weapon.h"
+
+#define PTM_RATIO 32.0f
 
 @implementation WeaponMagneticEffect
 
@@ -16,6 +19,7 @@
 {
     if (self = [super init])
     {
+        self.isWaitingToStart = YES;
         _attractionPower = attraction;
         _distanceAffected = distance;
     }
@@ -25,34 +29,18 @@
 
 - (void)executeEffectOnScreen:(GameLayer *) screen
 {
-    if (!self.isRunning) {
-        return;
-    }
-    else if (!self.isWaitingToStop) {
-        self.startTimer = self.startDelay;
-        self.stopTimer = self.stopDelay;
-    }
-    
-    if (self.startTimer) {
-        self.startTimer--;
-        return;
-    }
-    if (self.isWaitingToStop && self.stopTimer) {
-        self.stopTimer--;
-    }
-    if (!self.stopTimer) {
-        self.isWaitingToStop = NO;
-        self.isRunning = NO;
-        self.startTimer = self.startDelay;
-        self.stopTimer = self.stopDelay;
+    if (![self initAndOkToRun]) {
         return;
     }
     
     // Do something here
     
-    // Of course this arbitrary action is just for testing
-    screen.player2Vehicle.body->ApplyForceToCenter(b2Vec2(0,5));
-    screen.player2Vehicle.body->ApplyTorque(9);
+    Vehicle *other = !screen.isFirstPlayerTurn ? screen.player1Vehicle : screen.player2Vehicle;
+    CGPoint bodyPos = [screen toPixels:other.body->GetPosition()];
+    CGPoint shotPos = self.affectedWeapon.position;
+    b2Vec2 attractionVec = b2Vec2(shotPos.x - bodyPos.x , shotPos.y - bodyPos.y);
+
+    other.body->ApplyForceToCenter(attractionVec);
     
     // Flag as started so we know to use delay timer if needed
     self.isWaitingToStop = YES;
