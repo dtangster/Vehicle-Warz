@@ -289,7 +289,6 @@ NSUInteger physicsHistoryIndex = 0;
     // PROTOTYPE TESTING OF WEAPONEFFECT
     WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:1 withAffectedDistance:10];
     effect.startType = OnImpact;
-    effect.stopType = OnImpact;
     effect.startDelay = 20;
     effect.stopDelay = 20;
     [_player1Vehicle.weapon1 addEffect:effect];
@@ -537,16 +536,8 @@ NSUInteger physicsHistoryIndex = 0;
     
     _vehicleTurnJustBegan = NO;
     
-    // Apply weapon effects
-    for (Weapon *weapon in _activeProjectiles) {
-        for (WeaponEffect *effect in weapon.effects) {
-            [effect executeEffectOnScreen:self];
-            
-            if (effect.isFinished) {
-                [weapon.effects removeObject:effect];
-            }
-        }
-    }
+    // Apply weapon effects and remove finished effects
+    [self applyWeaponEffects];
     
     [self step];
     [_actionReplayData addObject:WORLD_STEP];
@@ -627,6 +618,27 @@ NSUInteger physicsHistoryIndex = 0;
     Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
     
     return [current.selectedWeapon executeAttackOnScreen:self];
+}
+
+- (void)applyWeaponEffects {
+    NSMutableArray *weaponsDestroyed = [NSMutableArray array];
+    
+    for (Weapon *weapon in _activeProjectiles) {
+        if (weapon.body == nil) {
+            [weaponsDestroyed addObject:weapon];
+            continue;
+        }
+        
+        for (WeaponEffect *effect in weapon.effects) {
+            [effect executeEffectOnScreen:self];
+            
+            if (effect.isFinished) {
+                [weapon.effects removeObject:effect];
+            }
+        }
+    }
+    
+    [_activeProjectiles removeObjectsInArray:weaponsDestroyed];
 }
 
 - (void)step {

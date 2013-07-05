@@ -26,7 +26,6 @@ typedef NS_ENUM(NSInteger, Event)
 @property (nonatomic) BOOL isWaitingToStop;
 @property (nonatomic) BOOL isFinished;
 @property (nonatomic) Event startType;
-@property (nonatomic) Event stopType;
 @property (nonatomic) int startDelay; // This value should not change when set
 @property (nonatomic) int stopDelay; // This value should not change when set
 @property (nonatomic) int startTimer; // Each new run of the effect will copy startDelay here

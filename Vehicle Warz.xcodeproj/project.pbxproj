@@ -18,6 +18,8 @@
 		248667C51778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667C61778EFDF00DE5743 /* mammoth.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667C41778EFDF00DE5743 /* mammoth.plist */; };
 		248667FD177FEEA800DE5743 /* sound_effects.plist in Resources */ = {isa = PBXBuildFile; fileRef = 248667FC177FEEA800DE5743 /* sound_effects.plist */; };
+		24AE005E17876A8700051E49 /* Terrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24AE005D17876A8700051E49 /* Terrain.mm */; };
+		24AE005F17876A8700051E49 /* Terrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24AE005D17876A8700051E49 /* Terrain.mm */; };
 		24BCB4941784CEB2003535BD /* timer.plist in Resources */ = {isa = PBXBuildFile; fileRef = 24BCB4921784CEB2003535BD /* timer.plist */; };
 		24BCB4951784CEB2003535BD /* timer.plist in Resources */ = {isa = PBXBuildFile; fileRef = 24BCB4921784CEB2003535BD /* timer.plist */; };
 		24BCB4961784CEB2003535BD /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = 24BCB4931784CEB2003535BD /* timer.png */; };
@@ -120,6 +122,8 @@
 		248667C11778EFC300DE5743 /* triceratops.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = triceratops.plist; sourceTree = "<group>"; };
 		248667C41778EFDF00DE5743 /* mammoth.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mammoth.plist; sourceTree = "<group>"; };
 		248667FC177FEEA800DE5743 /* sound_effects.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = sound_effects.plist; sourceTree = "<group>"; };
+		24AE005C17876A8700051E49 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Terrain.h; sourceTree = "<group>"; };
+		24AE005D17876A8700051E49 /* Terrain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Terrain.mm; sourceTree = "<group>"; };
 		24BCB4921784CEB2003535BD /* timer.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = timer.plist; sourceTree = "<group>"; };
 		24BCB4931784CEB2003535BD /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
 		24BCB4A81785342C003535BD /* WeaponEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeaponEffect.h; sourceTree = "<group>"; };
@@ -439,6 +443,8 @@
 				AA3296D515CEC40D00DEE33D /* Resources */,
 				3D709705177FD50B006704EF /* StartMenuLayer.h */,
 				3D709706177FD50B006704EF /* StartMenuLayer.mm */,
+				24AE005C17876A8700051E49 /* Terrain.h */,
+				24AE005D17876A8700051E49 /* Terrain.mm */,
 				248667B21778E4D000DE5743 /* Vehicle.h */,
 				248667B31778E4D000DE5743 /* Vehicle.mm */,
 				248667BA1778EAEB00DE5743 /* Weapon.h */,
@@ -629,6 +635,7 @@
 				3D7A6F0E17810E4000047229 /* GameCenterHelper.m in Sources */,
 				24BCB4AA1785342C003535BD /* WeaponEffect.mm in Sources */,
 				24BCB4B617855313003535BD /* WeaponMagneticEffect.mm in Sources */,
+				24AE005E17876A8700051E49 /* Terrain.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +647,7 @@
 				248667BD1778EAEB00DE5743 /* Weapon.mm in Sources */,
 				24BCB4AB1785342C003535BD /* WeaponEffect.mm in Sources */,
 				24BCB4B717855313003535BD /* WeaponMagneticEffect.mm in Sources */,
+				24AE005F17876A8700051E49 /* Terrain.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

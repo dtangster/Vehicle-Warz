@@ -138,15 +138,6 @@
     }
 }
 
-- (void)notifyEffectsWithStopEvent:(Event) type
-{
-    for (WeaponEffect *effect in _effects) {
-        if (effect.stopType == type) {
-            effect.isRunning = NO;
-        }
-    }
-}
-
 // Weapon to Vehicle collisions from ContactListener will be delegated to this method
 - (void)damageVehicle:(Vehicle *) vehicle
       withContactData:(b2Contact *) contact

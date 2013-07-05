@@ -50,7 +50,6 @@
     copy.isWaitingToStop = _isWaitingToStop;
     copy.isFinished = _isFinished;
     copy.startType = _startType;
-    copy.stopType = _stopType;
     copy.startDelay = _startDelay;
     copy.stopDelay = _stopDelay;
     copy.startTimer = _startDelay;
