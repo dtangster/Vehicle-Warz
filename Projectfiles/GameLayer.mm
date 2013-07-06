@@ -527,15 +527,15 @@ NSUInteger physicsHistoryIndex = 0;
         [_timer runAction:_decrementTimer];
         
         _turnJustEnded = !_turnJustEnded;
-        _vehicleTurnJustBegan = YES;
+        _turnJustBegan = YES;
     }
     
     // This IF block prevents action events from overlapping when a player turn changes
-    if (!_vehicleTurnJustBegan) {
+    if (!_turnJustBegan) {
         [self checkTouchEvents];
     }
     
-    _vehicleTurnJustBegan = NO;
+    _turnJustBegan = NO;
     
     // Apply damage to vehicles and apply any weapon effects
     [self applyDamageAndEffects];
