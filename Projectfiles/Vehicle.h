@@ -22,6 +22,7 @@
 @property (nonatomic) Weapon *weapon2;
 @property (nonatomic) Weapon *special;
 @property (nonatomic) Weapon *selectedWeapon;
+@property (nonatomic) int damageIncurred; // Damage inflicted on this vehicle after one frame
 
 // These are the base stats that multiplier effects will be applied to
 @property (nonatomic) int baseHealth;
@@ -55,5 +56,6 @@
 -(void) setWeapon1:(Weapon *) weapon;
 -(void) setWeapon2:(Weapon *) weapon;
 -(void) setSpecial:(Weapon *) weapon;
+-(BOOL) applyDamageToSelf;
 
 @end

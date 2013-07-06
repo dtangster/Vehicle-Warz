@@ -33,7 +33,7 @@
 #define RIGHT_MOVEMENT_CONTINUE @"Right Movement Continue"
 #define WORLD_STEP @"Step"
 #define ACTION_SEQUENCE_FILE @"action_sequence.data"
-#define DESTROY_TAG 99
+#define DESTROY_TAG 0
 
 // UIKit Gestures
 UIPanGestureRecognizer *twoFingerPanGesture;
@@ -625,6 +625,13 @@ NSUInteger physicsHistoryIndex = 0;
     NSMutableArray *weaponsDestroyed = [NSMutableArray array];
         
     for (Weapon *weapon in _activeProjectiles) {
+        if ([_player1Vehicle applyDamageToSelf] || [_player2Vehicle applyDamageToSelf]) {
+            Vehicle *current = _isFirstPlayerTurn ? _player1Vehicle : _player2Vehicle;
+            
+            _healthLabel.string = [NSString stringWithFormat:@"Health: %i", current.health];
+            _shieldLabel.string = [NSString stringWithFormat:@"Shield: %i", current.shield];
+        }
+        
         // If the body was destroyed, that means the weapon has detonated and should be removed
         if (weapon.tag == DESTROY_TAG && !weapon.effects.count) {
             [_panZoomLayer removeChild:weapon];

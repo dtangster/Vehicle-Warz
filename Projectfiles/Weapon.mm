@@ -14,7 +14,7 @@
 #define PTM_RATIO 32.0f
 #define PI 3.14159265f
 #define POWER_DOWN_SCALE 3.0f
-#define DESTROY_TAG 99
+#define DESTROY_TAG 0
 
 @implementation Weapon
 
@@ -106,7 +106,7 @@
         
         projectileShape.m_radius = clone.contentSize.width/2.0f/PTM_RATIO;
         projectileFixtureDef.shape = &projectileShape;
-        projectileFixtureDef.density = 0.3F; // Affects collision momentum and inertia
+        projectileFixtureDef.density = 3.0F; // Affects collision momentum and inertia
         clone.fixture = clone.body->CreateFixture(&projectileFixtureDef);
         
         // Create clones of weapon effects
@@ -147,8 +147,24 @@
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse
 {
-    NSLog(@"Collision detected");
     [self notifyEffectsWithStartEvent:OnImpact];
+    
+    // Should the body break?
+    int32 count = contact->GetManifold()->pointCount;
+    //stores # of points of contact
+    
+    float32 maxImpulse = 0.0f;
+    for (int32 i = 0; i < count; ++i)
+    {
+        maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
+        //this tests the impulse along each point of contact, and finds the maximum
+    }
+    
+    if (maxImpulse > 1.0f)
+    {
+        vehicle.damageIncurred += 1;
+    }
+    
     weapon.tag = DESTROY_TAG;
 }
 

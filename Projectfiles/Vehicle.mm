@@ -19,10 +19,11 @@
         _experience = 0;
         _level = 1;
         _baseHealth = 100;
-        _baseShield = 20;
+        _baseShield = 1;
         _basePower = 100;
         _baseSpeed = 10;
         _baseEnergy = 1000;
+        _damageIncurred = 0;
         
         // These should be some formula using the base as a multiplier
         _maxHealth = _baseHealth; 
@@ -69,6 +70,30 @@
 {
     _special = weapon;
     weapon.carrier = self;
+}
+
+-(BOOL) applyDamageToSelf
+{
+    if (!_damageIncurred) {
+        return NO;
+    }
+    
+    if (_shield >= _damageIncurred) {
+        _shield -= _damageIncurred;
+        _damageIncurred = 0;
+    }
+    else {
+        _damageIncurred -= _shield;
+        _health -= _damageIncurred;
+        _shield = 0;
+    }
+    
+    if (_health < 0) {
+        _health = 0;
+    }
+    
+    _damageIncurred = 0;
+    return YES;
 }
 
 @end
