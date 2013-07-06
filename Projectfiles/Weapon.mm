@@ -149,7 +149,7 @@
 {
     NSLog(@"Collision detected");
     [self notifyEffectsWithStartEvent:OnImpact];
-    //weapon.tag = DESTROY_TAG;
+    weapon.tag = DESTROY_TAG;
 }
 
 - (b2Vec2)calculateInitialVector

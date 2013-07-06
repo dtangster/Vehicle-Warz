@@ -626,7 +626,7 @@ NSUInteger physicsHistoryIndex = 0;
         
     for (Weapon *weapon in _activeProjectiles) {
         // If the body was destroyed, that means the weapon has detonated and should be removed
-        if (weapon.tag == DESTROY_TAG) {
+        if (weapon.tag == DESTROY_TAG && !weapon.effects.count) {
             [_panZoomLayer removeChild:weapon];
             _world->DestroyBody(weapon.body);
             [weaponsDestroyed addObject:weapon];
