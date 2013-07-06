@@ -23,7 +23,6 @@ typedef NS_ENUM(NSInteger, Event)
 @property (nonatomic) NSString *soundEffect;
 @property (nonatomic) BOOL isRunning; // Is actively running
 @property (nonatomic) BOOL isWaitingToStart;
-@property (nonatomic) BOOL isWaitingToStop;
 @property (nonatomic) BOOL isFinished;
 @property (nonatomic) Event startType;
 @property (nonatomic) int startDelay; // This value should not change when set

@@ -42,9 +42,6 @@
     b2Vec2 attractionVec = b2Vec2(newX, newY);
 
     other.body->ApplyForceToCenter(attractionVec);
-    
-    // Flag as started so we know to use delay timer if needed
-    self.isWaitingToStop = YES;
 }
 
 - (id)copyWithZone:(NSZone *) zone

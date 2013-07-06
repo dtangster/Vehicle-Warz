@@ -25,18 +25,15 @@
         self.startTimer--;
         return NO;
     }
-    if (self.isWaitingToStop && self.stopTimer) {
+    else if (self.stopTimer) {
         self.stopTimer--;
+        return YES;
     }
-    if (!self.stopTimer) {
-        self.isWaitingToStart = YES;
-        self.isWaitingToStop = NO;
+    else {
         self.isRunning = NO;
         self.isFinished = YES;
         return NO;
     }
-    
-    return YES;
 }
 
 - (id)copyWithZone:(NSZone *) zone
@@ -47,7 +44,6 @@
     copy.soundEffect = _soundEffect;
     copy.isRunning = _isRunning;
     copy.isWaitingToStart = _isWaitingToStart;
-    copy.isWaitingToStop = _isWaitingToStop;
     copy.isFinished = _isFinished;
     copy.startType = _startType;
     copy.startDelay = _startDelay;

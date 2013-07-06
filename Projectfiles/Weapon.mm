@@ -113,6 +113,7 @@
         for (WeaponEffect *effect in _effects) {
             [clone.effects addObject:[effect copy]];
             effect.affectedWeapon = clone;
+            effect.isWaitingToStart = YES;
             effect.isFinished = NO;
         }
         
@@ -148,7 +149,7 @@
 {
     NSLog(@"Collision detected");
     [self notifyEffectsWithStartEvent:OnImpact];
-    weapon.tag = DESTROY_TAG;
+    //weapon.tag = DESTROY_TAG;
 }
 
 - (b2Vec2)calculateInitialVector
