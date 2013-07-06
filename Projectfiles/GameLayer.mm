@@ -288,8 +288,8 @@ NSUInteger physicsHistoryIndex = 0;
     _player2Vehicle.special = tempWeapon;
     
     // PROTOTYPE TESTING OF WEAPONEFFECT
-    WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:1 withAffectedDistance:10];
-    effect.startType = OnImpact;
+    WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:1000 withAffectedDistance:10];
+    effect.startType = OnLaunch;
     effect.startDelay = 20;
     effect.stopDelay = 20;
     [_player1Vehicle.weapon1 addEffect:effect];

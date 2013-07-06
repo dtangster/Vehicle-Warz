@@ -37,8 +37,8 @@
     CGPoint bodyPos = [screen toPixels:other.body->GetPosition()];
     CGPoint shotPos = self.affectedWeapon.position;
     float distance = ccpDistance(bodyPos, shotPos);
-    float newX = (shotPos.x - bodyPos.x) / distance * _attractionPower;
-    float newY = (shotPos.y - bodyPos.y) / distance * _attractionPower;
+    float newX = ((shotPos.x - bodyPos.x) * _attractionPower) / (distance * distance);
+    float newY = ((shotPos.y - bodyPos.y) * _attractionPower) / (distance * distance) ;
     b2Vec2 attractionVec = b2Vec2(newX, newY);
 
     other.body->ApplyForceToCenter(attractionVec);

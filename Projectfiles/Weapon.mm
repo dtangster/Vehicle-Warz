@@ -113,6 +113,7 @@
         for (WeaponEffect *effect in _effects) {
             [clone.effects addObject:[effect copy]];
             effect.affectedWeapon = clone;
+            effect.isFinished = NO;
         }
         
         [[SimpleAudioEngine sharedEngine] playEffect:_weaponSound];
