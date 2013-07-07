@@ -19,6 +19,7 @@
         self.startTimer = self.startDelay;
         self.stopTimer = self.stopDelay;
         self.isWaitingToStart = NO;
+        return NO;
     }
     
     if (self.startTimer) {

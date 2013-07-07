@@ -15,6 +15,7 @@
 #define PI 3.14159265f
 #define POWER_DOWN_SCALE 3.0f
 #define DESTROY_TAG 0
+#define DAMAGE_MULTIPLIER 7
 
 @implementation Weapon
 
@@ -150,7 +151,7 @@
     int count = contact->GetManifold()->pointCount;
     
     for (int i = 0; i < count; ++i) {
-        vehicle.damageIncurred += impulse->normalImpulses[i];
+        vehicle.damageIncurred += impulse->normalImpulses[i] * DAMAGE_MULTIPLIER;
     }
    
     weapon.tag = DESTROY_TAG;

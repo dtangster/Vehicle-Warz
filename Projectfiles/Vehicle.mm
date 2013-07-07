@@ -21,7 +21,7 @@
         _baseHealth = 100;
         _baseShield = 1;
         _basePower = 100;
-        _baseSpeed = 10;
+        _baseSpeed = 30;
         _baseEnergy = 1000;
         _damageIncurred = 0;
         

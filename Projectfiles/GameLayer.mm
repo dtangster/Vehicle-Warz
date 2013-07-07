@@ -154,15 +154,16 @@ NSUInteger physicsHistoryIndex = 0;
     
     // Create first player vehicle
     _player1Vehicle = [[Vehicle alloc] initWithName: @"Triceratops" usingImage:@"triceratops.png"];
-    [_panZoomLayer addChild:_player1Vehicle z:1 tag:1];
+    _player1Vehicle.position = CGPointMake(450.0f, 200.0f);
+    [_panZoomLayer addChild:_player1Vehicle];
     
     // Setting the properties of our definition
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.linearDamping = 1;
     bodyDef.angularDamping = 1;
-    bodyDef.position.Set(450.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
-    bodyDef.linearVelocity = b2Vec2(-5,0);
+    bodyDef.position.Set(450.0f / PTM_RATIO, 200.0f / PTM_RATIO);
+    bodyDef.linearVelocity = b2Vec2(-5, 0);
     bodyDef.angularVelocity = -110;
     
     // This tells the Box2D body which sprite to update.
@@ -175,20 +176,21 @@ NSUInteger physicsHistoryIndex = 0;
     b2PolygonShape playerShape;
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &playerShape;
-    fixtureDef.density = 0.3F; // Affects collision momentum and inertia
+    fixtureDef.density = 0.3f; // Affects collision momentum and inertia
     playerShape.SetAsBox([_player1Vehicle spriteWidth] / 3 / PTM_RATIO, [_player1Vehicle spriteHeight] / 3 / PTM_RATIO);
     _player1Vehicle.fixture = _player1Vehicle.body->CreateFixture(&fixtureDef);
     
     // Create second player vehicle
     _player2Vehicle = [[Vehicle alloc] initWithName: @"Mammoth" usingImage:@"mammoth.png"];
-    [_panZoomLayer addChild:_player2Vehicle z:1 tag:2];
-    bodyDef.position.Set(50.0f/PTM_RATIO,(200.0f)/PTM_RATIO);
-    bodyDef.linearVelocity = b2Vec2(5,0);
+    _player2Vehicle.position = CGPointMake(50.0f, 200.0f);
+    [_panZoomLayer addChild:_player2Vehicle];
+    bodyDef.position.Set(50.0f / PTM_RATIO, 200.0f / PTM_RATIO);
+    bodyDef.linearVelocity = b2Vec2(5, 0);
     bodyDef.angularVelocity = 90;
     bodyDef.userData = (__bridge void*)_player2Vehicle;
     _player2Vehicle.body = _world->CreateBody(&bodyDef);
     fixtureDef.shape = &playerShape;
-    fixtureDef.density = 0.3F; //affects collision momentum and inertia
+    fixtureDef.density = 0.3f; //affects collision momentum and inertia
     playerShape.SetAsBox([_player2Vehicle spriteWidth] / 4 / PTM_RATIO, [_player2Vehicle spriteHeight] / 4 / PTM_RATIO);
     _player2Vehicle.fixture = _player2Vehicle.body->CreateFixture(&fixtureDef);
 
@@ -289,10 +291,10 @@ NSUInteger physicsHistoryIndex = 0;
     
     // PROTOTYPE TESTING OF WEAPONEFFECT
     WeaponEffect *effect = [[WeaponMagneticEffect alloc] initWithAttractionPower:1000 withAffectedDistance:10];
-    effect.startType = OnImpact;
+    effect.startType = OnLaunch;
     effect.startDelay = 20;
     effect.stopDelay = 20;
-    [_player1Vehicle.weapon1 addEffect:effect];
+    //[_player1Vehicle.weapon1 addEffect:effect];
 }
 
 - (void)setUpMenu
@@ -538,9 +540,6 @@ NSUInteger physicsHistoryIndex = 0;
         _turnJustBegan = NO;
     }
     
-    // Apply damage to vehicles and apply any weapon effects
-    [self applyDamageAndEffects];
-    
     [self step];
     [_actionReplayData addObject:WORLD_STEP];
 }
@@ -658,6 +657,8 @@ NSUInteger physicsHistoryIndex = 0;
 }
 
 - (void)step {
+    [self applyDamageAndEffects];
+    
     float timeStep = 0.03f;
     int32 velocityIterations = 8;
     int32 positionIterations = 1;
@@ -742,6 +743,7 @@ NSUInteger physicsHistoryIndex = 0;
         _isReplaying = !_isReplaying;
     }
     
+    [self applyDamageAndEffects];
     [self step];
 }
 
