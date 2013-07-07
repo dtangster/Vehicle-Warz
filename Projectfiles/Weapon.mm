@@ -147,25 +147,14 @@
       withContactData:(b2Contact *) contact
           withImpulse:(const b2ContactImpulse *) impulse
 {
-    [self notifyEffectsWithStartEvent:OnImpact];
+    int count = contact->GetManifold()->pointCount;
     
-    // Should the body break?
-    int32 count = contact->GetManifold()->pointCount;
-    //stores # of points of contact
-    
-    float32 maxImpulse = 0.0f;
-    for (int32 i = 0; i < count; ++i)
-    {
-        maxImpulse = b2Max(maxImpulse, impulse->normalImpulses[i]);
-        //this tests the impulse along each point of contact, and finds the maximum
+    for (int i = 0; i < count; ++i) {
+        vehicle.damageIncurred += impulse->normalImpulses[i];
     }
-    
-    if (maxImpulse > 1.0f)
-    {
-        vehicle.damageIncurred += 1;
-    }
-    
+   
     weapon.tag = DESTROY_TAG;
+    [self notifyEffectsWithStartEvent:OnImpact];
 }
 
 - (b2Vec2)calculateInitialVector
