@@ -210,8 +210,8 @@ NSUInteger physicsHistoryIndex = 0;
     _countDown = [CCAnimation animationWithFrames: _timerFrames delay:1.0f];
     
     //Create an action with the animation that can then be assigned to a sprite
-    //_decrementTimer = [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO];
-    _decrementTimer = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO]];
+    _decrementTimer = [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO];
+    //_decrementTimer = [CCRepeatForever actionWithAction: [CCAnimate actionWithAnimation:_countDown restoreOriginalFrame:NO]];
     
     
     [_timer runAction:_decrementTimer];
@@ -530,12 +530,13 @@ NSUInteger physicsHistoryIndex = 0;
         _turnJustBegan = YES;
     }
     
-    // This IF block prevents action events from overlapping when a player turn changes
+    // This IF-ELSE block prevents action events from overlapping when a player turn changes
     if (!_turnJustBegan) {
         [self checkTouchEvents];
     }
-    
-    _turnJustBegan = NO;
+    else {
+        _turnJustBegan = NO;
+    }
     
     // Apply damage to vehicles and apply any weapon effects
     [self applyDamageAndEffects];
